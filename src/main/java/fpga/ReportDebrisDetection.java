@@ -15,7 +15,7 @@ import fpga.objectdetection.Debris;
  */
 public class ReportDebrisDetection
 {
-  public static void reportDetectedDebris(Debris[] test) {
+  public static void reportDetectedDebris(Debris[] detectedDebris) {
     // TODO: implement requirements specified above.
   }
 
