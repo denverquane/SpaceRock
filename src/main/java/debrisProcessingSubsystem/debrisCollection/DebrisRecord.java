@@ -21,6 +21,7 @@ public class DebrisRecord {
         size = 0.0;
     }
 
+    //Begin setters and getters------------------------------------------------
     /**
      * Full constructor initializes all values.
      * TODO determine if these coordinates are relative to frame or whole image.
@@ -155,6 +156,28 @@ public class DebrisRecord {
     public void setSize(double size){
         this.size = size;
     }
+    //end setters and getters---------------------------------------------------
 
-    //TODO comparators for sorting collection?
+    /**
+     * Compare the radius of this DebrisRecord to another DebrisRecord and
+     * return the difference. this.radius - other.radius
+     * @param other The DebrisRecord we are comparing to.
+     * @return  double The difference in radius between this Debris Record and
+     * the other DebrisRecord passed as a parameter.
+     */
+    public double radiusDifference(DebrisRecord other){
+        return this.radius - other.getRadius();
+    }
+
+    /**
+     * Return the squared distance between this DebrisRecord and another
+     * DebrisRecord.
+     * @param other The DebrisRecord to measure the distance to.
+     * @return The squared distance between the two DebrisRecords. dX^2 + dY^2.
+     */
+    public double sqDistanceTo(DebrisRecord other){
+        int xDistance = xLoc - other.getX();
+        int yDistance = yLoc - other.getY();
+        return xDistance * xDistance + yDistance * yDistance;
+    }
 }
