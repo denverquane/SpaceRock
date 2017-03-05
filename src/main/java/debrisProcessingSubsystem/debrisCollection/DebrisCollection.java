@@ -1,4 +1,4 @@
-package debrisProcessingSubsystem;
+package debrisProcessingSubsystem.debrisCollection;
 
 /**
  * This will be the interface implemented by the Debris Collection object shown
