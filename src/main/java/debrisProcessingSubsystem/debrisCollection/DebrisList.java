@@ -9,7 +9,7 @@ public interface DebrisList {
     /**
      * This method will be used to get a debris element from the list.
      */
-    //Debris getDebrisElement();
+    DebrisRecord getDebrisElement();
 
     /**
      * This method will be used to tell if the list is empty.

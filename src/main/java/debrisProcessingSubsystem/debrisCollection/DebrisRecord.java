@@ -42,5 +42,5 @@ public class DebrisRecord {
 
     //TODO getters and setters.
 
-    //TODO comparators?
+    //TODO comparators for sorting collection?
 }
