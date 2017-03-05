@@ -1,7 +1,8 @@
 package debrisProcessingSubsystem.debrisCollection;
 
 /**
- * This is the DebrisCollection representation of a debris object.
+ * This is the DebrisCollection representation of a debris object. There should
+ * be one of these for each object detected.
  * Created by jdt on 3/5/17.
  */
 public class DebrisRecord {
@@ -23,12 +24,12 @@ public class DebrisRecord {
     /**
      * Full constructor initializes all values.
      * TODO determine if these coordinates are relative to frame or whole image.
-     * @param xLoc x coordinate of Debris.
-     * @param yLoc y coordinate of Debris.
-     * @param frameX x value of frame location.
-     * @param frameY y value of frame location.
-     * @param radius radius of the object.
-     * @param size size of object. TODO determine if this is area
+     * @param xLoc X coordinate of Debris.
+     * @param yLoc Y coordinate of Debris.
+     * @param frameX X value of frame location.
+     * @param frameY Y value of frame location.
+     * @param radius Radius of the object.
+     * @param size Size of object. TODO determine if this is area
      */
     public DebrisRecord(int xLoc, int yLoc, int frameX, int frameY,
                         double radius, double size){
@@ -40,7 +41,120 @@ public class DebrisRecord {
         this.size = size;
     }
 
-    //TODO getters and setters.
+    /**
+     * Initialize all debris members at once.
+     * @param xLoc X coordinate of Debris.
+     * @param yLoc Y coordinate of Debris.
+     * @param frameX X value of frame location.
+     * @param frameY Y value of frame location.
+     * @param radius Radius of the object.
+     * @param size Size of the object.
+     */
+    public void initializeDebris(int xLoc, int yLoc, int frameX, int frameY,
+                                 double radius, double size){
+        this.xLoc = xLoc;
+        this.yLoc = yLoc;
+        this.frameX = frameX;
+        this.frameY = frameY;
+        this.radius = radius;
+        this.size = size;
+    }
+
+    /**
+     * Get the x coordinate of the debris.
+     * @return xLoc The x coordinate of the debris' location.
+     */
+    public int getX(){
+        return xLoc;
+    }
+
+    /**
+     * Set the xLocation of this debris.
+     * @param xLoc The x location of this debris.
+     */
+    public void setX(int xLoc){
+        this.xLoc = xLoc;
+    }
+
+    /**
+     * Set the y location of this debris.
+     * @return yLoc The y location of this debris.
+     */
+    public int getY(){
+        return yLoc;
+    }
+
+    /**
+     * Set the y location of this debris.
+     * @param yLoc the y location of this debris.
+     */
+    public void setY(int yLoc){
+        this.yLoc = yLoc;
+    }
+
+    /**
+     * Get the debris'  frame's x value.
+     * @return frameX, the x value of the frame that contains the debris.
+     */
+    public int getFrameX(){
+        return frameX;
+    }
+
+    /**
+     * Set the x value of the frame that contains this debris.
+     * @param frameX The x value of the frame that contains this debris.
+     */
+    public void setFrameX(int frameX){
+        this.frameX = frameX;
+    }
+
+    /**
+     * Get the y value of the frame containing this debris.
+     * @return frameY, The y value of the frame that contains this debris.
+     */
+    public int getFrameY(){
+        return frameY;
+    }
+
+    /**
+     * Set the y value of the frame containing this debris.
+     * @param frameY The y value of the frame containing this debris.
+     */
+    public void setFrameY(int frameY){
+        this.frameY = frameY;
+    }
+
+    /**
+     * Get the radius of this debris.
+     * @return radius The radius of this debris object.
+     */
+    public double getRadius(){
+        return radius;
+    }
+
+    /**
+     * Set the radius of this object
+     * @param r The radius of this object.
+     */
+    public void setRadius(double r){
+        this.radius = r;
+    }
+
+    /**
+     * Get the size of this object.
+     * @return size The size of this object.
+     */
+    public double getSize(){
+        return size;
+    }
+
+    /**
+     * Set the size of this object.
+     * @param size size The size of this object.
+     */
+    public void setSize(double size){
+        this.size = size;
+    }
 
     //TODO comparators for sorting collection?
 }
