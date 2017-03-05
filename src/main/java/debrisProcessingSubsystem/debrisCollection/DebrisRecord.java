@@ -7,6 +7,7 @@ package debrisProcessingSubsystem.debrisCollection;
  */
 public class DebrisRecord {
     //TODO identification scheme, string maybe?
+    private String id;
     private int xLoc, yLoc;
     private int frameX, frameY;
     private double radius;
@@ -59,6 +60,22 @@ public class DebrisRecord {
         this.frameY = frameY;
         this.radius = radius;
         this.size = size;
+    }
+
+    /**
+     * Get the ID for the DebrisRecord.
+     * @return The id member of this object.
+     */
+    public String getId(){
+        return id;
+    }
+
+    /**
+     * Set the ID for this DebrisRecord.
+     * @param id The id for this DebrisRecord.
+     */
+    public void setId(String id){
+        this.id = id;
     }
 
     /**
