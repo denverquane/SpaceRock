@@ -9,11 +9,9 @@ import java.util.List;
  */
 public class ZoomFlag implements Runnable {
 
-
   private SensorInterface si;
   private MemoryMap mm;
   private ZoomLevel zoom;
-
 
   public class MemoryMap{
     public List<ZoomFlag.Reg> Registers;
