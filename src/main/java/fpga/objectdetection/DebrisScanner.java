@@ -9,31 +9,28 @@ import java.util.ArrayList;
 // gausian filter does not provide reliable boarder data (cause it has no information to pull from edges)
 public class DebrisScanner {
 
-    private byte[][] searchedArray;
-    private boolean[][] debrisMap;
-    private int imgSize;
+    private static byte[][] searchedArray;
+    private static boolean[][] debrisMap;
+    private static int imgSize;
     // SOME LIST OF DEBRIS -- not sure how this fits into greater scope
-    private ArrayList<Debris> foundObjects = new ArrayList<>();
+    private static ArrayList<Debris> foundObjects = new ArrayList<>();
 
-    private boolean validDebris; // if on boarder, then dont know total scope --> invalid
-    private int debrisSize;
-    private int maxX, maxY;
-    private int minX, minY;
-
-    public DebrisScanner(boolean[][] debrisMap)
-    {
-        this.debrisMap = debrisMap;
-        this.imgSize = debrisMap.length;
-        searchedArray = new byte[imgSize][imgSize];
-    }
+    private static boolean validDebris; // if on boarder, then dont know total scope --> invalid
+    private static int debrisSize;
+    private static int maxX, maxY;
+    private static int minX, minY;
 
     // SOME LIST OF DEBRIS searchDebrisMap()
     // Scan line by line (ignoring edges -- gausian filter unreliable)
     // Once we find any debris, BFS for its entirety
     // if it reaches edge, ignore
     // if it is enclosed in frame, record
-    public ArrayList<Debris> searchDebrisMap()
+    public static ArrayList<Debris> searchDebrisMap(boolean[][] debrisMap)
     {
+        DebrisScanner.debrisMap = debrisMap;
+        imgSize = debrisMap.length;
+        searchedArray = new byte[imgSize][imgSize];
+
         for (int j = 0; j < imgSize; j++)
         {
             for (int i = 0; i < imgSize; i++)
@@ -44,7 +41,7 @@ public class DebrisScanner {
         return foundObjects;
     }
 
-    private void checkSpace(int i, int j)
+    private static void checkSpace(int i, int j)
     {
         if( searchedArray[i][j] == 1 ) { return; }
         searchedArray[i][j] = 1;
@@ -52,7 +49,7 @@ public class DebrisScanner {
         startDebrisSearch(i, j);
     }
 
-    private boolean startDebrisSearch(int i, int j)
+    private static boolean startDebrisSearch(int i, int j)
     {
         validDebris = !(onBoarder(i, j));
         debrisSize = 1;
@@ -75,7 +72,7 @@ public class DebrisScanner {
         return false;
     }
 
-    private SearchValue search(int i, int j)
+    private static SearchValue search(int i, int j)
     {
         if( outOfBounds(i, j) ) { return SearchValue.OUT_OF_BOUNDS; }
         if( searchedArray[i][j] == 1 ) { return SearchValue.ALREADY_SEARCHED; }
@@ -94,21 +91,21 @@ public class DebrisScanner {
         return SearchValue.DEBRIS_NORMAL;
     }
 
-    private boolean outOfBounds(int x, int y)
+    private static boolean outOfBounds(int x, int y)
     {
         if( x < 0 || x >= imgSize ) { return true; }
         if( y < 0 || y >= imgSize ) { return true; }
         return false;
     }
 
-    private boolean onBoarder(int x, int y)
+    private static boolean onBoarder(int x, int y)
     {
         if( x == 0 || x == (imgSize - 1) ) { return true; }
         if( y == 0 || y == (imgSize - 1) ) { return true; }
         return false;
     }
 
-    private void trackBounds(int x, int y)
+    private static void trackBounds(int x, int y)
     {
         if( x > maxX ) { maxX = x; }
         if( x < minX ) { minX = x; }
@@ -116,7 +113,7 @@ public class DebrisScanner {
         if( y < minY ) { minY = y; }
     }
 
-    public void printList()
+    public static void printList()
     {
         System.out.println("Found " + foundObjects.size() + " 'valid' debris");
         int counter = 1;
