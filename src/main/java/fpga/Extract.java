@@ -12,9 +12,8 @@ public class Extract
 
 
   static List<Debris> extract(boolean[][] image){
-    DebrisScanner dSTest = new DebrisScanner(image);
-    dSTest.searchDebrisMap();
-    dSTest.printList();
+    DebrisScanner.searchDebrisMap(image);
+    DebrisScanner.printList();
 
     return new ArrayList<>();
   }
