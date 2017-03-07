@@ -5,10 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Rob on 2/25/2017.
+ * Extracts a list of objects from a boolean 2d Array
+ *
+ * @author Rob Doyle
+ * @author James Holland
  */
 
-public class Extract {
+class Extract {
   /**
    * Extract a list of Debris objects from the image.
    * Scan the boolean map line by line.
@@ -18,7 +21,7 @@ public class Extract {
    *        CAUTION:destruction of boolean array will occur
    * @return List of debris with x,y centers and diameter.
    */
-  public static List<Debris> extract(boolean[][] debrisMap) {
+  static List<Debris> extract(boolean[][] debrisMap) {
     ArrayList<Debris> foundObjects = new ArrayList<>();
 
     for (int j = 0; j < debrisMap.length; j++) {
@@ -109,9 +112,9 @@ public class Extract {
    * Immutable construct for holding X,Y center and diameter.
    */
   public static class Debris {
-    public final int centerX, centerY, diameter;
+    final int centerX, centerY, diameter;
 
-    public Debris(int x, int y, int dia) {
+    Debris(int x, int y, int dia) {
       centerX = x;
       centerY = y;
       diameter = dia;
@@ -126,13 +129,7 @@ public class Extract {
         return false;
       }
       Extract.Debris debris = (Extract.Debris) o;
-      if (centerX != debris.centerX) {
-        return false;
-      }
-      if (centerY != debris.centerY) {
-        return false;
-      }
-      return diameter == debris.diameter;
+      return centerX == debris.centerX && centerY == debris.centerY && diameter == debris.diameter;
     }
 
     @Override
