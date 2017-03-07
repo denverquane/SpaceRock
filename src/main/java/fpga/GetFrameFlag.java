@@ -12,6 +12,8 @@ Thread framethread;
    */
   private int currentX, currentY, currentSize, oldX, oldY, oldSize;
 
+/*TODO: Delete this as soon as the actual register exists.*/
+  private DummyRegister CR;
 
   public GetFrameFlag(String name){
 framethread = new Thread(this, name);
@@ -25,12 +27,22 @@ framethread = new Thread(this, name);
   }
 
 
+  /*TODO: Delete DummyRegister as soon as the actual register exists.*/
+  private class DummyRegister{
+    public boolean getFrame;
+    public boolean ready;
+    public int newX;
+    public int newY;
+    public int newSize;
+    public int oldX;
+    public int oldY;
+    public int oldSize;
+  }
+
+
   @Override
   public void run() {
     while(running){
-      /**
-       * TODO:  Add the method to tell the sensor to send the requested frame.
-       */
 /*
    Poll the control register for a 'getFrame' request.  When this is 'true', then pull the new
    X and Y coordinates and the new requested frame center from the control register.
