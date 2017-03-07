@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 // NOTE: IS BOARDER RELIABLE DATA -- set variable for this?
 // gausian filter does not provide reliable boarder data (cause it has no information to pull from edges)
-class DebrisScanner {
+public class DebrisScanner {
 
     private byte[][] searchedArray;
-    private byte[][] debrisMap;
+    private boolean[][] debrisMap;
     private int imgSize;
     // SOME LIST OF DEBRIS -- not sure how this fits into greater scope
     private ArrayList<Debris> foundObjects = new ArrayList<>();
@@ -20,23 +20,11 @@ class DebrisScanner {
     private int maxX, maxY;
     private int minX, minY;
 
-    DebrisScanner(byte[][] debrisMap, int imgSize)
+    public DebrisScanner(boolean[][] debrisMap)
     {
         this.debrisMap = debrisMap;
-        this.imgSize = imgSize;
+        this.imgSize = debrisMap.length;
         searchedArray = new byte[imgSize][imgSize];
-        zeroSearchedArray();
-    }
-
-    private void zeroSearchedArray()
-    {
-        for (int i = 0; i < imgSize; i++)
-        {
-            for (int j = 0; j < imgSize; j++)
-            {
-                searchedArray[i][j] = 0;
-            }
-        }
     }
 
     // SOME LIST OF DEBRIS searchDebrisMap()
@@ -44,7 +32,7 @@ class DebrisScanner {
     // Once we find any debris, BFS for its entirety
     // if it reaches edge, ignore
     // if it is enclosed in frame, record
-    ArrayList<Debris> searchDebrisMap()
+    public ArrayList<Debris> searchDebrisMap()
     {
         for (int j = 0; j < imgSize; j++)
         {
@@ -60,7 +48,7 @@ class DebrisScanner {
     {
         if( searchedArray[i][j] == 1 ) { return; }
         searchedArray[i][j] = 1;
-        if( debrisMap[i][j] == 0 ) { return; }
+        if(!debrisMap[i][j]) { return; }
         startDebrisSearch(i, j);
     }
 
@@ -92,7 +80,7 @@ class DebrisScanner {
         if( outOfBounds(i, j) ) { return SearchValue.OUT_OF_BOUNDS; }
         if( searchedArray[i][j] == 1 ) { return SearchValue.ALREADY_SEARCHED; }
         searchedArray[i][j] = 1;
-        if( debrisMap[i][j] == 0 ) { return SearchValue.NO_DEBRIS; }
+        if( debrisMap[i][j] == false ) { return SearchValue.NO_DEBRIS; }
         if( onBoarder(i, j) )
         {
             validDebris = false;
@@ -128,7 +116,7 @@ class DebrisScanner {
         if( y < minY ) { minY = y; }
     }
 
-    void printList()
+    public void printList()
     {
         System.out.println("Found " + foundObjects.size() + " 'valid' debris");
         int counter = 1;

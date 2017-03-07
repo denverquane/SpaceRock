@@ -1,5 +1,6 @@
 package fpga;
 
+import fpga.objectdetection.DebrisScanner;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,16 @@ import java.util.List;
  */
 public class Extract
 {
+
+
+  static List<Debris> extract(boolean[][] image){
+    DebrisScanner dSTest = new DebrisScanner(image);
+    dSTest.searchDebrisMap();
+    dSTest.printList();
+
+    return new ArrayList<>();
+  }
+
   public class Debris {
     public final int centerX, centerY, diameter;
 
@@ -46,9 +57,5 @@ public class Extract
     }
   }
 
-  static List<Debris> extract(boolean[][] image){
-
-    return new ArrayList<>();
-  }
 
 }
