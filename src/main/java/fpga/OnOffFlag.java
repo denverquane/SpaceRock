@@ -12,7 +12,7 @@ public class OnOffFlag implements Runnable {
   //enum sensorOn
 
   Thread flagThread;
-
+boolean running = true;
 
   /**
    *   Construct a new thread.
@@ -38,25 +38,32 @@ public class OnOffFlag implements Runnable {
    be able to avoid spurrious inputs.
    **/
 
+  /**
+   * Method to shut the thread down
+   */
+  public void shutdown(){
+    running = false;
+  }
+
+
   @Override
   public void run() {
 
+    while(running) {
     /*
        Poll the control register for change in state for the on/off register
 
        if(controlRegister.onOff
      */
 
-
-
-    if(!sensorOn){
-      KenFlags.sensor.on();
-      sensorOn = true;
+      if (!sensorOn) {
+        KenFlags.sensor.on();
+        sensorOn = true;
+      } else {
+        KenFlags.sensor.off();
+        sensorOn = false;
+      }
+      // Toggle Ready() to true
     }
-    else {
-      KenFlags.sensor.off();
-      sensorOn = false;
-    }
-    // Toggle Ready() to true
   }
 }
