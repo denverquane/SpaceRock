@@ -1,5 +1,7 @@
 package debrisProcessingSubsystem.debrisCollection;
 
+import java.awt.image.BufferedImage;
+
 /**
  * This is the DebrisCollection representation of a debris object. There should
  * be one of these for each object detected.
@@ -13,6 +15,7 @@ public class DebrisRecord {
     private double[] estimatedVelocityXY;
     private DebrisRecord matchingRecord;
     private boolean ambiguousMatch;
+    private BufferedImage frameImage;
 
     private int xLoc, yLoc;
     private int frameX, frameY;

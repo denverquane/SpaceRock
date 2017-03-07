@@ -91,6 +91,10 @@ public class DRListManager implements DebrisCollection {
         for(int i = 0; i < 3; ++i){
             debris.addDebris();
         }
+        debris.newImage();
+        for(int i = 0; i < 6; ++i){
+            debris.addDebris();
+        }
         debris.printCollectionCharacteristics();
 
     }
