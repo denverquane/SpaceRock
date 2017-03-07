@@ -41,6 +41,8 @@ framethread = new Thread(this, name);
    Once we get confirmation, set the "lastFrameCoordinates" to the coordinates we just requested,
    then set our ready() to true.
  */
+
+
       /*
          We need the actual hooks to the control register.  Right now, I am using:
          CR.getFrame as a boolean register which will actually tell us we need to tell
