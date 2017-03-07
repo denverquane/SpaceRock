@@ -1,6 +1,8 @@
 package fpga.objectdetection;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Rob on 2/25/2017.
@@ -17,7 +19,6 @@ public class DebrisScanner {
   private static ArrayList<Debris> foundObjects = new ArrayList<>();
 
   private static boolean validDebris; // if on boarder, then dont know total scope --> invalid
-  private static int debrisSize;
   private static int maxX, maxY;
   private static int minX, minY;
 
@@ -52,7 +53,6 @@ public class DebrisScanner {
 
   private static boolean startDebrisSearch(int i, int j) {
     validDebris = !(onBoarder(i, j));
-    debrisSize = 1;
     maxX = i;
     minX = i;
     maxY = j;
@@ -64,7 +64,7 @@ public class DebrisScanner {
       int centerX = ((maxX - minX) / 2) + minX;
       int centerY = ((maxY - minY) / 2) + minY;
       int diameter = Math.max((maxX - minX), (maxY - minY));
-      foundObjects.add(new Debris(centerX, centerY, diameter, debrisSize));
+      foundObjects.add(new Debris(centerX, centerY, diameter));
       return true;
     }
     return false;
@@ -88,7 +88,6 @@ public class DebrisScanner {
     for (Dir d : Dir.values()) {
       search(i + d.deltaX(), j + d.deltaY());
     }
-    debrisSize++;
     return SearchValue.DEBRIS_NORMAL;
   }
 
@@ -125,6 +124,10 @@ public class DebrisScanner {
     if (y < minY) {
       minY = y;
     }
+  }
+
+  public static List<Debris> getDebrisList(){
+    return Collections.unmodifiableList(foundObjects);
   }
 
   public static void printList() {
