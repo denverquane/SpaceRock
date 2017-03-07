@@ -3,7 +3,6 @@ package fpga;
 import static fpga.Testing.assertEquals;
 import static fpga.Testing.assertTrue;
 
-import fpga.objectdetection.Debris;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,12 +19,12 @@ public class ExtractTest extends Extract
     boolean[][] image = new boolean[300][300];
     image[50][45] = true; //Single pixel asteroid at 50x45
 
-    List<Debris> debrisList = Extract.extract(image);
+    List<Extract.Debris> debrisList = Extract.extract(image);
 
 
     assertEquals(new Integer(1), debrisList.size());
 
-    Debris debris = debrisList.get(0);
+    Extract.Debris debris = debrisList.get(0);
 
     assertEquals(new Integer(50), debris.centerX);
     assertEquals(new Integer(45), debris.centerY);
@@ -38,12 +37,12 @@ public class ExtractTest extends Extract
     image[250][200] = true; //Single pixel asteroid at 50x45
 
 
-    List<Debris> debrisList = Extract.extract(image);
+    List<Extract.Debris> debrisList = Extract.extract(image);
 
     assertEquals(new Integer(2), debrisList.size());
 
-    assertTrue(debrisList.contains(new Debris(50,45,1)));
-    assertTrue(debrisList.contains(new Debris(250,200,1)));
+    assertTrue(debrisList.contains(new Extract.Debris(50,45,1)));
+    assertTrue(debrisList.contains(new Extract.Debris(250,200,1)));
   }
 
   public void cornerCaseDebrisTest() throws Exception {
@@ -55,11 +54,11 @@ public class ExtractTest extends Extract
     }
 
 
-    List<Debris> debrisList = Extract.extract(image);
+    List<Extract.Debris> debrisList = Extract.extract(image);
 
     assertEquals(new Integer(1), debrisList.size());
 
-    Debris debris = debrisList.get(0);
+    Extract.Debris debris = debrisList.get(0);
 
     assertEquals(new Integer(24), debris.centerX);
     assertEquals(new Integer(24), debris.centerY);
