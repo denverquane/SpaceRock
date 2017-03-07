@@ -33,40 +33,30 @@ public class DebrisScanner {
 
     for (int j = 0; j < debrisMap.length; j++) {
       for (int i = 0; i < debrisMap.length; i++) {
-        checkSpace(i, j);
+        if (searchedArray[i][j] == 1) {
+          continue;
+        }
+        searchedArray[i][j] = 1;
+        if (!debrisMap[i][j]) {
+          continue;
+        }
+        validDebris = !(onBoarder(i, j));
+        maxX = i;
+        minX = i;
+        maxY = j;
+        minY = j;
+        for (Dir d : Dir.values()) {
+          search(i + d.deltaX(), j + d.deltaY());
+        }
+        if (validDebris) {
+          int centerX = ((maxX - minX) / 2) + minX;
+          int centerY = ((maxY - minY) / 2) + minY;
+          int diameter = Math.max((maxX - minX) + 1, (maxY - minY) + 1);
+          foundObjects.add(new Debris(centerX, centerY, diameter));
+        }
       }
     }
     return foundObjects;
-  }
-
-  private static void checkSpace(int i, int j) {
-    if (searchedArray[i][j] == 1) {
-      return;
-    }
-    searchedArray[i][j] = 1;
-    if (!debrisMap[i][j]) {
-      return;
-    }
-    startDebrisSearch(i, j);
-  }
-
-  private static boolean startDebrisSearch(int i, int j) {
-    validDebris = !(onBoarder(i, j));
-    maxX = i;
-    minX = i;
-    maxY = j;
-    minY = j;
-    for (Dir d : Dir.values()) {
-      search(i + d.deltaX(), j + d.deltaY());
-    }
-    if (validDebris) {
-      int centerX = ((maxX - minX) / 2) + minX;
-      int centerY = ((maxY - minY) / 2) + minY;
-      int diameter = Math.max((maxX - minX)+1, (maxY - minY)+1);
-      foundObjects.add(new Debris(centerX, centerY, diameter));
-      return true;
-    }
-    return false;
   }
 
   private static SearchValue search(int i, int j) {
