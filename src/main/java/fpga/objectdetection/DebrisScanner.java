@@ -57,47 +57,34 @@ public class DebrisScanner {
   }
 
   private static void search(int i, int j) {
-    if (outOfBounds(i, j)) {
+    //Check out of bounds
+    if (i < 0 || i >= debrisMap.length || j < 0 || j >= debrisMap.length) {
       return;
     }
     if (searchedArray[i][j] == 1) {
-return;
+      return;
     }
     searchedArray[i][j] = 1;
     if (debrisMap[i][j] == false) {
       return;
     }
 
-    trackBounds(i, j);
+    if (i > maxX) {
+      maxX = i;
+    }
+    if (i < minX) {
+      minX = i;
+    }
+    if (j > maxY) {
+      maxY = j;
+    }
+    if (j < minY) {
+      minY = j;
+    }
     for (Dir d : Dir.values()) {
       search(i + d.deltaX(), j + d.deltaY());
     }
     return;
-  }
-
-  private static boolean outOfBounds(int x, int y) {
-    if (x < 0 || x >= debrisMap.length) {
-      return true;
-    }
-    if (y < 0 || y >= debrisMap.length) {
-      return true;
-    }
-    return false;
-  }
-
-  private static void trackBounds(int x, int y) {
-    if (x > maxX) {
-      maxX = x;
-    }
-    if (x < minX) {
-      minX = x;
-    }
-    if (y > maxY) {
-      maxY = y;
-    }
-    if (y < minY) {
-      minY = y;
-    }
   }
 
   public static List<Debris> getDebrisList(){
