@@ -7,11 +7,10 @@ import java.util.List;
 /**
  * Created by jholland13 on 3/6/17.
  */
-public class Extract
-{
+public class Extract {
 
 
-  static List<Debris> extract(boolean[][] image){
+  static List<Debris> extract(boolean[][] image) {
     DebrisScanner.searchDebrisMap(image);
     DebrisScanner.printList();
 
@@ -19,10 +18,10 @@ public class Extract
   }
 
   public class Debris {
+
     public final int centerX, centerY, diameter;
 
-    Debris(int x, int y, int dia)
-    {
+    Debris(int x, int y, int dia) {
       centerX = x;
       centerY = y;
       diameter = dia;
