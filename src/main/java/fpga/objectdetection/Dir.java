@@ -50,5 +50,4 @@ public enum Dir {
 
   public abstract int deltaY();
 
-  public static final int SIZE = values().length;
 }
