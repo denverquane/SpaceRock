@@ -1,12 +1,18 @@
 package debrisProcessingSubsystem.debrisCollection;
 
 /**
+ * This class is an implementation of the DebrisCollection interface. Manages
+ * the debris collection. The functionality beyond the outward facing methods
+ * go here.
  * Created by jdt on 3/7/17.
  */
 public class DRListManager implements DebrisCollection {
 
     private DebrisList newDebris, oldDebris;
 
+    /**
+     * Default constructor. Initializes debris lists to null.
+     */
     public DRListManager(){
         newDebris = null;
         oldDebris = null;
@@ -34,7 +40,12 @@ public class DRListManager implements DebrisCollection {
      * TODO needs parameters.
      */
     public void addDebris(){
-        newDebris.addDebris(new DebrisRecord());
+        try {
+            newDebris.addDebris(new DebrisRecord());
+        }
+        catch(NullPointerException e){
+            System.err.println("New Debris list not initialized: " + e.getMessage());
+        }
     }
 
     /**
@@ -72,7 +83,7 @@ public class DRListManager implements DebrisCollection {
      */
     public static void main(String[] args){
         DebrisCollection debris = new DRListManager();
-        debris.newImage();//
+        debris.newImage();
         for(int i = 0; i < 4; ++i){
             debris.addDebris();
         }

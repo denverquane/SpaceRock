@@ -30,7 +30,7 @@ public class DRList implements DebrisList {
         return debrisList.size();
     }
 
-    public void addDebris(DebrisRecord newDebrisRecord){
+    public void addDebris(DebrisRecord newDebrisRecord) throws NullPointerException{
         debrisList.add(newDebrisRecord);
     }
 
