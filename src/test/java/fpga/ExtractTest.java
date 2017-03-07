@@ -73,21 +73,21 @@ public class ExtractTest extends Extract
     try {
       test.singleSmallDebrisTest();
     } catch (Exception e) {
-      System.out.println(e.getLocalizedMessage());
+      System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
     }
 
     try {
       test.multiSmallDebrisTest();
     } catch (Exception e) {
-      System.out.println(e.getLocalizedMessage());
+      System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
     }
 
     try {
       test.cornerCaseDebrisTest();
     } catch (Exception e) {
-      System.out.println(e.getLocalizedMessage());
+      System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
     }
 
