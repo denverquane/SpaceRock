@@ -46,9 +46,13 @@ public class DebrisScanner {
 
     debrisPartial.update(i, j);
 
-    for (Dir d : Dir.values()) {
-      search(i + d.deltaX(), j + d.deltaY(), debrisMap, debrisPartial);
-    }
+    //Search adjacent cells.
+    search(i, j-1, debrisMap, debrisPartial);
+    search(i, j+1, debrisMap, debrisPartial);
+    search(i+1, j, debrisMap, debrisPartial);
+    search(i-1, j, debrisMap, debrisPartial);
+
+
   }
 
   public static void printDebris(List<Debris> list) {
