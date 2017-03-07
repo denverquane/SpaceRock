@@ -8,83 +8,47 @@ import java.util.List;
  * Created by Rob on 2/25/2017.
  */
 
-// NOTE: IS BOARDER RELIABLE DATA -- set variable for this?
-// gausian filter does not provide reliable boarder data (cause it has no information to pull from edges)
 public class DebrisScanner {
 
-  private static byte[][] searchedArray;
-  private static boolean[][] debrisMap;
-  // SOME LIST OF DEBRIS -- not sure how this fits into greater scope
-  private static ArrayList<Debris> foundObjects = new ArrayList<>();
-
-  private static int maxX, maxY;
-  private static int minX, minY;
 
   // SOME LIST OF DEBRIS searchDebrisMap()
-  // Scan line by line (ignoring edges -- gausian filter unreliable)
+  // Scan line by line
   // Once we find any debris, BFS for its entirety
-  // if it reaches edge, ignore
-  // if it is enclosed in frame, record
   public static List<Debris> searchDebrisMap(boolean[][] debrisMap) {
-    DebrisScanner.debrisMap = debrisMap;
-    searchedArray = new byte[debrisMap.length][debrisMap.length];
-    foundObjects = new ArrayList<>();
+    ArrayList<Debris> foundObjects = new ArrayList<>();
 
     for (int j = 0; j < debrisMap.length; j++) {
       for (int i = 0; i < debrisMap.length; i++) {
-        if (searchedArray[i][j] == 1) {
-          continue;
-        }
-        searchedArray[i][j] = 1;
         if (!debrisMap[i][j]) {
           continue;
         }
-        maxX = i;
-        minX = i;
-        maxY = j;
-        minY = j;
-        for (Dir d : Dir.values()) {
-          search(i + d.deltaX(), j + d.deltaY());
-        }
 
-        int centerX = ((maxX - minX) / 2) + minX;
-        int centerY = ((maxY - minY) / 2) + minY;
-        int diameter = Math.max((maxX - minX) + 1, (maxY - minY) + 1);
-        foundObjects.add(new Debris(centerX, centerY, diameter));
+        DebrisPartial debrisPartial = new DebrisPartial(i,j);
+        search(i, j, debrisMap, debrisPartial);
+
+        foundObjects.add(debrisPartial.toDebris());
       }
     }
     return Collections.unmodifiableList(foundObjects);
   }
 
-  private static void search(int i, int j) {
+  private static void search(int i, int j, boolean[][] debrisMap, DebrisPartial debrisPartial) {
     //Check out of bounds
     if (i < 0 || i >= debrisMap.length || j < 0 || j >= debrisMap.length) {
       return;
     }
-    if (searchedArray[i][j] == 1) {
+    //Is it debris?
+    if (!debrisMap[i][j]) {
       return;
     }
-    searchedArray[i][j] = 1;
-    if (debrisMap[i][j] == false) {
-      return;
-    }
+    //Set false to prevent rescanning.
+    debrisMap[i][j] = false;
 
-    if (i > maxX) {
-      maxX = i;
-    }
-    if (i < minX) {
-      minX = i;
-    }
-    if (j > maxY) {
-      maxY = j;
-    }
-    if (j < minY) {
-      minY = j;
-    }
+    debrisPartial.update(i, j);
+
     for (Dir d : Dir.values()) {
-      search(i + d.deltaX(), j + d.deltaY());
+      search(i + d.deltaX(), j + d.deltaY(), debrisMap, debrisPartial);
     }
-    return;
   }
 
   public static void printDebris(List<Debris> list) {
@@ -95,6 +59,39 @@ public class DebrisScanner {
           "Object " + counter + " center @ (" + d.centerX + ", " + d.centerY + ") with diameter "
               + d.diameter);
       counter++;
+    }
+  }
+
+  private static class DebrisPartial {
+    private int minX, maxX, minY, maxY;
+
+    private DebrisPartial(int i, int j) {
+      minX = i;
+      maxX = i;
+      minY = j;
+      maxY = j;
+    }
+
+    private void update(int i, int j) {
+      if (i > maxX) {
+        maxX = i;
+      }
+      if (i < minX) {
+        minX = i;
+      }
+      if (j > maxY) {
+        maxY = j;
+      }
+      if (j < minY) {
+        minY = j;
+      }
+    }
+
+    private Debris toDebris() {
+      return new Debris(
+          ((maxX - minX) / 2) + minX,
+          ((maxY - minY) / 2) + minY,
+          Math.max((maxX - minX) + 1, (maxY - minY) + 1));
     }
   }
 }
