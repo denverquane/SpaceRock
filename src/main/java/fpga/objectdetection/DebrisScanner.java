@@ -17,7 +17,6 @@ public class DebrisScanner {
   // SOME LIST OF DEBRIS -- not sure how this fits into greater scope
   private static ArrayList<Debris> foundObjects = new ArrayList<>();
 
-  private static boolean validDebris; // if on boarder, then dont know total scope --> invalid
   private static int maxX, maxY;
   private static int minX, minY;
 
@@ -40,7 +39,6 @@ public class DebrisScanner {
         if (!debrisMap[i][j]) {
           continue;
         }
-        validDebris = !(onBoarder(i, j));
         maxX = i;
         minX = i;
         maxY = j;
@@ -48,12 +46,11 @@ public class DebrisScanner {
         for (Dir d : Dir.values()) {
           search(i + d.deltaX(), j + d.deltaY());
         }
-        if (validDebris) {
-          int centerX = ((maxX - minX) / 2) + minX;
-          int centerY = ((maxY - minY) / 2) + minY;
-          int diameter = Math.max((maxX - minX) + 1, (maxY - minY) + 1);
-          foundObjects.add(new Debris(centerX, centerY, diameter));
-        }
+
+        int centerX = ((maxX - minX) / 2) + minX;
+        int centerY = ((maxY - minY) / 2) + minY;
+        int diameter = Math.max((maxX - minX) + 1, (maxY - minY) + 1);
+        foundObjects.add(new Debris(centerX, centerY, diameter));
       }
     }
     return foundObjects;
@@ -70,9 +67,7 @@ public class DebrisScanner {
     if (debrisMap[i][j] == false) {
       return SearchValue.NO_DEBRIS;
     }
-    if (onBoarder(i, j)) {
-      validDebris = false;
-    }
+
     trackBounds(i, j);
     for (Dir d : Dir.values()) {
       search(i + d.deltaX(), j + d.deltaY());
