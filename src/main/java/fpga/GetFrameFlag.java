@@ -21,6 +21,9 @@ framethread = new Thread(this, name);
   @Override
   public void run() {
     while(running){
+      /**
+       * TODO:  Add the method to tell the sensor to send the requested frame.
+       */
 
 
 
