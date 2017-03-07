@@ -8,6 +8,12 @@ package debrisProcessingSubsystem.debrisCollection;
 public class DebrisRecord {
     //TODO identification scheme, string maybe?
     private String id;
+
+    private final int VECTOR2_SIZE = 2;
+    private double[] estimatedVelocityXY;
+    private DebrisRecord matchingRecord;
+    private boolean ambiguousMatch;
+
     private int xLoc, yLoc;
     private int frameX, frameY;
     private double radius;
