@@ -56,23 +56,23 @@ public class DebrisScanner {
     return foundObjects;
   }
 
-  private static SearchValue search(int i, int j) {
+  private static void search(int i, int j) {
     if (outOfBounds(i, j)) {
-      return SearchValue.OUT_OF_BOUNDS;
+      return;
     }
     if (searchedArray[i][j] == 1) {
-      return SearchValue.ALREADY_SEARCHED;
+return;
     }
     searchedArray[i][j] = 1;
     if (debrisMap[i][j] == false) {
-      return SearchValue.NO_DEBRIS;
+      return;
     }
 
     trackBounds(i, j);
     for (Dir d : Dir.values()) {
       search(i + d.deltaX(), j + d.deltaY());
     }
-    return SearchValue.DEBRIS_NORMAL;
+    return;
   }
 
   private static boolean outOfBounds(int x, int y) {
@@ -80,16 +80,6 @@ public class DebrisScanner {
       return true;
     }
     if (y < 0 || y >= debrisMap.length) {
-      return true;
-    }
-    return false;
-  }
-
-  private static boolean onBoarder(int x, int y) {
-    if (x == 0 || x == (debrisMap.length - 1)) {
-      return true;
-    }
-    if (y == 0 || y == (debrisMap.length - 1)) {
       return true;
     }
     return false;
