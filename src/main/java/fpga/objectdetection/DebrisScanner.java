@@ -14,7 +14,6 @@ public class DebrisScanner {
 
   private static byte[][] searchedArray;
   private static boolean[][] debrisMap;
-  private static int imgSize;
   // SOME LIST OF DEBRIS -- not sure how this fits into greater scope
   private static ArrayList<Debris> foundObjects = new ArrayList<>();
 
@@ -29,11 +28,11 @@ public class DebrisScanner {
   // if it is enclosed in frame, record
   public static ArrayList<Debris> searchDebrisMap(boolean[][] debrisMap) {
     DebrisScanner.debrisMap = debrisMap;
-    imgSize = debrisMap.length;
-    searchedArray = new byte[imgSize][imgSize];
+    searchedArray = new byte[debrisMap.length][debrisMap.length];
+    foundObjects = new ArrayList<>();
 
-    for (int j = 0; j < imgSize; j++) {
-      for (int i = 0; i < imgSize; i++) {
+    for (int j = 0; j < debrisMap.length; j++) {
+      for (int i = 0; i < debrisMap.length; i++) {
         checkSpace(i, j);
       }
     }
@@ -63,7 +62,7 @@ public class DebrisScanner {
     if (validDebris) {
       int centerX = ((maxX - minX) / 2) + minX;
       int centerY = ((maxY - minY) / 2) + minY;
-      int diameter = Math.max((maxX - minX), (maxY - minY));
+      int diameter = Math.max((maxX - minX)+1, (maxY - minY)+1);
       foundObjects.add(new Debris(centerX, centerY, diameter));
       return true;
     }
@@ -92,20 +91,20 @@ public class DebrisScanner {
   }
 
   private static boolean outOfBounds(int x, int y) {
-    if (x < 0 || x >= imgSize) {
+    if (x < 0 || x >= debrisMap.length) {
       return true;
     }
-    if (y < 0 || y >= imgSize) {
+    if (y < 0 || y >= debrisMap.length) {
       return true;
     }
     return false;
   }
 
   private static boolean onBoarder(int x, int y) {
-    if (x == 0 || x == (imgSize - 1)) {
+    if (x == 0 || x == (debrisMap.length - 1)) {
       return true;
     }
-    if (y == 0 || y == (imgSize - 1)) {
+    if (y == 0 || y == (debrisMap.length - 1)) {
       return true;
     }
     return false;
