@@ -13,6 +13,14 @@ public interface DebrisList {
     public DebrisRecord getDebrisElement();
 
     /**
+     * This method will add a new DebrisRecord to the list.
+     * @param newDebrisRecord A new DebrisRecord.
+     */
+    public void addDebris(DebrisRecord newDebrisRecord);
+
+    public int size();
+
+    /**
      * This method will be used to tell if the list is empty.
      * @return True if empty.
      */

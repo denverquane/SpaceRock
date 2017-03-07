@@ -18,11 +18,23 @@ public interface DebrisCollection {
     public boolean newImage();
 
     /**
+     * Add a new debris item.
+     * TODO this should take some debris parameters.
+     */
+    public void addDebris();
+
+    /**
      * This method is to be called when. SADD team appears to envision this
      * implemented with an iterator.
      * possibly within the debris list itself?
      */
     public DebrisRecord getDebris();
+
+    /**
+     * Print some information about the collection.
+     * Testing method.
+     */
+    public void printCollectionCharacteristics();
 
     //methods swapList and clearList should be internal per prof roman.
 }

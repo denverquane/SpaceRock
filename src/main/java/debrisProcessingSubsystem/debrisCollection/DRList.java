@@ -23,10 +23,22 @@ public class DRList implements DebrisList {
     }
 
     /**
+     * Get size of the DebrisList
+     * @return  int: debrisList's size.
+     */
+    public int size(){
+        return debrisList.size();
+    }
+
+    public void addDebris(DebrisRecord newDebrisRecord){
+        debrisList.add(newDebrisRecord);
+    }
+
+    /**
      * Is this list empty?
      * @return true if empty.
      */
     public boolean isEmpty(){
-        return debrisList.isEmpty();
+        return debrisList == null || debrisList.isEmpty();
     }
 }
