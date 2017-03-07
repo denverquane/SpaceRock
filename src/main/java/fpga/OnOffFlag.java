@@ -57,10 +57,10 @@ boolean running = true;
      */
 
       if (!sensorOn) {
-        KenFlags.sensor.on();
+        FlagController.sensor.on();
         sensorOn = true;
       } else {
-        KenFlags.sensor.off();
+        FlagController.sensor.off();
         sensorOn = false;
       }
       // Toggle Ready() to true

@@ -11,11 +11,11 @@ import sensor.SensorSimulation;
  * the FPGA.
  *
  */
-public class KenFlags {
+public class FlagController {
 
   static SensorSimulation sensor = new SensorSimulation();
   //boolean shutdown = false;
-  public KenFlags() {
+  public FlagController() {
     System.out.println("Starting Control Register flags...");
   }
 
