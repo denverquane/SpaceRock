@@ -6,8 +6,10 @@ import java.util.List;
  * Created by Ken Kressin on 4/3/17. Description:
  */
 public class TakePictureFlag implements Runnable {
+  Thread picThread;
   private SensorInterface si;
   private MemoryMap mm;
+  boolean running = true;
 
 
   public class MemoryMap{
@@ -56,26 +58,39 @@ public class TakePictureFlag implements Runnable {
     }
   }
 
+  /**
+   * This method will allow us to shut down the thread.
+   *
+   */
+  public void shutdown(){
+    running = false;
+  }
+
+
   public TakePictureFlag(String name){
+    picThread = new Thread(this, name);
     si = null;
+
   }
   @Override
   public void run() {
+    while(running) {
 
     /*TODO: set up loop in run()*/
     /*while (ready register is false) {}*/
-    while(!Ready("TakePicReg")){
+      while (!Ready("TakePicReg")) {
 
-    }
+      }
 
     /*ready = false;*/
-    SetRegNotReady("TakePicReg");
+      SetRegNotReady("TakePicReg");
 
     /*while (ReadAck == false) {}*/
     /*TODO: find and call the appropriate ReadAck function*/
     /*ready = true;*/
-    Read_Acknowledge();
+      Read_Acknowledge();
 
+    }
   }
 
   /**
