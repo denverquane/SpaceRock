@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class Extract {
   static List<Debris> extract(boolean[][] image) {
-    DebrisScanner.searchDebrisMap(image);
-    DebrisScanner.printList();
+    List<Debris> debrisList = DebrisScanner.searchDebrisMap(image);
+    DebrisScanner.printDebris(debrisList);
 
-    return DebrisScanner.getDebrisList();
+    return debrisList;
   }
 }

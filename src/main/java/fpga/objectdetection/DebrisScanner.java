@@ -25,7 +25,7 @@ public class DebrisScanner {
   // Once we find any debris, BFS for its entirety
   // if it reaches edge, ignore
   // if it is enclosed in frame, record
-  public static ArrayList<Debris> searchDebrisMap(boolean[][] debrisMap) {
+  public static List<Debris> searchDebrisMap(boolean[][] debrisMap) {
     DebrisScanner.debrisMap = debrisMap;
     searchedArray = new byte[debrisMap.length][debrisMap.length];
     foundObjects = new ArrayList<>();
@@ -53,7 +53,7 @@ public class DebrisScanner {
         foundObjects.add(new Debris(centerX, centerY, diameter));
       }
     }
-    return foundObjects;
+    return Collections.unmodifiableList(foundObjects);
   }
 
   private static void search(int i, int j) {
@@ -87,14 +87,10 @@ public class DebrisScanner {
     return;
   }
 
-  public static List<Debris> getDebrisList(){
-    return Collections.unmodifiableList(foundObjects);
-  }
-
-  public static void printList() {
-    System.out.println("Found " + foundObjects.size() + " 'valid' debris");
+  public static void printDebris(List<Debris> list) {
+    System.out.println("Found " + list.size() + " 'valid' debris");
     int counter = 1;
-    for (Debris d : foundObjects) {
+    for (Debris d : list) {
       System.out.println(
           "Object " + counter + " center @ (" + d.centerX + ", " + d.centerY + ") with diameter "
               + d.diameter);
