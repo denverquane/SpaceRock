@@ -18,6 +18,12 @@ public interface DebrisList {
      */
     public void addDebris(DebrisRecord newDebrisRecord);
 
+    public void flagAsSent();
+
+    public void flagAsNotSent();
+
+    public boolean hasBeenSentHome();
+
     public int size();
 
     /**

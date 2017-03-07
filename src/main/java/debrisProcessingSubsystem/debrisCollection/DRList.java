@@ -3,15 +3,17 @@ package debrisProcessingSubsystem.debrisCollection;
 import java.util.ArrayList;
 
 /**
- * A list of debris records.
+ * A list of debris records. Implements DebrisList.
  * Created by jdt on 3/7/17.
  */
 public class DRList implements DebrisList {
 
     private ArrayList<DebrisRecord> debrisList;
+    private boolean sentHome;
 
     public DRList(){
         debrisList = new ArrayList<>();
+        sentHome = false;
     }
     /**
      * Get a debris element from the list.
@@ -32,6 +34,18 @@ public class DRList implements DebrisList {
 
     public void addDebris(DebrisRecord newDebrisRecord) throws NullPointerException{
         debrisList.add(newDebrisRecord);
+    }
+
+    public void flagAsSent(){
+        sentHome = true;
+    }
+
+    public void flagAsNotSent(){
+        sentHome = false;
+    }
+
+    public boolean hasBeenSentHome(){
+        return sentHome;
     }
 
     /**
