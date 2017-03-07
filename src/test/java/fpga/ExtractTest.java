@@ -71,6 +71,7 @@ public class ExtractTest extends Extract
     ExtractTest test = new ExtractTest();
     try {
       test.singleSmallDebrisTest();
+      System.err.println("Test 1 passed");
     } catch (Exception e) {
       System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
@@ -78,6 +79,7 @@ public class ExtractTest extends Extract
 
     try {
       test.multiSmallDebrisTest();
+      System.err.println("Test 2 passed");
     } catch (Exception e) {
       System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
@@ -85,6 +87,7 @@ public class ExtractTest extends Extract
 
     try {
       test.cornerCaseDebrisTest();
+      System.err.println("Test 3 passed");
     } catch (Exception e) {
       System.err.println(e.getLocalizedMessage());
       e.printStackTrace();
