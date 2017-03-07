@@ -61,8 +61,8 @@ public class ExtractTest extends Extract
 
     Debris debris = debrisList.get(0);
 
-    assertEquals(new Integer(25), debris.centerX);
-    assertEquals(new Integer(25), debris.centerY);
+    assertEquals(new Integer(24), debris.centerX);
+    assertEquals(new Integer(24), debris.centerY);
     assertEquals(new Integer(50), debris.diameter);
   }
 
