@@ -9,16 +9,37 @@ package debrisProcessingSubsystem;
  */
 public class Scheduler //implements DebrisCollection, Camera, Operator
 {
-  
-  public void check_Collection()
+  private class CheckCollection implements Runnable
+  {
+    public void run()
+    {
+      check_Collection();
+    }
+  }
+  private class CheckOperator implements Runnable
+  {
+    public void run()
+    {
+      check_Operator();
+    }
+  }
+  private class CheckCamera implements Runnable
+  {
+    public void run()
+    {
+      check_Camera();
+    }
+  }
+
+  private void check_Collection()
   {
 
   }
-  public void check_Operator()
+  private void check_Operator()
   {
 
   }
-  public void check_Camera()
+  private void check_Camera()
   {
 
   }
