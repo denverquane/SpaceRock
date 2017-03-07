@@ -26,7 +26,7 @@ class Threshold {
 
     for(int i = BORDER_SIZE; i < image.getWidth() - BORDER_SIZE; i++){
       for(int j = BORDER_SIZE; j < image.getHeight() - BORDER_SIZE; j++){
-        if(image.getRGB(i, j)>= 128){
+        if((image.getRGB(i, j) & 0xFF) >= 128){
           debrisMap[i][j] = true;
         }
       }
