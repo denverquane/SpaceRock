@@ -17,7 +17,6 @@ Thread zoomFlag;
   }
   private SensorInterface si;
   private MemoryMap mm;
-  private ZoomLevel zoom;
 
   public class MemoryMap{
     public List<ZoomFlag.Reg> Registers;
@@ -53,13 +52,38 @@ Thread zoomFlag;
     }
   }
 
+  /**
+   * ZOOM LEVEL
+   * Checks the first character of someData for 1, 2, 4 or 8.
+   * Returns the appropriate enum.
+   * Uses the default zoom level if anything weird happens.
+   * @param RegName Name of the register
+   * @return A ZoomLevel enum
+   */
+  public ZoomLevel getZoom(String RegName){
+    char data;
+    ZoomLevel level = ZoomLevel.NONE;
+    for(ZoomFlag.Reg r : this.mm.Registers) {
+      if(r.name.equals(RegName)) {
+        data = r.someData.charAt(0);
+        switch (data) {
+          case '8': level = ZoomLevel.x8; break;
+          case '4': level = ZoomLevel.x4; break;
+          case '2': level = ZoomLevel.x2; break;
+          default: level = ZoomLevel.NONE; break;
+        }
+      }
+    }
+    return level;
+  }
+
   public void Read_Acknowledge(){
 
     while(!si.ready()){
 
     }
+    ZoomLevel zoom = getZoom("ZoomLevel");
     si.setZoom(zoom);
-    /*TODO: Get the requested zoom*/
 
   }
 
@@ -71,32 +95,16 @@ Thread zoomFlag;
   @Override
   public void run() {
     while(running){
-/**
- * TODO:  Need the interface call to check the control register's current zoom level.
- *
- */
     /* If the zoom from the control register zoom is different from currentZoom, then
        update currentZoom, and send the new zoom to the sensor interface.
        We will have to toggle Ready() to false, then update and send, then toggle ready()
        back to true to let the control register know we updated the sensor.
      */
-
-
     }
 
-    /*TODO: set up loop in run()*/
-    /*while (ready register is false) {}*/
-    while(!Ready("ZoomReg")){
-
-    }
-
-    /*ready = false;*/
+    while(!Ready("ZoomReg")) {}
     SetRegNotReady("ZoomReg");
-
-    /*while (ReadAck == false) {}*/
-    /*TODO: find and call the appropriate ReadAck function*/
     Read_Acknowledge();
-    /*ready = true;*/
 
   }
 
