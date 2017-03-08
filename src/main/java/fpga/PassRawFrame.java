@@ -13,10 +13,12 @@ import java.awt.image.BufferedImage;
  */
 public class PassRawFrame
 {
-  public static void passFrame(Boolean success) {
-    if(success){
-      // TODO: sends receivedFrame to the control registers
-    }
+  public static void success(Boolean success) {
+    // Does nothing!!!
+    // Do not change as of 3/7/2017
+  }
+  public static void passFrame(BufferedImage frame){
+    //TODO: send the frame to the control registers
   }
 
 }

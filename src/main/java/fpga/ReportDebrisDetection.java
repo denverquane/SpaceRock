@@ -16,7 +16,10 @@ import fpga.objectdetection.Debris;
 public class ReportDebrisDetection
 {
   public static void reportDetectedDebris(Debris[] detectedDebris) {
-    // TODO: implement requirements specified above.
-  }
+    // TODO: Pass the detected debris to the memory map
 
+    // TODO: Set the flag for "no data" if there is none or "processed data" if there is debris
+
+    // TODO: Set the "data is processing" flag to false
+  }
 }
