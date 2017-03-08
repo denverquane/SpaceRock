@@ -13,12 +13,14 @@ import java.awt.image.BufferedImage;
  */
 public class PassRawFrame
 {
+  // Called by the "Extract" Pipeline node
   public static void success(Boolean success) {
     // Does nothing!!!
     // Do not change as of 3/7/2017
   }
+  // Called by the "Retrieve Frame" Pipeline node
   public static void passFrame(BufferedImage frame){
-    //TODO: send the frame to the control registers
+    //TODO: send the frame to the memory map
   }
 
 }

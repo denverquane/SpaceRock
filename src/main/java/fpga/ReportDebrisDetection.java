@@ -15,6 +15,7 @@ import fpga.objectdetection.Debris;
  */
 public class ReportDebrisDetection
 {
+  // Called by the "Extract" Pipeline node
   public static void reportDetectedDebris(Debris[] detectedDebris) {
     // TODO: Pass the detected debris to the memory map
 
