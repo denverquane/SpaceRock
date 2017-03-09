@@ -23,7 +23,6 @@ public class DivideXNode extends PipeNode <Double, Double>
     this.x = x;
   }
 
-  @ Override
   public void readInputs()
   {
     try
@@ -40,10 +39,11 @@ public class DivideXNode extends PipeNode <Double, Double>
   @ Override
   public void processInputs()
   {
+    readInputs();
     result = twoXPlusFive / x;
+    writeOutputs();
   }
   
-  @ Override
   public void writeOutputs()
   {
     try

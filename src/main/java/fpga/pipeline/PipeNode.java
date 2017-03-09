@@ -25,27 +25,11 @@ public abstract class PipeNode <I,O> implements Runnable
   }
   
   /**
-   * Read and record the necessary information from the input streams so
-   * that processing can be done.  No writing information to output streams
-   * should be done here so as to avoid deadlock.  When processing, read and
-   * write a single object at a time from each stream.  If multiple objects
-   * need to be sent between nodes, group them together in an array or
-   * collection and send that instead.
-   */
-  public abstract void readInputs();
-  
-  /**
-   * Here's where the node performs whatever work it needs to with its newest
-   * input to generate output.  Should not read from or write to the output
-   * streams here.
+   * The method invoked during each iteration of the pipeline.  This method
+   * should: read inputs from the streams, perform the necessary work on the
+   * inputs to generate outputs, and send the output to the outgoing streams.
    */
   public abstract void processInputs();
-  
-  /**
-   * Write the appropriate output to the appropriate output streams.
-   * No reading should be done here.
-   */
-  public abstract void writeOutputs();
 
   @Override
   public void run()
@@ -53,9 +37,7 @@ public abstract class PipeNode <I,O> implements Runnable
 
     while (true)
     {
-      readInputs();
       processInputs();
-      writeOutputs();
     }
   }
 }

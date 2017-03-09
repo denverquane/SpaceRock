@@ -20,7 +20,6 @@ public class Multiply2Node extends PipeNode <Double, Double>
     super(reader, writer);
   }
 
-  @ Override
   public void readInputs()
   {
     try
@@ -37,10 +36,11 @@ public class Multiply2Node extends PipeNode <Double, Double>
   @ Override
   public void processInputs()
   {
+    readInputs();
     twoXPlusFive = 2 * xPlusFive;
+    writeOutputs();
   }
   
-  @ Override
   public void writeOutputs()
   {
     try

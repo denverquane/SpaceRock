@@ -21,7 +21,6 @@ public class Add5Node extends PipeNode <Double, Double>
     super(reader, writer);
   }
 
-  @ Override
   public void readInputs()
   {
     try
@@ -47,10 +46,11 @@ public class Add5Node extends PipeNode <Double, Double>
     // output this node will be sending out.  In this case, just adding five to
     // our input.
     
+    readInputs();
     xPlusFive = x + 5;
+    writeOutputs();
   }
   
-  @ Override
   public void writeOutputs()
   {
     try
