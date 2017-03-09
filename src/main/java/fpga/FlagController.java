@@ -1,6 +1,7 @@
 package fpga;
 
 import sensor.SensorSimulation;
+import fpga.memory.MemoryMap;
 /**
  * Created by Ken Kressin on 4/3/17. Description:
  * This class is my idea of a 'master controller' class for the flags we are coding.
@@ -14,6 +15,7 @@ import sensor.SensorSimulation;
 public class FlagController {
 
   static SensorSimulation sensor = new SensorSimulation();
+  static MemoryMap memMap = new MemoryMap();
   //boolean shutdown = false;
   public FlagController() {
     System.out.println("Starting Control Register flags...");
@@ -30,10 +32,7 @@ public class FlagController {
       Basic try/catch block to shut everything down in an orderly fashion...  I hope.
      */
 
-    /*
-    TODO:  Put in the appropriate shutdown command
-     */
-    public void shutDown() {
+      public void shutDown() {
       takePic.shutdown();
       onOff.shutdown();
       zoom.shutdown();
