@@ -1,5 +1,10 @@
 package fpga;
+import fpga.memory.EmptyRegisterException;
+import fpga.memory.MemoryMap;
+import fpga.memory.NoSuchRegisterFoundException;
+import fpga.memory.UnavailbleRegisterException;
 import sensor.SensorInterface;
+
 import java.util.List;
 
 /**
@@ -10,43 +15,11 @@ public class TakePictureFlag implements Runnable {
   private SensorInterface si;
   private MemoryMap mm;
   boolean running = true;
+  private boolean RegisterNotReady = true;
+  private int sleepAmount = 500;
 
 
-  public class MemoryMap{
-    public List<Reg> Registers;
-  }
-
-  public class Reg{
-
-    public String name;
-    public Boolean status;
-    public String someData;
-
-  }
-
-  public Boolean Ready(String RegName){
-
-    Boolean RegStatus = false;
-
-    for(Reg r : this.mm.Registers) {
-      if(r.name.equals(RegName)) {
-        RegStatus = r.status;
-      }
-    }
-
-    return RegStatus;
-  }
-
-  public void SetRegNotReady(String RegName){
-
-    for(Reg r : this.mm.Registers) {
-      if(r.name.equals(RegName)) {
-        r.status = false;
-      }
-    }
-  }
-
-  public void Read_Acknowledge(){
+  public void SetTakePicture(){
 
     while(!si.ready()){
 
@@ -75,20 +48,28 @@ public class TakePictureFlag implements Runnable {
   @Override
   public void run() {
     while(running) {
+    /*while (ready register is not ready with data) {}*/
+      while(RegisterNotReady){
+          RegisterNotReady = true;
+        try {
 
-    /*TODO: set up loop in run()*/
-    /*while (ready register is false) {}*/
-      while (!Ready("TakePicReg")) {
+          mm.read(Boolean.class, "take_picture");
+          RegisterNotReady = false;
 
+        } catch (Exception e) {
+
+          try {
+            //sleep before next poll of register
+            Thread.sleep(sleepAmount);
+          } catch (InterruptedException e1) {
+            e1.printStackTrace();
+          }
+
+        }
       }
 
-    /*ready = false;*/
-      SetRegNotReady("TakePicReg");
-
-    /*while (ReadAck == false) {}*/
-    /*TODO: find and call the appropriate ReadAck function*/
-    Read_Acknowledge();
-    /*ready = true;*/
+      //Have sensor take picture and wait till image processed
+      SetTakePicture();
 
     }
   }
@@ -101,8 +82,5 @@ public class TakePictureFlag implements Runnable {
   public void setSensor(SensorInterface sensor){
     si = sensor;
   }
-
-
-
 
 }
