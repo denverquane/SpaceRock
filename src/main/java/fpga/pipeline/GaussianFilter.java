@@ -42,6 +42,10 @@ public class GaussianFilter extends PipeNode<BufferedImage, BufferedImage>
 
   @Override
   public void processInputs() {
-
+    try {
+      writer.write(blur(reader.read()));
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }

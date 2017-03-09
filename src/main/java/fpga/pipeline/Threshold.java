@@ -47,6 +47,10 @@ class Threshold extends PipeNode<BufferedImage, boolean[][]>{
 
   @Override
   public void processInputs() {
-
+    try {
+      writer.write(threshold(reader.read()));
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }

@@ -88,7 +88,11 @@ public class Extract extends PipeNode<boolean[][], List<Extract.Debris>>{
 
   @Override
   public void processInputs() {
-
+    try {
+      writer.write(extract(reader.read()));
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   private static class DebrisPartial {
