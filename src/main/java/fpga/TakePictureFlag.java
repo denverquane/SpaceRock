@@ -20,7 +20,7 @@ public class TakePictureFlag implements Runnable {
 
     public String name;
     public Boolean status;
-    public String  someData;
+    public String someData;
 
   }
 
@@ -29,7 +29,7 @@ public class TakePictureFlag implements Runnable {
     Boolean RegStatus = false;
 
     for(Reg r : this.mm.Registers) {
-      if(r.name == RegName) {
+      if(r.name.equals(RegName)) {
         RegStatus = r.status;
       }
     }
@@ -40,7 +40,7 @@ public class TakePictureFlag implements Runnable {
   public void SetRegNotReady(String RegName){
 
     for(Reg r : this.mm.Registers) {
-      if(r.name == RegName) {
+      if(r.name.equals(RegName)) {
         r.status = false;
       }
     }
@@ -87,8 +87,8 @@ public class TakePictureFlag implements Runnable {
 
     /*while (ReadAck == false) {}*/
     /*TODO: find and call the appropriate ReadAck function*/
+    Read_Acknowledge();
     /*ready = true;*/
-      Read_Acknowledge();
 
     }
   }
