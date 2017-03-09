@@ -1,5 +1,8 @@
 package fpga;
 
+import fpga.PipeStream.In;
+import fpga.PipeStream.Out;
+
 /**
  * A pipe node object that represents the node of a pipeline.  Each node has a
  * set of streams from which it reads input and another  set of streams into
@@ -7,21 +10,21 @@ package fpga;
  * node in the pipeline.
  */
 
-public abstract class PipeNode implements Runnable
+public abstract class PipeNode <I,O> implements Runnable
 {
-  protected PipeStream [] readers;
-  protected PipeStream [] writers;
+  protected In<I> reader;
+  protected Out<O> writer;
   
   /**
    * Set up a new node.  All streams must be set up between the communicating
    * nodes and organized into an array beforehand.
-   * @param readers The streams from which this node will read input.
-   * @param writers The streams into which this node will write output.
+   * @param reader The streams from which this node will read input.
+   * @param writer The streams into which this node will write output.
    */
-  public PipeNode(PipeStream [] readers, PipeStream [] writers)
+  public PipeNode(In<I> reader, Out<O> writer)
   {
-    this.readers = readers;
-    this.writers = writers;
+    this.reader = reader;
+    this.writer = writer;
   }
   
   /**
@@ -50,6 +53,7 @@ public abstract class PipeNode implements Runnable
   @Override
   public void run()
   {
+
     while (true)
     {
       readInputs();
