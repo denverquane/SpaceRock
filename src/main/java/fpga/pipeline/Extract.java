@@ -11,7 +11,18 @@ import java.util.List;
  * @author James Holland
  */
 
-public class Extract {
+public class Extract extends PipeNode<boolean[][], List<Extract.Debris>>{
+  /**
+   * Set up a new node.  All streams must be set up between the communicating
+   * nodes and organized into an array beforehand.
+   *
+   * @param reader The streams from which this node will read input.
+   * @param writer The streams into which this node will write output.
+   */
+  public Extract(PipeStream.In<boolean[][]> reader, PipeStream.Out<List<Debris>> writer) {
+    super(reader, writer);
+  }
+
   /**
    * Extract a list of Debris objects from the image.
    * Scan the boolean map line by line.
@@ -73,6 +84,11 @@ public class Extract {
               + d.diameter);
       counter++;
     }
+  }
+
+  @Override
+  public void processInputs() {
+
   }
 
   private static class DebrisPartial {

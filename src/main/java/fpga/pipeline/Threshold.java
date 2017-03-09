@@ -6,13 +6,24 @@ import java.awt.image.BufferedImage;
  * Produces a boolean 2d array from an image.
  * @author James Holland
  */
-class Threshold {
+class Threshold extends PipeNode<BufferedImage, boolean[][]>{
 
   /**
    * The Gaussian blur will leave a border of untouched pixels.
    * These will need to be ignored.
    */
   private static final int BORDER_SIZE = 1;
+
+  /**
+   * Set up a new node.  All streams must be set up between the communicating
+   * nodes and organized into an array beforehand.
+   *
+   * @param reader The streams from which this node will read input.
+   * @param writer The streams into which this node will write output.
+   */
+  public Threshold(PipeStream.In<BufferedImage> reader, PipeStream.Out<boolean[][]> writer) {
+    super(reader, writer);
+  }
 
   /**
    * Convert an image to a 2d array of booleans
@@ -34,4 +45,8 @@ class Threshold {
     return debrisMap;
   }
 
+  @Override
+  public void processInputs() {
+
+  }
 }
