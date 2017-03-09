@@ -2,8 +2,11 @@ package fpga.pipelinetest;
 
 import fpga.PipeNode;
 import fpga.PipeStream;
+import fpga.PipeStream.In;
+import fpga.PipeStream.Out;
+import java.util.List;
 
-public class Multiply2Node extends PipeNode
+public class Multiply2Node extends PipeNode <Double, Double>
 {
   double xPlusFive;
   double twoXPlusFive;
@@ -14,7 +17,7 @@ public class Multiply2Node extends PipeNode
   // WRITE STREAMS:
   // 0: DivideXNode
   
-  public Multiply2Node(PipeStream [] readers, PipeStream [] writers)
+  public Multiply2Node(List<In<Double>> readers, List<Out<Double>> writers)
   {
     super(readers, writers);
   }
@@ -24,7 +27,7 @@ public class Multiply2Node extends PipeNode
   {
     try
     {
-      xPlusFive = (double) readers[0].read();
+      xPlusFive = readers.get(0).read();
     }
     catch (InterruptedException e)
     {
@@ -44,7 +47,7 @@ public class Multiply2Node extends PipeNode
   {
     try
     {
-      writers[0].write(twoXPlusFive);
+      writers.get(0).write(twoXPlusFive);
     }
     catch (InterruptedException e)
     {
