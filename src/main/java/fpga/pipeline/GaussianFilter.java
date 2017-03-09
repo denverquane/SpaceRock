@@ -1,4 +1,4 @@
-package fpga;
+package fpga.pipeline;
 
 import java.awt.image.Kernel;
 import java.awt.image.*;

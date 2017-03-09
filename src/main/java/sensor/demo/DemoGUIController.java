@@ -1,6 +1,6 @@
 package sensor.demo;
 
-import fpga.GaussianFilter;
+import fpga.pipeline.GaussianFilter;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;

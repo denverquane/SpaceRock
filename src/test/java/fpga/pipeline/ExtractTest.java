@@ -1,4 +1,4 @@
-package fpga;
+package fpga.pipeline;
 
 import static fpga.Testing.assertEquals;
 import static fpga.Testing.assertTrue;
