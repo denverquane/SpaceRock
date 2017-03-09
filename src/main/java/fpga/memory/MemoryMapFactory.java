@@ -1,7 +1,6 @@
 package fpga.memory;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import fpga.objectdetection.Debris;
+import fpga.pipeline.Extract;
 import sensor.ZoomLevel;
 
 import java.awt.image.BufferedImage;
@@ -64,7 +63,7 @@ public final class MemoryMapFactory
           return (RegisterMemoryDetails<T>) new RegisterMemoryDetails<BufferedImage>(null);
         }
         else if (typeId == 4) {
-          return (RegisterMemoryDetails<T>) new RegisterMemoryDetails<List<Debris>>(null);
+          return (RegisterMemoryDetails<T>) new RegisterMemoryDetails<List<Extract.Debris>>(null);
         } else {
           throw new MemoryInitializationException("Invalid typeId found for register.");
         }
