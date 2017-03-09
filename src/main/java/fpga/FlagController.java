@@ -16,9 +16,11 @@ public class FlagController {
 
   static SensorSimulation sensor = new SensorSimulation();
   static MemoryMap memMap = new MemoryMap();
+
   //boolean shutdown = false;
   public FlagController() {
     System.out.println("Starting Control Register flags...");
+
   }
 
     ZoomFlag zoom = new ZoomFlag("flag1");
@@ -31,6 +33,12 @@ public class FlagController {
     /*
       Basic try/catch block to shut everything down in an orderly fashion...  I hope.
      */
+
+  public FlagController(SensorSimulation sense, MemoryMap mem){
+    /*
+    TODO:  initialize the sensor and memory map objects
+     */
+  }
 
       public void shutDown() {
       takePic.shutdown();
