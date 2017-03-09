@@ -42,9 +42,9 @@ public class PipelineTest
     double input1 = Math.random() * 1000;
     double input2 = Math.random() * 1000;
 
-    PipeNode n1 = new Add5Node(mainToN1.getReadEnd(), n1ToN2.getWriteEnd());
-    PipeNode n2 = new Multiply2Node(n1ToN2.getReadEnd(), n2ToN3.getWriteEnd());
-    PipeNode n3 = new DivideXNode(n2ToN3.getReadEnd(), n3ToMain.getWriteEnd(), input1);
+    PipeNode<Double, Double> n1 = new Add5Node(mainToN1.getReadEnd(), n1ToN2.getWriteEnd());
+    PipeNode<Double, Double> n2 = new Multiply2Node(n1ToN2.getReadEnd(), n2ToN3.getWriteEnd());
+    PipeNode<Double, Double> n3 = new DivideXNode(n2ToN3.getReadEnd(), n3ToMain.getWriteEnd(), input1);
     
     // ...put them in threads...
     

@@ -3,7 +3,6 @@ package fpga.pipelinetest;
 import fpga.PipeNode;
 import fpga.PipeStream.In;
 import fpga.PipeStream.Out;
-import java.util.List;
 
 public class Multiply2Node extends PipeNode <Double, Double>
 {
