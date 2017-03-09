@@ -62,15 +62,25 @@ Thread zoomFlag;
    */
   public ZoomLevel getZoom(String RegName){
     char data;
-    ZoomLevel level = ZoomLevel.NONE;
+    ZoomLevel level = ZoomLevel.NONE; //Default value
     for(ZoomFlag.Reg r : this.mm.Registers) {
-      if(r.name.equals(RegName)) {
-        data = r.someData.charAt(0);
-        switch (data) {
-          case '8': level = ZoomLevel.x8; break;
-          case '4': level = ZoomLevel.x4; break;
-          case '2': level = ZoomLevel.x2; break;
-          default: level = ZoomLevel.NONE; break;
+      if (r.name.length() >= 1) {
+        if (r.name.equals(RegName)) {
+          data = r.someData.charAt(0);
+          switch (data) {
+            case '8':
+              level = ZoomLevel.x8;
+              break;
+            case '4':
+              level = ZoomLevel.x4;
+              break;
+            case '2':
+              level = ZoomLevel.x2;
+              break;
+            default:
+              level = ZoomLevel.NONE;
+              break;
+          }
         }
       }
     }
