@@ -1,4 +1,4 @@
-package fpga;
+package fpga.pipeline;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author James Holland
  */
 
-class Extract {
+public class Extract {
   /**
    * Extract a list of Debris objects from the image.
    * Scan the boolean map line by line.

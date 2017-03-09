@@ -1,7 +1,7 @@
 package fpga.pipelinetest;
 
-import fpga.PipeNode;
-import fpga.PipeStream;
+import fpga.pipeline.PipeNode;
+import fpga.pipeline.PipeStream;
 
 public class PipelineTest
 {

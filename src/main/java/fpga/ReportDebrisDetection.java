@@ -1,6 +1,6 @@
 package fpga;
 
-import fpga.objectdetection.Debris;
+import fpga.pipeline.Extract;
 
 /**
  * Created by David M on 3/4/17.
@@ -16,7 +16,7 @@ import fpga.objectdetection.Debris;
 public class ReportDebrisDetection
 {
   // Called by the "Extract" Pipeline node
-  public static void reportDetectedDebris(Debris[] detectedDebris) {
+  public static void reportDetectedDebris(Extract.Debris [] detectedDebris) {
     // TODO: Pass the detected debris to the memory map
 
     // TODO: Set the flag for "no data" if there is none or "processed data" if there is debris

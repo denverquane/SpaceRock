@@ -1,8 +1,8 @@
 package fpga.pipelinetest;
 
-import fpga.PipeNode;
-import fpga.PipeStream.In;
-import fpga.PipeStream.Out;
+import fpga.pipeline.PipeNode;
+import fpga.pipeline.PipeStream.In;
+import fpga.pipeline.PipeStream.Out;
 
 public class DivideXNode extends PipeNode <Double, Double>
 {
