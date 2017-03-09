@@ -1,10 +1,8 @@
 package fpga.pipelinetest;
 
 import fpga.PipeNode;
-import fpga.PipeStream;
 import fpga.PipeStream.In;
 import fpga.PipeStream.Out;
-import java.util.List;
 
 public class Add5Node extends PipeNode <Double, Double>
 {
@@ -19,8 +17,8 @@ public class Add5Node extends PipeNode <Double, Double>
   // 1: DivideXNode
 
 
-  public Add5Node(List <In<Double>> readers, List <Out<Double>> writers) {
-    super(readers, writers);
+  public Add5Node(In<Double> reader, Out<Double> writer) {
+    super(reader, writer);
   }
 
   @ Override
@@ -33,7 +31,7 @@ public class Add5Node extends PipeNode <Double, Double>
       // where you store whatever information you were sent in class variables.
       // You'll do the actual work using this information in processInputs.
       
-      x = readers.get(0).read();
+      x = reader.read();
     }
     catch (InterruptedException e)
     {
@@ -61,8 +59,8 @@ public class Add5Node extends PipeNode <Double, Double>
       // the stream to be read by Multiply2Node, and put x on the stream to be
       // read by DivideXNode.
       
-      writers.get(0).write(xPlusFive);
-      writers.get(1).write(x);
+      writer.write(xPlusFive);
+
     }
     catch (InterruptedException e)
     {
