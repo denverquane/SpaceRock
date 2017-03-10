@@ -10,6 +10,9 @@ package debrisProcessingSubsystem.debrisCollection;
  * Created by jdt on 3/4/17.
  */
 public interface DebrisCollection {
+
+
+
     /**
      * This method will be called when it is time to add a new image to the
      * debris list.

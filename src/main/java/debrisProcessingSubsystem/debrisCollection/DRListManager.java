@@ -1,14 +1,34 @@
 package debrisProcessingSubsystem.debrisCollection;
 
+import debrisProcessingSubsystem.Updatable;
+import debrisProcessingSubsystem.Update;
+
 /**
  * This class is an implementation of the DebrisCollection interface. Manages
  * the debris collection. The functionality beyond the outward facing methods
  * go here.
  * Created by jdt on 3/7/17.
  */
-public class DRListManager implements DebrisCollection {
+public class DRListManager implements DebrisCollection, Updatable {
 
     private DebrisList newDebris, oldDebris;
+
+    /**
+     * Call this to send an update to this component.
+     * @param theUpdate The update to be received by this component.
+     * @return A response update.
+     */
+    public Update updateComponent(Update theUpdate){
+        return null;
+    }
+
+    /**
+     * Return any available updates.
+     * @return An update is ready.
+     */
+    public Update pollComponent(){
+        return null;
+    }
 
     /**
      * Default constructor. Initializes debris lists to null.
