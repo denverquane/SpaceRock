@@ -15,6 +15,7 @@ public class DRListManager implements DebrisCollection, Updatable {
 
     /**
      * Call this to send an update to this component.
+     * TODO write this.
      * @param theUpdate The update to be received by this component.
      * @return A response update.
      */
@@ -24,6 +25,7 @@ public class DRListManager implements DebrisCollection, Updatable {
 
     /**
      * Return any available updates.
+     * TODO write this.
      * @return An update is ready.
      */
     public Update pollComponent(){
@@ -38,6 +40,7 @@ public class DRListManager implements DebrisCollection, Updatable {
         oldDebris = null;
     }
     /**
+     * @deprecated Old interface. Still here for testing.
      * Start a new image.
      * @return success or failure
      */
@@ -56,6 +59,7 @@ public class DRListManager implements DebrisCollection, Updatable {
     }
 
     /**
+     * @deprecated Old interface. Still here for testing.
      * Add a debris record to the list.
      * TODO needs parameters.
      */
@@ -69,6 +73,7 @@ public class DRListManager implements DebrisCollection, Updatable {
     }
 
     /**
+     * @deprecated Old interface. Still here for testing
      * Get a DebrisRecord from the old list for sending.
      * @return Next DebrisRecord in the old debris list.
      */
@@ -77,6 +82,7 @@ public class DRListManager implements DebrisCollection, Updatable {
     }
 
     /**
+     * @deprecated Old interface. Still here for testing.
      * Print some info about this collection.
      * Testing method.
      */

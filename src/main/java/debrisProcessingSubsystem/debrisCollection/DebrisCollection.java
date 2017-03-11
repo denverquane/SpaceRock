@@ -1,6 +1,8 @@
 package debrisProcessingSubsystem.debrisCollection;
 
 /**
+ * @deprecated Debris Collections will now implement the Updatable interface.
+ * This will remain in place for testing.
  * This will be the interface implemented by the Debris Collection object shown
  * in the SADD.
  * This interface should contain all outward facing methods for the
@@ -10,7 +12,6 @@ package debrisProcessingSubsystem.debrisCollection;
  * Created by jdt on 3/4/17.
  */
 public interface DebrisCollection {
-
 
 
     /**
