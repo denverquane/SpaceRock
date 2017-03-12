@@ -6,6 +6,11 @@ import java.util.List;
 import fpga.pipeline.PipeStream.In;
 import fpga.pipeline.PipeStream.Out;
 
+/**
+ * The main code to create and run the main part of the pipeline consisting
+ * of the three intermediate nodes Gaussian Filter, Threshold, and Extract.
+ */
+
 public class MainPipeline
 {
   private Out<BufferedImage> writeEnd;
@@ -15,6 +20,10 @@ public class MainPipeline
   private Thread threshThread;
   private Thread extractThread;
 
+  /**
+   * Set up and connect all nodes and streams of the pipeline, including the
+   * threads to run them.
+   */
   public MainPipeline()
   {
     PipeStream<BufferedImage> retGauss = new PipeStream<BufferedImage>();
@@ -38,6 +47,9 @@ public class MainPipeline
     extractThread = new Thread(extract);
   }
   
+  /**
+   * Start the pipeline up, with each node running in its own thread.
+   */
   public void start()
   {
     gaussThread.start();
@@ -45,8 +57,11 @@ public class MainPipeline
     extractThread.start();
   }
   
-  // TODO: Might want to implement some sort of stop method.
-  
+  /**
+   * Put an image into the Gaussian Blur node.  May block if the
+   * Gaussian Blur node isn't ready to take more input.
+   * @param image The image to be written into the pipeline.
+   */
   public void write(BufferedImage image)
   {
     try
@@ -59,6 +74,12 @@ public class MainPipeline
     }
   }
   
+  /**
+   * Read an image from the Extract node.  May block if there is no
+   * output to be read until output is eventually received.
+   * @return The most recent list of debris outputted from the extract
+   * node.
+   */
   public List<Extract.Debris> read()
   {
     try
