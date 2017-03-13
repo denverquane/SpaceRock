@@ -195,15 +195,25 @@ public class DebrisRecord {
         return this.radius - other.getRadius();
     }
 
+  /**
+   * Return distance from to object.
+   * @param other The object to get distance from
+   * @return Real (double) distance from other debris.
+   */
+  public double distanceTo(DebrisRecord other){
+      double distanceSquared = (double)sqDistanceTo(other);
+      return Math.sqrt(distanceSquared);
+    }
+
     /**
      * Return the squared distance between this DebrisRecord and another
      * DebrisRecord.
      * @param other The DebrisRecord to measure the distance to.
      * @return The squared distance between the two DebrisRecords. dX^2 + dY^2.
      */
-    public double sqDistanceTo(DebrisRecord other){
-        int xDistance = xLoc - other.getX();
-        int yDistance = yLoc - other.getY();
+    public int sqDistanceTo(DebrisRecord other){
+        int xDistance = other.getX() - xLoc;
+        int yDistance = other.getY() - yLoc;
         return xDistance * xDistance + yDistance * yDistance;
     }
 }
