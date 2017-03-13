@@ -90,11 +90,12 @@ public class Scheduler //implements DebrisCollection, Camera, Operator
         if(nextUpdate instanceof DebrisCollectorUpdate){
           updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
         }
+        //TODO uncomment these when we have implementations of these components.
         else if(nextUpdate instanceof CameraUpdate){
-          updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
+          //updateQueue.addLast(camera.updateComponent(nextUpdate));
         }
         else if(nextUpdate instanceof OperatorUpdate){
-          updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
+          //updateQueue.addLast(operator.updateComponent(nextUpdate));
         }
         else{
           System.err.println("Invalid Update type");
