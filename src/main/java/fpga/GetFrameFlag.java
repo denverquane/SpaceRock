@@ -73,7 +73,8 @@ framethread = new Thread(this, name);
         currentY = CR.newY;
         currentSize = CR.newSize;
 
-        FlagController.sensor.getFrame(currentX, currentY, currentSize);
+        FlagController.sensor.setFrame(currentX, currentY, currentSize);
+        FlagController.sensor.getFrame();
         //wait for an ack from the sensor that the frame was sent.
 
         oldX = currentX;
