@@ -1,5 +1,7 @@
 package debrisProcessingSubsystem;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
+
 /**
  * This will be the Scheduler object shown
  * in the SADD. The Scheduler will interface with the DebrisCollection, Operator,
@@ -9,6 +11,17 @@ package debrisProcessingSubsystem;
  */
 public class Scheduler //implements DebrisCollection, Camera, Operator
 {
+  private Updatable debrisCollection;
+
+  /**
+   * Default constructor.
+   * In place now to demonstrate how components should be set up and accessed.
+   * Each component should be created as an instance of Updatable
+   */
+  public Scheduler(){
+    debrisCollection = new DebrisCollection();
+  }
+
   private class CheckCollection implements Runnable
   {
     public void run()
@@ -33,7 +46,8 @@ public class Scheduler //implements DebrisCollection, Camera, Operator
 
   private void check_Collection()
   {
-
+    Update returnedUpdate = debrisCollection.pollComponent();
+    //perform action according to update.
   }
   private void check_Operator()
   {
