@@ -2,6 +2,8 @@ package debrisProcessingSubsystem;
 
 import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
 
+import java.util.LinkedList;
+
 /**
  * This will be the Scheduler object shown
  * in the SADD. The Scheduler will interface with the DebrisCollection, Operator,
@@ -12,6 +14,9 @@ import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
 public class Scheduler //implements DebrisCollection, Camera, Operator
 {
   private Updatable debrisCollection;
+  private Updatable camera;
+  private Updatable operator;
+  private LinkedList<Update> updateQueue;
 
   /**
    * Default constructor.
@@ -20,8 +25,10 @@ public class Scheduler //implements DebrisCollection, Camera, Operator
    */
   public Scheduler(){
     debrisCollection = new DebrisCollection();
+    updateQueue = new LinkedList<>();
   }
 
+  //TODO these should be in one continuous loop, checking in order.
   private class CheckCollection implements Runnable
   {
     public void run()
@@ -44,10 +51,17 @@ public class Scheduler //implements DebrisCollection, Camera, Operator
     }
   }
 
+  /**
+   * Poll the Debris Collection component.
+   * Filled out as example. Please change if you have a different idea.
+   */
   private void check_Collection()
   {
     Update returnedUpdate = debrisCollection.pollComponent();
     //perform action according to update.
+    if(returnedUpdate != null){
+      updateQueue.addLast(returnedUpdate);
+    } //else{ no update, do something else.}
   }
   private void check_Operator()
   {
@@ -56,6 +70,37 @@ public class Scheduler //implements DebrisCollection, Camera, Operator
   private void check_Camera()
   {
 
+  }
+
+  /**
+   * This method will direct updates to the appropriate component until there
+   * are no more updates to handle.
+   * Filled out as example.
+   * TODO this could continue for a very long time, perhapse there is a better way?
+   */
+  private void directUpdates(){
+    Update nextUpdate;
+    while(!updateQueue.isEmpty()){
+      nextUpdate = updateQueue.removeFirst();
+      if(nextUpdate != null){
+        /*
+         * if update in queue is not null, put returned update in the back of
+         * the queue to be sent out to the appropriate component.
+         */
+        if(nextUpdate instanceof DebrisCollectorUpdate){
+          updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
+        }
+        else if(nextUpdate instanceof CameraUpdate){
+          updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
+        }
+        else if(nextUpdate instanceof OperatorUpdate){
+          updateQueue.addLast(debrisCollection.updateComponent(nextUpdate));
+        }
+        else{
+          System.err.println("Invalid Update type");
+        }
+      } //else{ do nothing, dequeue next update}
+    }
   }
 
 }
