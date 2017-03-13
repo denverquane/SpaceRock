@@ -14,7 +14,12 @@ import fpga.memory.MemoryMap;
  */
 public class FlagController {
 
-  static SensorSimulation sensor = new SensorSimulation();
+  /**
+   * TODO: Move the sensor and memory map instantiations to the thread class when all our flags
+   * TODO: shift there.
+
+   */
+    static SensorSimulation sensor = new SensorSimulation();
   static MemoryMap memMap = new MemoryMap();
 
   //boolean shutdown = false;
