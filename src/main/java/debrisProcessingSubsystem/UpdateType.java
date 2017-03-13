@@ -8,5 +8,6 @@ package debrisProcessingSubsystem;
  */
 public enum UpdateType
 {
-  CAMERA, OPERATOR, DEBRIS_COLLECTOR
+  CAMERA, OPERATOR, DEBRIS_COLLECTOR, ERROR, DONE, COMMUNICATION_DOWN,
+  COMMUNICATION_UP
 }
