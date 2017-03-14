@@ -1,6 +1,6 @@
 package sensor.demo;
 
-import fpga.GaussianFilter;
+import fpga.pipeline.GaussianFilter;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -136,7 +136,8 @@ public class DemoGUIController implements Initializable {
       previousCaptureStatus = status;
 
       if(loadimage){
-          BufferedImage chunk = sensor.getFrame(i * 200 + 100, j *200 + 100, 200);
+        sensor.setFrame(i * 200 + 100, j *200 + 100, 200);
+        BufferedImage chunk = sensor.getFrame();
           if (chunk != null) {
               chunk = GaussianFilter.blur(chunk);
               Graphics2D g = buildable_image.createGraphics();

@@ -1,4 +1,4 @@
-package fpga;
+package fpga.pipeline;
 
 import java.awt.image.Kernel;
 import java.awt.image.*;
@@ -6,8 +6,19 @@ import java.awt.image.*;
 /**
  * Created by Ally on 2/25/17.
  */
-public class GaussianFilter
+public class GaussianFilter extends PipeNode<BufferedImage, BufferedImage>
 {
+
+  /**
+   * Set up a new node.  All streams must be set up between the communicating
+   * nodes and organized into an array beforehand.
+   *
+   * @param reader The streams from which this node will read input.
+   * @param writer The streams into which this node will write output.
+   */
+  public GaussianFilter(PipeStream.In<BufferedImage> reader, PipeStream.Out<BufferedImage> writer) {
+    super(reader, writer);
+  }
 
   public static BufferedImage blur( BufferedImage image) {
     int blurScale = 30;
@@ -29,4 +40,12 @@ public class GaussianFilter
     return destination;
   }
 
+  @Override
+  public void processInputs() {
+    try {
+      writer.write(blur(reader.read()));
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
