@@ -31,6 +31,7 @@ public class FPGAController {
   FPGAThread reset = new FPGAThread("reset", FPGAFlags.RESET);
   FPGAThread takeImage = new FPGAThread("takeImage", FPGAFlags.TAKE_IMAGE);
   FPGAThread setGetFrame = new FPGAThread("setGetFrame", FPGAFlags.SET_GET_FRAME);
+  FPGAThread imageCaptured = new FPGAThread("imageCaptured", FPGAFlags.IMAGE_CAPTURED);
 
   /**
    * Basic try/catch block to shut all the flags down in an orderly fashion.
@@ -41,12 +42,14 @@ public class FPGAController {
     reset.shutdown();
     takeImage.shutdown();
     setGetFrame.shutdown();
+    imageCaptured.shutdown();
     try{
       zoom.fpgaThread.join();
       onOff.fpgaThread.join();
       reset.fpgaThread.join();
       takeImage.fpgaThread.join();
       setGetFrame.fpgaThread.join();
+      imageCaptured.fpgaThread.join();
 
       System.out.println("Flags successfully shut down...");
     }catch(InterruptedException e){

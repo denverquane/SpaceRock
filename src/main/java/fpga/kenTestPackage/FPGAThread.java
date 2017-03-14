@@ -11,7 +11,8 @@ import sensor.SensorSimulation;
  *
  */
 public class FPGAThread implements Runnable {
-Thread fpgaThread;
+
+  Thread fpgaThread;
   static MemoryMap mm = new MemoryMap();
   static SensorSimulation sensor = new SensorSimulation();
   private boolean running = true;
@@ -21,28 +22,30 @@ Thread fpgaThread;
    * This method gives the ability to shut the thread down in an oredly manner, by setting the
    * boolean variable 'running' to false so the while block will terminate.
    */
-  public void shutdown(){
+  public void shutdown() {
     running = false;
   }
 
   /**
    * Constructor used to build and start a flag thread.
+   *
    * @param name is a String used to name the thread.
    * @param inputFlag is an enum which will be used in the switch block to determine the thread's
    * behavior.  This allows ond master thread class to create a thread with specific behaviors
    * depending on the FPGA flag it is emulating.
    */
-  FPGAThread(String name, FPGAFlags inputFlag){
+  FPGAThread(String name, FPGAFlags inputFlag) {
     fpgaThread = new Thread(this, name);
     flag = inputFlag;
     fpgaThread.start();
   }
+
   @Override
   public void run() {
 
-    switch(flag){
+    switch (flag) {
       case SET_GET_FRAME:
-        while(running){
+        while (running) {
           /**
            * TODO:
            * Add the code to implement the get/set frame flag.  This should be everything unique
@@ -53,7 +56,7 @@ Thread fpgaThread;
         }
         break;
       case ON_OFF:
-        while(running){
+        while (running) {
           /**
            * TODO:
            * Add the code to implement the on/off flag.  This should be everything unique
@@ -64,7 +67,7 @@ Thread fpgaThread;
         }
         break;
       case RESET:
-        while(running){
+        while (running) {
           /**
            * TODO:
            * Add the code to implement the reset flag.  This should be everything unique
@@ -75,7 +78,7 @@ Thread fpgaThread;
         }
         break;
       case TAKE_IMAGE:
-        while(running){
+        while (running) {
           /**
            * TODO:
            * Add the code to implement the take image flag.  This should be everything unique
@@ -86,10 +89,21 @@ Thread fpgaThread;
         }
         break;
       case ZOOM:
-        while(running){
+        while (running) {
           /**
            * TODO:
            * Add the code to implement the zoom flag.  This should be everything unique
+           * to this flag.  I think we can add individual methods needed by the flag out of the
+           * switch block.
+           */
+
+        }
+        break;
+      case IMAGE_CAPTURED:
+        while (running) {
+          /**
+           * TODO:
+           * Add the code to implement the image_captured flag.  This should be everything unique
            * to this flag.  I think we can add individual methods needed by the flag out of the
            * switch block.
            */
