@@ -28,12 +28,12 @@ public class FlagController {
 
   }
 
-    ZoomFlag zoom = new ZoomFlag("flag1");
+    ZoomFlag zoom = new ZoomFlag("flag1",sensor,memMap);
     OnOffFlag onOff = new OnOffFlag("flag2");
     // SetFrameFlag setFrame = new SetFrameFlag("flag3");
     ResetFlag reset = new ResetFlag("flag4");
     TakePictureFlag takePic = new TakePictureFlag("flag5");
-    GetFrameFlag frameFlag = new GetFrameFlag("flag6");
+    GetFrameFlag frameFlag = new GetFrameFlag("flag6",sensor,memMap);
 
     /*
       Basic try/catch block to shut everything down in an orderly fashion...  I hope.
@@ -56,9 +56,9 @@ public class FlagController {
 
         takePic.picThread.join();
         onOff.flagThread.join();
-        zoom.zoomFlag.join();
+        zoom.zoomT.join();
         reset.resetflag.join();
-        frameFlag.framethread.join();
+        frameFlag.getFrame.join();
 
       System.out.println("Flags successfully shut down...");
 
