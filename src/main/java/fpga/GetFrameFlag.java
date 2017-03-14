@@ -1,95 +1,61 @@
 package fpga;
 
+import fpga.memory.MemoryMap;
+import sensor.SensorInterface;
+import sun.management.Sensor;
+
 /**
  * Created by Ken Kressin on 4/3/17. Description:
  */
 public class GetFrameFlag implements Runnable {
-Thread framethread;
+  Thread getFrame;
+  private SensorInterface si;
+  private MemoryMap mm;
   boolean running = true;
-
-  /* These variables will hold the temporary values for the current frame request,
-  and the last frame request, allowing us to properly update the Control registers.
-   */
-  private int currentX, currentY, currentSize, oldX, oldY, oldSize;
-
-/*TODO: Delete this as soon as the actual register exists.*/
-  private DummyRegister CR;
-
-  public GetFrameFlag(String name){
-framethread = new Thread(this, name);
-  }
+  private boolean registerReady = false;
+  private int sleepAmount = 500;
 
   /**
-   * Method to shut the thread down
+   * Contructor. Gets the Sensor interface and Memory Map passed in.
+   * @param name Name of thread.
+   * @param si   Sensor Interface.
+   * @param mm   Memory Map.
    */
-  public void shutdown(){
-    running = false;
+  public GetFrameFlag(String name, SensorInterface si, MemoryMap mm) {
+    getFrame = new Thread(this, name);
+    this.si = si;
+    this.mm = mm;
   }
-
-
-  /*TODO: Delete DummyRegister as soon as the actual register exists.*/
-  private class DummyRegister{
-    public boolean getFrame;
-    public boolean ready;
-    public int newX;
-    public int newY;
-    public int newSize;
-    public int oldX;
-    public int oldY;
-    public int oldSize;
-  }
-
 
   @Override
   public void run() {
-    while(running){
-/*
-   Poll the control register for a 'getFrame' request.  When this is 'true', then pull the new
-   X and Y coordinates and the new requested frame center from the control register.
-   If new request, set our ready() to false, then send the new data to the sensor.
-   Look for some sort of ack from the sensor - not sure if this should be the 'imageReady()'
-   or the 'sensor.ready()' signal.  Might have to ask the sensor team for a new ack for a
-   GetFrame request - something on the lines of 'frameSent()'
-   Once we get confirmation, set the "lastFrameCoordinates" to the coordinates we just requested,
-   then set our ready() to true.
- */
 
+    while(running) {
 
-      /*
-         We need the actual hooks to the control register.  Right now, I am using:
-         CR.getFrame as a boolean register which will actually tell us we need to tell
-         the sensor to get the next frame.
-         CR.currentX - x coordinate of the center of the current requested frame.
-         CR.currentY - y coordinate of the center of the current requested frame.
-         CR.currentSize - size of the current requested frame.
+      try {
 
-         CR.oldX - x coordinate of the center of the last requested frame.
-         CR.oldY - y coordinate of the center of the last requested frame.
-         CR.oldCenter - size of the last requested frame.
-       */
-      if(CR.getFrame){
-        //set CR.ready to false;
-        currentX = CR.newX;
-        currentY = CR.newY;
-        currentSize = CR.newSize;
+        mm.read(Boolean.class, "get_frame");
+        registerReady = true;
 
-        FlagController.sensor.setFrame(currentX, currentY, currentSize);
-        FlagController.sensor.getFrame();
-        //wait for an ack from the sensor that the frame was sent.
+      } catch (Exception e) {
 
-        oldX = currentX;
-        oldY = currentY;
-        oldSize = currentSize;
-
-        CR.oldX = oldX;
-        CR.oldY = oldY;
-        CR.oldSize = oldSize;
-        CR.ready = true;
-        CR.getFrame = false;
+        registerReady = false;
       }
 
+      if(registerReady) {
 
+        si.getFrame();
+        registerReady = false;
+      }
     }
+  }
 
+
+  /**
+   * This method will allow us to shut down the thread.
+   *
+   */
+  public void shutdown(){
+    running = false;
   }
 }
