@@ -98,6 +98,17 @@ public class DebrisCollection implements Updatable {
         return oldDebris.getDebrisElement();
     }
 
+  /**
+   * For a given debris object, search the old debris record for potential matches
+   * and decide which if any will be marked as a match.
+   * TODO This is a stub, please implement.
+   * @param debris DebrisRecord object to look for a match in.
+   */
+  private void checkForDebrisMatch(DebrisRecord debris){
+      //Search oldDebris record for possible matches.
+      //update debris with information about match.
+    }
+
     /**
      * Testing method
      * Print some info about this collection.
