@@ -7,5 +7,5 @@ package fpga.kenTestPackage;
  * version 3.0, dated 7 March, 2017.
  */
 public enum FPGAFlags {
-  SET_GET_FRAME, ON_OFF, RESET, TAKE_IMAGE, ZOOM
+  SET_GET_FRAME, ON_OFF, RESET, TAKE_IMAGE, ZOOM, IMAGE_CAPTURED
 }
