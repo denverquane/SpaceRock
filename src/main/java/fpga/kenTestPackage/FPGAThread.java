@@ -1,6 +1,8 @@
 package fpga.kenTestPackage;
 
 import fpga.memory.MemoryMap;
+import java.util.ArrayList;
+import java.util.List;
 import sensor.SensorInterface;
 import sensor.SensorSimulation;
 
@@ -15,8 +17,24 @@ public class FPGAThread implements Runnable {
 
   Thread fpgaThread;
   static MemoryMap mm = new MemoryMap();
-  static SensorSimulation sensor = new SensorSimulation();
-  static SensorInterface senseI;
+  /* Create a camera object that implements SensorInterface.
+     For this version of the simulation, we only have one camera, so we can 'hard-code' it.
+     In later versions, we would have to pass in some sort of collection of camera objects,
+     all of which implement SensorInterface, then reference the camera we want to poll or control
+     using a call like:
+       sensor = <camera object to be controlled>;
+       sensor.<SensorInterface method to be called>;
+     This allows us to do all of our camera commands through the sensor interface, instead of each
+     camera object.
+   */
+  private static SensorSimulation camera = new SensorSimulation();
+
+  // Declare a reference to the SensorInterface.
+  private static SensorInterface sensor;
+  /*This list used to hold possibly multiple objects implementing SensorInterface, which would
+  represent different cameras or sensors on the satellite.
+   */
+  private static List<SensorSimulation> cameraList = new ArrayList<SensorSimulation>();
   private boolean running = true;
   //for TakeImage Flag
   private boolean RegisterNotReady = true;
@@ -24,39 +42,8 @@ public class FPGAThread implements Runnable {
   private FPGAFlags flag;
 
   /**
-   * This method gives the ability to shut the thread down in an oredly manner, by setting the
-   * boolean variable 'running' to false so the while block will terminate.
-   */
-  void shutdown() {
-    running = false;
-  }
-
-  /**\
-   * This method is used by TakeImage Flag to tell the sensor to take a picture
-   */
-
-  private void SetTakePicture(){
-    while(!sensor.ready()){
-
-    }
-    sensor.takePicture();
-
-    /* Wait for the image to be processed. */
-    while(!sensor.imageReady()){
-
-    }
-  }
-
-  /**
-   * SET SENSOR
-   * Choose which sensor to send instructions to to avoid problems with the constructor.
-   */
-  public void setSensor(SensorInterface si){
-    senseI = si;
-  }
-
-  /**
-   * Constructor used to build and start a flag thread.
+   * Constructor used to build and start a flag thread using a default camera object that has
+   * implemented SensorInterface.
    *
    * @param name is a String used to name the thread.
    * @param inputFlag is an enum which will be used in the switch block to determine the thread's
@@ -67,7 +54,69 @@ public class FPGAThread implements Runnable {
     fpgaThread = new Thread(this, name);
     flag = inputFlag;
     fpgaThread.start();
+    //Set sensor to reference the camera object we want  to work on...
+    sensor = camera;
   }
+
+  /**
+   * Constructor which can be used to pass multiple camera objects in a future version of the
+   * simulation.
+   * @param name is a String used to name the thread.
+   * @param inputFlag is an enum which will be used in the switch block to determine the thread's
+   * behavior.  This allows one master thread class to create a thread with specific behaviors
+   * depending on the FPGA flag it is emulating.
+   * @param camera This is an ArrayList of camera objects that implement SensorInterface, allowing
+   * multiple cameras to be accessed in future versions of this simulation.
+   */
+
+  FPGAThread(String name, FPGAFlags inputFlag, List<SensorSimulation> camera){
+    cameraList = camera;
+
+  }
+
+  /**
+   * This method gives the ability to shut the thread down in an orderly manner, by setting the
+   * boolean variable 'running' to false so the while block will terminate.
+   */
+
+  void shutdown() {
+    running = false;
+  }
+
+  /**\
+   * This method is used by TakeImage Flag to tell the camera to take a picture
+   */
+
+  private void SetTakePicture(){
+    while(!sensor.ready()){
+      try {
+        Thread.sleep(sleepAmount);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+    }
+    sensor.takePicture();
+
+    /* Wait for the image to be processed. */
+    while(!sensor.imageReady()){
+      try {
+        Thread.sleep(sleepAmount);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+    }
+  }
+
+  /**
+   * SET SENSOR
+   * Choose which camera to send instructions to to avoid problems with the constructor.
+   */
+  public void setSensor(SensorInterface si){
+    sensor = si;
+  }
+
 
   @Override
   public void run() {
@@ -128,7 +177,7 @@ public class FPGAThread implements Runnable {
               }
             }
           }
-          //Have sensor take picture and wait until image processed.
+          //Have camera take picture and wait until image processed.
           SetTakePicture();
 
         }

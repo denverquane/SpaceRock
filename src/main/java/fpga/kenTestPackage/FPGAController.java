@@ -1,6 +1,7 @@
 package fpga.kenTestPackage;
 
 import fpga.memory.MemoryMap;
+import sensor.SensorInterface;
 import sensor.SensorSimulation;
 
 /**
@@ -14,17 +15,33 @@ import sensor.SensorSimulation;
 public class FPGAController {
 
   /*
-    The sensor and memory map objects will be instantiated as static objects in FPGAThread, so that
+    The camera and memory map objects will be instantiated as static objects in FPGAThread, so that
     the threads are all using the same object.
    */
-  //static SensorSimulation sensor = new SensorSimulation();
+  //static SensorSimulation camera = new SensorSimulation();
   //static MemoryMap memMap = new MemoryMap();
+  static SensorInterface sensor;
 
   public FPGAController() {
     System.out.println("Starting Control Register flags...");
 
   }
-  // Stsart all the flags.
+
+  /**
+   * Constructor which can be used to pass the camera object(s) (that implement SensorInterface)
+   * to the FPGA controller, and the flag threads.  If you want to implement this, you will need to
+   * decide ow you are going to store the various camera objects - probably in a Collection,
+   * then change the constructor to look for whatever container you defined.
+    * @param si This is the camera object the FPGA will use.
+   */
+/*
+  public FPGAController(<camera list container>, si){
+    this.sensor = si;
+    System.out.println("Starting Control Register flags with new camera...");
+
+  }
+*/
+  // Start all the flags.
 
   FPGAThread zoom = new FPGAThread("zoomThread", FPGAFlags.ZOOM);
   FPGAThread onOff = new FPGAThread("onOff", FPGAFlags.ON_OFF);
