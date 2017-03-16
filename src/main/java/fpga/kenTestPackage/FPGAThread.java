@@ -109,6 +109,25 @@ public class FPGAThread implements Runnable {
     }
   }
 
+  private void setReset(){
+    while(!sensor.ready()){
+      try{
+        Thread.sleep(sleepAmount);
+      }catch(InterruptedException e){
+        e.printStackTrace();
+      }
+    }
+    sensor.reset();
+
+    /* wait for sensor to be reset*/
+    while(!sensor.ready()){
+      try{
+        Thread.sleep(sleepAmount);
+      }catch(InterruptedException e){
+        e.printStackTrace();
+      }
+    }
+  }
   /**
    * SET SENSOR
    * Choose which camera to send instructions to to avoid problems with the constructor.
@@ -152,17 +171,24 @@ public class FPGAThread implements Runnable {
            * to this flag.  I think we can add individual methods needed by the flag out of the
            * switch block.
            */
-
+          while(RegisterNotReady){
+            RegisterNotReady = true;
+            try{
+              MemoryMap.read(Boolean.class, "reset");
+              RegisterNotReady = false;
+            }catch(Exception e){
+              try{
+                Thread.sleep(sleepAmount);
+              }catch(InterruptedException el){
+                el.printStackTrace();
+              }
+            }
+          }
+          setReset();
         }
         break;
       case TAKE_IMAGE:
         while (running) {
-          /**
-           * TODO:
-           * Add the code to implement the take image flag.  This should be everything unique
-           * to this flag.  I think we can add individual methods needed by the flag out of the
-           * switch block.
-           */
           while(RegisterNotReady){
             RegisterNotReady = true;
             try{
