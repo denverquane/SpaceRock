@@ -165,12 +165,6 @@ public class FPGAThread implements Runnable {
         break;
       case RESET:
         while (running) {
-          /**
-           * TODO:
-           * Add the code to implement the reset flag.  This should be everything unique
-           * to this flag.  I think we can add individual methods needed by the flag out of the
-           * switch block.
-           */
           while(RegisterNotReady){
             RegisterNotReady = true;
             try{
