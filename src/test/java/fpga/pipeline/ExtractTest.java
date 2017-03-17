@@ -3,6 +3,9 @@ package fpga.pipeline;
 import static fpga.Testing.assertEquals;
 import static fpga.Testing.assertTrue;
 
+import fpga.pipeline.PipeStream.In;
+import fpga.pipeline.PipeStream.Out;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,13 +17,17 @@ import java.util.List;
 public class ExtractTest extends Extract
 {
 
+  public ExtractTest(In<boolean[][]> reader,
+      Out<List<Debris>> writer) {
+    super(reader, writer);
+  }
+
   public void singleSmallDebrisTest() throws Exception {
 
     boolean[][] image = new boolean[300][300];
     image[50][45] = true; //Single pixel asteroid at 50x45
 
     List<Extract.Debris> debrisList = Extract.extract(image);
-
 
     assertEquals(new Integer(1), debrisList.size());
 
@@ -67,7 +74,9 @@ public class ExtractTest extends Extract
 
 
   public static void main(String args[]) throws IOException{
-    ExtractTest test = new ExtractTest();
+    PipeStream<boolean[][]> stream = new PipeStream<>();
+    PipeStream<List<Extract.Debris>> stream2 = new PipeStream<>();
+    ExtractTest test = new ExtractTest(stream.getReadEnd(), stream2.getWriteEnd());
     try {
       test.singleSmallDebrisTest();
       System.err.println("Test 1 passed");
