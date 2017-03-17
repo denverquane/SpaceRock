@@ -5,7 +5,6 @@ import static fpga.Testing.assertTrue;
 
 import fpga.pipeline.PipeStream.In;
 import fpga.pipeline.PipeStream.Out;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
