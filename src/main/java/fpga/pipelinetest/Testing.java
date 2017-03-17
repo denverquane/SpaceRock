@@ -1,4 +1,4 @@
-package fpga;
+package fpga.pipelinetest;
 
 /**
  * Until we decide a unit testing framework, this one can do basic asserts.

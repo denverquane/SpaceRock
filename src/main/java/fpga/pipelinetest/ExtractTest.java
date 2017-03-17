@@ -1,8 +1,10 @@
-package fpga.pipeline;
+package fpga.pipelinetest;
 
-import static fpga.Testing.assertEquals;
-import static fpga.Testing.assertTrue;
+import static fpga.pipelinetest.Testing.assertEquals;
+import static fpga.pipelinetest.Testing.assertTrue;
 
+import fpga.pipeline.Extract;
+import fpga.pipeline.PipeStream;
 import fpga.pipeline.PipeStream.In;
 import fpga.pipeline.PipeStream.Out;
 import java.io.IOException;

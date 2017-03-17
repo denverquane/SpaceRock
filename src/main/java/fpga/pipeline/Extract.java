@@ -32,7 +32,7 @@ public class Extract extends PipeNode<boolean[][], List<Extract.Debris>>{
    *        CAUTION:destruction of boolean array will occur
    * @return List of debris with x,y centers and diameter.
    */
-  static List<Debris> extract(boolean[][] debrisMap) {
+  public static List<Debris> extract(boolean[][] debrisMap) {
     ArrayList<Debris> foundObjects = new ArrayList<>();
 
     for (int j = 0; j < debrisMap.length; j++) {
@@ -132,9 +132,9 @@ public class Extract extends PipeNode<boolean[][], List<Extract.Debris>>{
    * Immutable construct for holding X,Y center and diameter.
    */
   public static class Debris {
-    final int centerX, centerY, diameter;
+    public final int centerX, centerY, diameter;
 
-    Debris(int x, int y, int dia) {
+    public Debris(int x, int y, int dia) {
       centerX = x;
       centerY = y;
       diameter = dia;
