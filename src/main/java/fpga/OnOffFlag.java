@@ -9,7 +9,6 @@ import sensor.SensorSimulation;
 public class OnOffFlag implements Runnable {
 
   boolean sensorOn = false;
-  //enum sensorOn
 
   Thread flagThread;
 boolean running = true;
