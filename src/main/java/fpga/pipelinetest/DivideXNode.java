@@ -1,9 +1,10 @@
 package fpga.pipelinetest;
 
-import fpga.PipeNode;
-import fpga.PipeStream;
+import fpga.pipeline.PipeNode;
+import fpga.pipeline.PipeStream.In;
+import fpga.pipeline.PipeStream.Out;
 
-public class DivideXNode extends PipeNode
+public class DivideXNode extends PipeNode <Double, Double>
 {
   double twoXPlusFive;
   double x;
@@ -16,18 +17,17 @@ public class DivideXNode extends PipeNode
   // WRITE STREAMS:
   // 0: Main
   
-  public DivideXNode(PipeStream [] readers, PipeStream [] writers)
+  public DivideXNode(In<Double> reader, Out<Double> writer, double x)
   {
-    super(readers, writers);
+    super(reader, writer);
+    this.x = x;
   }
 
-  @ Override
   public void readInputs()
   {
     try
     {
-      twoXPlusFive = (double) readers[0].read();
-      x = (double) readers[1].read();
+      twoXPlusFive = reader.read();
     }
     catch (InterruptedException e)
     {
@@ -39,15 +39,16 @@ public class DivideXNode extends PipeNode
   @ Override
   public void processInputs()
   {
+    readInputs();
     result = twoXPlusFive / x;
+    writeOutputs();
   }
   
-  @ Override
   public void writeOutputs()
   {
     try
     {
-      writers[0].write(result);
+      writer.write(result);
     }
     catch (InterruptedException e)
     {
