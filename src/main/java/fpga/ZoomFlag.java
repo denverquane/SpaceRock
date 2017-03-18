@@ -10,6 +10,7 @@ import sun.management.Sensor;
  * Created by Ken Kressin on 4/3/17. Description:
  */
 public class ZoomFlag implements Runnable {
+  private final int ZOOM_NULL = -999;
   Thread zoomT;
   boolean running = true;
   private ZoomLevel currentZoom;
@@ -28,32 +29,28 @@ public class ZoomFlag implements Runnable {
 
   @Override
   public void run() {
+    int zoomNum = ZOOM_NULL;
     while (running) {
       try {
-
-        mm.read(Boolean.class, "zoom");
+        zoomNum = mm.read(Integer.class, "zoom_level");
         registerReady = true;
-
       } catch (Exception e) {
-
         registerReady = false;
       }
 
       if(registerReady) {
-        try {
-          currentZoom = mm.read(ZoomLevel.class, "zoom_level");
-        } catch (Exception e) {
-          currentZoom = null;
-        }
-        if (currentZoom != null) {
-          si.setZoom(currentZoom);
-          registerReady = false;
+        if (zoomNum != ZOOM_NULL) {
+          currentZoom = ZoomLevel.fromValue(zoomNum);
+          if (currentZoom != null) {
+            si.setZoom(currentZoom);
+            registerReady = false;
+          }
         }
       }
       try {
         zoomT.sleep(sleepAmount);
       } catch (Exception e) {
-        /*TODO: Handle the caught exception*/
+        Thread.currentThread().interrupt();
       }
     }
   }
