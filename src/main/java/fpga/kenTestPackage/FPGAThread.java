@@ -38,6 +38,8 @@ public class FPGAThread implements Runnable {
   private boolean running = true;
   //for TakeImage Flag
   private boolean RegisterNotReady = true;
+  private boolean onOffToggle;
+  private boolean sensorOn = false;
   private long sleepAmount = 500;
   private FPGAFlags flag;
 
@@ -128,6 +130,41 @@ public class FPGAThread implements Runnable {
       }
     }
   }
+
+  /**
+   * This method toggles the camera sensor on or off, depending on the current state of the sensor.
+   * If the sensor is off, onOffToggle will be showing false.  We then set onOffToggle to true, and
+   * call sensor.on() to turn on the sensor.
+   * If onOffToggle is true, we know the sensor is on, and we set onOffToggle to false and
+   * call sensor.off() to shut the sensor down.
+   */
+  private void toggleOn(){
+    if(onOffToggle){
+      onOffToggle = false;
+      sensor.off();
+    }
+    else{
+      onOffToggle = true;
+      sensor.on();
+    }
+  }
+
+  private void registerReady(String regName){
+    while(RegisterNotReady){
+      RegisterNotReady = false;
+      try{
+        MemoryMap.read(Boolean.class, regName);
+        RegisterNotReady = true;
+      }catch(Exception e){
+        try{
+          Thread.sleep(sleepAmount);
+        }catch(InterruptedException el){
+          el.printStackTrace();
+        }
+      }
+    }
+
+  }
   /**
    * SET SENSOR
    * Choose which camera to send instructions to to avoid problems with the constructor.
@@ -154,17 +191,29 @@ public class FPGAThread implements Runnable {
         break;
       case ON_OFF:
         while (running) {
-          /**
-           * TODO:
-           * Add the code to implement the on/off flag.  This should be everything unique
-           * to this flag.  I think we can add individual methods needed by the flag out of the
-           * switch block.
-           */
-
+          registerReady("on");
+/*
+          while(RegisterNotReady){
+            RegisterNotReady = true;
+            try{
+              onOffToggle = MemoryMap.read(Boolean.class, "on");
+              RegisterNotReady = false;
+            }catch(Exception e){
+              try{
+                Thread.sleep(sleepAmount);
+              }catch(InterruptedException el){
+                el.printStackTrace();
+              }
+            }
+          }
+*/
+          toggleOn();
         }
         break;
       case RESET:
         while (running) {
+          registerReady("reset");
+/*
           while(RegisterNotReady){
             RegisterNotReady = true;
             try{
@@ -178,6 +227,7 @@ public class FPGAThread implements Runnable {
               }
             }
           }
+*/
           setReset();
         }
         break;
