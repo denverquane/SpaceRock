@@ -2,9 +2,7 @@ package fpga;
 
 import sensor.SensorInterface;
 import sensor.ZoomLevel;
-import java.util.List;
 import fpga.memory.MemoryMap;
-import sun.management.Sensor;
 
 /**
  * Created by Ken Kressin on 4/3/17. Description:
@@ -12,19 +10,19 @@ import sun.management.Sensor;
 public class ZoomFlag implements Runnable {
   private final int ZOOM_NULL = -999;
   Thread zoomT;
-  boolean running = true;
+  private boolean running = true;
   private ZoomLevel currentZoom;
   private SensorInterface si;
-  private MemoryMap mm;
   private boolean registerReady = false;
   private long sleepAmount = 500;
+  //private MemoryMap mm;
 
 
   public ZoomFlag(String name, SensorInterface si, MemoryMap mm){
     zoomT = new Thread(this, name);
     this.si = si;
-    this.mm = mm;
     currentZoom = null;
+    //this.mm = mm;
   }
 
   @Override
@@ -32,7 +30,7 @@ public class ZoomFlag implements Runnable {
     int zoomNum = ZOOM_NULL;
     while (running) {
       try {
-        zoomNum = mm.read(Integer.class, "zoom_level");
+        zoomNum = MemoryMap.read(Integer.class, "zoom_level");
         registerReady = true;
       } catch (Exception e) {
         registerReady = false;
@@ -48,7 +46,7 @@ public class ZoomFlag implements Runnable {
         }
       }
       try {
-        zoomT.sleep(sleepAmount);
+        Thread.sleep(sleepAmount);
       } catch (Exception e) {
         Thread.currentThread().interrupt();
       }
