@@ -1,10 +1,12 @@
 package fpga.kenTestPackage;
 
+import com.sun.org.apache.regexp.internal.RE;
 import fpga.memory.MemoryMap;
 import java.util.ArrayList;
 import java.util.List;
 import sensor.SensorInterface;
 import sensor.SensorSimulation;
+import sensor.ZoomLevel;
 
 /**
  * Created by Ken Kressin on 13/3/17. Description:
@@ -42,6 +44,7 @@ public class FPGAThread implements Runnable {
   private boolean sensorOn = false;
   private long sleepAmount = 500;
   private FPGAFlags flag;
+  private final int ZOOM_NULL = -999; //Use as a default/error value.
 
   /**
    * Constructor used to build and start a flag thread using a default camera object that has
@@ -111,6 +114,30 @@ public class FPGAThread implements Runnable {
     }
   }
 
+  private void SetZoomLevel(int zoomNum){
+    ZoomLevel currentZoom;
+    while(!sensor.ready()){
+      try {
+        Thread.sleep(sleepAmount);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    /*Attempts to change the zoom level*/
+    currentZoom = ZoomLevel.fromValue(zoomNum);
+    if (currentZoom != null) {
+      sensor.setZoom(currentZoom);
+    }
+
+    while(!sensor.ready()){
+      try {
+        Thread.sleep(sleepAmount);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   private void setReset(){
     while(!sensor.ready()){
       try{
@@ -176,7 +203,6 @@ public class FPGAThread implements Runnable {
 
   @Override
   public void run() {
-
     switch (flag) {
       case SET_GET_FRAME:
         while (running) {
@@ -253,14 +279,26 @@ public class FPGAThread implements Runnable {
         }
         break;
       case ZOOM:
-        while (running) {
-          /**
-           * TODO:
-           * Add the code to implement the zoom flag.  This should be everything unique
-           * to this flag.  I think we can add individual methods needed by the flag out of the
-           * switch block.
-           */
+        /* The following are variables used only here
+        * and nowhere else. */
+        int zoomNum = ZOOM_NULL;
 
+        while (running) {
+          while(RegisterNotReady){
+            RegisterNotReady = true;
+            try{
+              zoomNum = MemoryMap.read(Integer.class, "zoom_level");
+              RegisterNotReady = false;
+            }catch(Exception e){
+              try{
+                //sleep before next poll of register
+                Thread.sleep(sleepAmount);
+              }catch (InterruptedException el){
+                el.printStackTrace();
+              }
+            }
+          }
+          SetZoomLevel(zoomNum);
         }
         break;
       case IMAGE_CAPTURED:

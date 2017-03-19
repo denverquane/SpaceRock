@@ -35,7 +35,6 @@ public class ZoomFlag implements Runnable {
       } catch (Exception e) {
         registerReady = false;
       }
-
       if(registerReady) {
         if (zoomNum != ZOOM_NULL) {
           currentZoom = ZoomLevel.fromValue(zoomNum);
