@@ -1,11 +1,6 @@
 package fpga;
-import fpga.memory.EmptyRegisterException;
 import fpga.memory.MemoryMap;
-import fpga.memory.NoSuchRegisterFoundException;
-import fpga.memory.UnavailbleRegisterException;
 import sensor.SensorInterface;
-
-import java.util.List;
 
 /**
  * Created by Ken Kressin on 4/3/17. Description:
@@ -15,7 +10,7 @@ public class TakePictureFlag implements Runnable {
   private SensorInterface si;
   private MemoryMap mm;
   boolean running = true;
-  private boolean RegisterNotReady = true;
+  private boolean registerReady = false;
   private int sleepAmount = 500;
 
 
@@ -48,29 +43,32 @@ public class TakePictureFlag implements Runnable {
   @Override
   public void run() {
     while(running) {
-    /*while (ready register is not ready with data) {}*/
-      while(RegisterNotReady){
-          RegisterNotReady = true;
-        try {
+      //try catch to verify register ready or not. Exception thrown if no error
+      try{
 
-          mm.read(Boolean.class, "take_picture");
-          RegisterNotReady = false;
+        mm.read(Boolean.class, "take_picture");//read register to see if ready
+        registerReady = true;//exception not thrown during read of register so ready
 
-        } catch (Exception e) {
+        while(registerReady){ //register data has been read and so loop to set take picture via sensor interface begins
 
           try {
-            //sleep before next poll of register
-            Thread.sleep(sleepAmount);
-          } catch (InterruptedException e1) {
-            e1.printStackTrace();
+
+            SetTakePicture();//Have sensor take picture and wait till image processed
+
+          } catch (Exception e) {
+
           }
 
+          registerReady = false; //take picture complete set register ready to false to exit set picture loop
         }
       }
-
-      //Have sensor take picture and wait till image processed
-      SetTakePicture();
-
+      catch(Exception e){
+        try {
+          Thread.sleep(sleepAmount); //Sensor not ready to set take picture, wait before polling again
+        } catch (InterruptedException e1) {
+          e1.printStackTrace();
+        }
+      }
     }
   }
 
