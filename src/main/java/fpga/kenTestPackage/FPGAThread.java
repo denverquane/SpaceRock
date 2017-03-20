@@ -6,7 +6,7 @@ import java.util.List;
 import sensor.SensorInterface;
 import sensor.SensorSimulation;
 import sensor.ZoomLevel;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by Ken Kressin on 13/3/17. Description:
  * FPGAThread is the class that will start each FPGA thread, using a switch block and the FPGAFlags
@@ -43,12 +43,12 @@ public class FPGAThread implements Runnable {
   private boolean running = true;
   //for TakeImage Flag
   private boolean RegisterNotReady = true;
-  private boolean registerReady = false;
-  private boolean onOffToggle;
+  private AtomicBoolean registerReady;
+  //private boolean onOffToggle = true;
+  private boolean cameraOn;
   private boolean sensorOn = false;
   private long sleepAmount = 500;
   private FPGAFlags flag;
-  private final int ZOOM_NULL = -999; //Use as a default/error value.
 
   /**
    * Constructor used to build and start a flag thread using a default camera object that has
@@ -63,6 +63,7 @@ public class FPGAThread implements Runnable {
     fpgaThread = new Thread(this, name);
     flag = inputFlag;
     fpgaThread.start();
+    registerReady = new AtomicBoolean(false);
     //Set sensor to reference the camera object we want  to work on...
     sensor = camera;
   }
@@ -118,8 +119,7 @@ public class FPGAThread implements Runnable {
     }
   }
 
-  private void SetZoomLevel(int zoomNum){
-    ZoomLevel currentZoom;
+  private void SetZoomLevel(ZoomLevel currentZoom){
     while(!sensor.ready()){
       try {
         Thread.sleep(sleepAmount);
@@ -128,7 +128,6 @@ public class FPGAThread implements Runnable {
       }
     }
     /*Attempts to change the zoom level*/
-    currentZoom = ZoomLevel.fromValue(zoomNum);
     if (currentZoom != null) {
       sensor.setZoom(currentZoom);
     }
@@ -169,23 +168,26 @@ public class FPGAThread implements Runnable {
    * If onOffToggle is true, we know the sensor is on, and we set onOffToggle to false and
    * call sensor.off() to shut the sensor down.
    */
-  private void toggleOn(){
-    if(onOffToggle){
-      onOffToggle = false;
-      sensor.off();
+  private void toggleOn(boolean onOff){
+    if(onOff){
+      //onOffToggle = true;
+      sensor.on();
     }
     else{
-      onOffToggle = true;
-      sensor.on();
+      //onOffToggle = false;
+      sensor.off();
     }
   }
 
-  private void isRegisterReady(String regName){
-    while(registerReady){
-      registerReady = false;
+  private synchronized <T> T isRegisterReady(String regName){
+    Class<T> dataReturned = null;
+    Object regObj = null;
+  //private  synchronized void isRegisterReady(String regName){
+    while(registerReady.get()){
+      registerReady.set(false);
       try{
-        MemoryMap.read(Boolean.class, regName);
-        registerReady = true;
+        regObj = MemoryMap.read(Boolean.class, regName);
+        registerReady.set(true);
       }catch(Exception e){
         try{
           Thread.sleep(sleepAmount);
@@ -194,7 +196,7 @@ public class FPGAThread implements Runnable {
         }
       }
     }
-
+    return dataReturned.cast(regObj);
   }
   /**
    * SET SENSOR
@@ -220,24 +222,11 @@ public class FPGAThread implements Runnable {
         }
         break;
       case ON_OFF:
+        boolean onOff;
         while (running) {
-          isRegisterReady("on");
-/*
-          while(RegisterNotReady){
-            RegisterNotReady = true;
-            try{
-              onOffToggle = MemoryMap.read(Boolean.class, "on");
-              RegisterNotReady = false;
-            }catch(Exception e){
-              try{
-                Thread.sleep(sleepAmount);
-              }catch(InterruptedException el){
-                el.printStackTrace();
-              }
-            }
-          }
-*/
-          toggleOn();
+          onOff = isRegisterReady("on");
+
+          toggleOn(onOff);
         }
         break;
       case RESET:
@@ -262,16 +251,24 @@ public class FPGAThread implements Runnable {
         }
         break;
       case TAKE_IMAGE:
+        boolean takePic;
+        while(running){
+          takePic = isRegisterReady("take_picture");
+          if(takePic){
+            sensor.takePicture();
+          }
+        }
+/*
         try{
-          MemoryMap.read(Boolean.class, "take_picture");
-          registerReady = true;
-          while(registerReady){
+          takePic = MemoryMap.read(Boolean.class, "take_picture");
+          registerReady.set(true);
+          while(registerReady.get()){
             try{
               setTakePicture();
             }catch(Exception e){
 
             }
-            registerReady = false;
+            registerReady.set(false);
           }
         }catch (Exception e){
           try{
@@ -280,6 +277,7 @@ public class FPGAThread implements Runnable {
             el.printStackTrace();
           }
         }
+*/
 /*
         while (running) {
           while(RegisterNotReady){
@@ -305,13 +303,15 @@ public class FPGAThread implements Runnable {
       case ZOOM:
         /* The following are variables used only here
         * and nowhere else. */
-        int zoomNum = ZOOM_NULL;
+        ZoomLevel currentZoom = null;
 
         while (running) {
+          currentZoom = isRegisterReady("zoom_level");
+/*
           while(RegisterNotReady){
             RegisterNotReady = true;
             try{
-              zoomNum = MemoryMap.read(Integer.class, "zoom_level");
+              currentZoom = MemoryMap.read(ZoomLevel.class, "zoom_level");
               RegisterNotReady = false;
             }catch(Exception e){
               try{
@@ -322,7 +322,8 @@ public class FPGAThread implements Runnable {
               }
             }
           }
-          SetZoomLevel(zoomNum);
+*/
+          SetZoomLevel(currentZoom);
         }
         break;
       case IMAGE_CAPTURED:
@@ -332,6 +333,9 @@ public class FPGAThread implements Runnable {
            * Add the code to implement the image_captured flag.  This should be everything unique
            * to this flag.  I think we can add individual methods needed by the flag out of the
            * switch block.
+           *
+           * TODO:
+           * What hook(s) does this use in SensorInterface???  Nothing there right now.
            */
 
         }
