@@ -1,5 +1,10 @@
 package debrisProcessingSubsystem;
 
+import fpga.objectdetection.Debris;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The update specifically for the Camera component which contains information
  * the camera object needs to update.
@@ -8,24 +13,19 @@ package debrisProcessingSubsystem;
  */
 public class CameraUpdate extends Update
 {
+  private List<Debris> debris = new ArrayList<>();
 
   public CameraUpdate(UpdateType updateType)
   {
     super(updateType);
   }
 
-  @Override
-  public Update updateComponent(Update theUpdate)
-  {
-    // TODO Auto-generated method stub
-    return null;
+  public void setDebris(List<Debris> debris) {
+    this.debris = debris;
   }
 
-  @Override
-  public Update pollComponent()
-  {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Debris> getDebris() {
+    return debris;
   }
 
 }
