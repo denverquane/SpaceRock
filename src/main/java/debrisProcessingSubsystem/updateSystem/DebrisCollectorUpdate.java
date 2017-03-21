@@ -11,9 +11,22 @@ import debrisProcessingSubsystem.updateSystem.UpdateType;
  */
 public class DebrisCollectorUpdate extends Update
 {
+  public boolean sendDebrisHome;
+
+  public boolean addDebris;
+  //public DebrisObjectFromCamera debrisObject;
+
+  public boolean rawImageRequest;
+  public String imageName;
+
   public DebrisCollectorUpdate(UpdateType updateType)
   {
     super(updateType);
+    sendDebrisHome = false;
+    addDebris = false;
+    //debrisObject = null;
+    rawImageRequest = false;
+    imageName = null;
   }
 
 }
