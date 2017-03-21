@@ -17,12 +17,4 @@ public abstract class Update {
     {
       return this.updateType;
     }
-
-    @Override
-    public abstract Update updateComponent(Update theUpdate);
-
-
-    @Override
-    public abstract Update pollComponent();
-
 }
