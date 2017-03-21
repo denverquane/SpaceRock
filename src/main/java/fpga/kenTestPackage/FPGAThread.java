@@ -179,6 +179,11 @@ public class FPGAThread implements Runnable {
     }
   }
 
+  private void setFrame(int x, int y, int size){
+
+    sensor.setFrame(x,y,size);
+
+  }
   private synchronized <T> T isRegisterReady(String regName){
     Class<T> dataReturned = null;
     Object regObj = null;
@@ -211,14 +216,13 @@ public class FPGAThread implements Runnable {
   public void run() {
     switch (flag) {
       case SET_GET_FRAME:
+        int x, y, size;
         while (running) {
-          /**
-           * TODO:
-           * Add the code to implement the get/set frame flag.  This should be everything unique
-           * to this flag.  I think we can add individual methods needed by the flag out of the
-           * switch block.
-           */
 
+          x = isRegisterReady("frame_x");
+          y = isRegisterReady("frame_y");
+          size = isRegisterReady("frame_size");
+          setFrame(x,y,size);
         }
         break;
       case ON_OFF:
