@@ -1,4 +1,4 @@
-package debrisProcessingSubsystem;
+package debrisProcessingSubsystem.updateSystem;
 
 /**
  * This is the parent class for all updates.

@@ -1,6 +1,9 @@
 package debrisProcessingSubsystem;
 
 import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
+import debrisProcessingSubsystem.updateSystem.Updatable;
+import debrisProcessingSubsystem.updateSystem.Update;
+import debrisProcessingSubsystem.updateSystem.UpdateType;
 
 /**
  * @author Deb Rezanka
