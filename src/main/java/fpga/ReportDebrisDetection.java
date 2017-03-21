@@ -2,9 +2,9 @@ package fpga;
 
 import fpga.memory.MemoryMap;
 import fpga.pipeline.Extract;
+import fpga.pipeline.MainPipeline;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -18,24 +18,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The PC Board needs to reset the flags and the debris data.”
  */
 
-public class ReportDebrisDetection
+public class ReportDebrisDetection implements Runnable
 {
-  private static AtomicBoolean dataIsProcessing = new AtomicBoolean(false);
-  private static DebriDetectionStatus status = DebriDetectionStatus.NO_DATA;
-  private static final Object statusLock = new Object();
+  private final MainPipeline pipeline;
+  private AtomicBoolean dataIsProcessing;
+  private DebriDetectionStatus status;
+  private final Object statusLock;
 
-  public static boolean isProcessing()
+  public ReportDebrisDetection(MainPipeline pipeline)
+  {
+    this.pipeline = pipeline;
+    dataIsProcessing = new AtomicBoolean(false);
+    status = DebriDetectionStatus.NO_DATA;
+    statusLock = new Object();
+  }
+
+
+  public boolean isProcessing()
   {
     return dataIsProcessing.get();
   }
 
-  // Called by the "Extract" Pipeline node
-  public static void reportDetectedDebris(Extract.Debris[] detectedDebris)
+  @Override
+  public void run()
   {
+    List<Extract.Debris> debris = pipeline.read();
     dataIsProcessing.set(true);
     synchronized (statusLock)
     {
-      switch (detectedDebris.length)
+      switch (debris.size())
       {
         case 0:
           status = DebriDetectionStatus.NO_DATA;
@@ -50,15 +61,13 @@ public class ReportDebrisDetection
       }
     }
 
-    ArrayList<Extract.Debris> list = new ArrayList<>(detectedDebris.length);
-    Collections.addAll(list, detectedDebris);
     try
     {
-      MemoryMap.write("debris_list", list);
+      MemoryMap.write("debris_list", debris);
 
     } catch (Exception e)
     {
-      e.printStackTrace();
+      e.printStackTrace(System.err);
     } finally
     {
       dataIsProcessing.set(false);
@@ -66,12 +75,13 @@ public class ReportDebrisDetection
 
   }
 
-  public static DebriDetectionStatus getDetectionStatus()
+  public DebriDetectionStatus getDetectionStatus()
   {
     synchronized (statusLock)
     {
       return status;
     }
   }
+
 
 }
