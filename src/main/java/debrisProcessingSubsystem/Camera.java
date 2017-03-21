@@ -1,5 +1,8 @@
 package debrisProcessingSubsystem;
 
+import debrisProcessingSubsystem.updateSystem.Updatable;
+import debrisProcessingSubsystem.updateSystem.Update;
+import debrisProcessingSubsystem.updateSystem.UpdateType;
 import fpga.memory.EmptyRegisterException;
 import fpga.memory.MemoryMap;
 import fpga.memory.NoSuchRegisterFoundException;
@@ -62,7 +65,6 @@ public class Camera implements Updatable {
     return new CameraUpdate(UpdateType.COMMUNICATION_UP);
   }
 
-  @Override
   public Update updateComponent(Update theUpdate) {
     switch(theUpdate.getUpdateType()) {
       case TURN_ON_CAMERA:
@@ -80,7 +82,6 @@ public class Camera implements Updatable {
     }
   }
 
-  @Override
   public Update pollComponent() {
     if (debris.isEmpty()) {
       throw new RuntimeException("No data ready");

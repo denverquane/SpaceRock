@@ -1,4 +1,4 @@
-package debrisProcessingSubsystem;
+package debrisProcessingSubsystem.updateSystem;
 
 /**
  * Interface that should be implemented by Camera, DebrisCollection, and

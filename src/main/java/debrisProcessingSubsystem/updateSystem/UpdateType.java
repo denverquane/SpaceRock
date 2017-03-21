@@ -1,4 +1,4 @@
-package debrisProcessingSubsystem;
+package debrisProcessingSubsystem.updateSystem;
 
 /**
  * Enums used by the scheduler to determine the type of update so it can

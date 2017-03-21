@@ -1,7 +1,7 @@
 package debrisProcessingSubsystem.debrisCollection;
 
-import debrisProcessingSubsystem.Updatable;
-import debrisProcessingSubsystem.Update;
+import debrisProcessingSubsystem.updateSystem.Updatable;
+import debrisProcessingSubsystem.updateSystem.Update;
 
 import java.util.LinkedList;
 
