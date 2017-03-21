@@ -1,5 +1,8 @@
 package debrisProcessingSubsystem;
 
+import debrisProcessingSubsystem.updateSystem.Updatable;
+import debrisProcessingSubsystem.updateSystem.Update;
+
 /**
  * Team 01 will implement the Operator
  * This will be the interface implemented by the Camera object shown
@@ -25,12 +28,10 @@ public class Camera implements Updatable {
 
   }
 
-  @Override
   public Update updateComponent(Update theUpdate) {
     return null;
   }
 
-  @Override
   public Update pollComponent() {
     return null;
   }
