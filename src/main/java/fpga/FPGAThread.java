@@ -66,13 +66,15 @@ public class FPGAThread implements Runnable {
 
   /**
    * Constructor which can be used to pass multiple camera objects in a future version of the
-   * simulation.
+   * simulation.  This is NOT fully implemented at this time.
    * @param name is a String used to name the thread.
    * @param inputFlag is an enum which will be used in the switch block to determine the thread's
    * behavior.  This allows one master thread class to create a thread with specific behaviors
    * depending on the FPGA flag it is emulating.
    * @param camera This is an ArrayList of camera objects that implement SensorInterface, allowing
-   * multiple cameras to be accessed in future versions of this simulation.
+   *
+   * TODO
+   * Implement multiple cameras using the arrayList in the switch block.
    */
 
   FPGAThread(String name, FPGAFlags inputFlag, List<SensorSimulation> camera){
