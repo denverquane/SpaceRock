@@ -33,12 +33,22 @@ public class ReportDebrisDetection implements Runnable
     statusLock = new Object();
   }
 
-
+  /**
+   * This method returns a boolean which indicates whether our data
+   * is currently processing
+   * @return dataIsProcssing.get();
+   */
   public boolean isProcessing()
   {
     return dataIsProcessing.get();
   }
 
+  /**
+   * This method sets our data processing boolean to true,
+   * synchronizes on our statusLock object then determines
+   * which case we have for our debris array. It then writes
+   * our debris list to the memory map.
+   */
   @Override
   public void run()
   {
@@ -57,7 +67,6 @@ public class ReportDebrisDetection implements Runnable
         default:
           status = DebriDetectionStatus.MULTIPLE;
           break;
-
       }
     }
 
@@ -72,9 +81,13 @@ public class ReportDebrisDetection implements Runnable
     {
       dataIsProcessing.set(false);
     }
-
   }
 
+  /**
+   * This helper function is synchronized on our status lock
+   * It returns the status of our debris detection process.
+   * @return status
+   */
   public DebriDetectionStatus getDetectionStatus()
   {
     synchronized (statusLock)
@@ -82,6 +95,4 @@ public class ReportDebrisDetection implements Runnable
       return status;
     }
   }
-
-
 }
