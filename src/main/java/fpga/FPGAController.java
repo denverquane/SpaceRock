@@ -1,8 +1,6 @@
-package fpga.kenTestPackage;
+package fpga;
 
-import fpga.memory.MemoryMap;
 import sensor.SensorInterface;
-import sensor.SensorSimulation;
 
 /**
  * Created by Ken Kressin on 13/3/17. Description:

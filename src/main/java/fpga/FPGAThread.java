@@ -1,4 +1,4 @@
-package fpga.kenTestPackage;
+package fpga;
 
 import fpga.memory.MemoryMap;
 import java.util.ArrayList;
@@ -42,9 +42,7 @@ public class FPGAThread implements Runnable {
   private static List<SensorSimulation> cameraList = new ArrayList<SensorSimulation>();
   private boolean running = true;
   //for TakeImage Flag
-  private boolean RegisterNotReady = true;
   private AtomicBoolean registerReady;
-  //private boolean onOffToggle = true;
   private boolean cameraOn;
   private boolean sensorOn = false;
   private long sleepAmount = 500;
@@ -170,11 +168,9 @@ public class FPGAThread implements Runnable {
    */
   private void toggleOn(boolean onOff){
     if(onOff){
-      //onOffToggle = true;
       sensor.on();
     }
     else{
-      //onOffToggle = false;
       sensor.off();
     }
   }
@@ -236,21 +232,6 @@ public class FPGAThread implements Runnable {
       case RESET:
         while (running) {
           isRegisterReady("reset");
-/*
-          while(RegisterNotReady){
-            RegisterNotReady = true;
-            try{
-              MemoryMap.read(Boolean.class, "reset");
-              RegisterNotReady = false;
-            }catch(Exception e){
-              try{
-                Thread.sleep(sleepAmount);
-              }catch(InterruptedException el){
-                el.printStackTrace();
-              }
-            }
-          }
-*/
           setReset();
         }
         break;
@@ -262,47 +243,6 @@ public class FPGAThread implements Runnable {
             sensor.takePicture();
           }
         }
-/*
-        try{
-          takePic = MemoryMap.read(Boolean.class, "take_picture");
-          registerReady.set(true);
-          while(registerReady.get()){
-            try{
-              setTakePicture();
-            }catch(Exception e){
-
-            }
-            registerReady.set(false);
-          }
-        }catch (Exception e){
-          try{
-            Thread.sleep(sleepAmount);
-          }catch (InterruptedException el){
-            el.printStackTrace();
-          }
-        }
-*/
-/*
-        while (running) {
-          while(RegisterNotReady){
-            RegisterNotReady = true;
-            try{
-              MemoryMap.read(Boolean.class, "take_picture");
-              RegisterNotReady = false;
-            }catch(Exception e){
-              try{
-                //sleep before next poll of register
-                Thread.sleep(sleepAmount);
-              }catch (InterruptedException el){
-                el.printStackTrace();
-              }
-            }
-          }
-          //Have camera take picture and wait until image processed.
-          setTakePicture();
-
-        }
-*/
         break;
       case ZOOM:
         /* The following are variables used only here
@@ -311,22 +251,6 @@ public class FPGAThread implements Runnable {
 
         while (running) {
           currentZoom = isRegisterReady("zoom_level");
-/*
-          while(RegisterNotReady){
-            RegisterNotReady = true;
-            try{
-              currentZoom = MemoryMap.read(ZoomLevel.class, "zoom_level");
-              RegisterNotReady = false;
-            }catch(Exception e){
-              try{
-                //sleep before next poll of register
-                Thread.sleep(sleepAmount);
-              }catch (InterruptedException el){
-                el.printStackTrace();
-              }
-            }
-          }
-*/
           SetZoomLevel(currentZoom);
         }
         break;

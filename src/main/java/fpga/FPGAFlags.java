@@ -1,4 +1,4 @@
-package fpga.kenTestPackage;
+package fpga;
 
 /**
  * Created by Ken Kressin on 13/3/17. Description:
