@@ -43,8 +43,6 @@ public class FPGAThread implements Runnable {
   private boolean running = true;
   //for TakeImage Flag
   private AtomicBoolean registerReady;
-  private boolean cameraOn;
-  private boolean sensorOn = false;
   private long sleepAmount = 500;
   private FPGAFlags flag;
 
@@ -198,13 +196,6 @@ public class FPGAThread implements Runnable {
       }
     }
     return dataReturned.cast(regObj);
-  }
-  /**
-   * SET SENSOR
-   * Choose which camera to send instructions to to avoid problems with the constructor.
-   */
-  public void setSensor(SensorInterface si){
-    sensor = si;
   }
 
 
