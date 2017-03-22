@@ -12,11 +12,29 @@ import fpga.objectdetection.Debris;
  */
 public class DebrisCollectorUpdate extends Update
 {
+  /*
+  * This is a begin new image update.
+  * Set true when about to send a new image.
+   */
+  public boolean beginNewImage;
+
+  /*
+  * Begin transmitting debris data home. This should be set when the scheduler
+  * is ready to begin accepting debris for transmission home.
+   */
   public boolean sendDebrisHome;
 
+  /*
+  * Add a debris object to the new list. If this is true, DebrisCollection will
+  * look for an attached debris object
+   */
   public boolean addDebris;
   public Debris debrisObject;
 
+  /*
+  * This is a raw image request. The DebrisCollection will find and return a
+  * raw image using the object id specified in the string imageName.
+   */
   public boolean rawImageRequest;
   public String imageName;
 
