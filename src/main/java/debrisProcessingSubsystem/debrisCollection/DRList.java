@@ -1,6 +1,7 @@
 package debrisProcessingSubsystem.debrisCollection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A list of debris records. Implements DebrisList.
@@ -9,19 +10,36 @@ import java.util.ArrayList;
 public class DRList implements DebrisList {
 
     private ArrayList<DebrisRecord> debrisList;
-    private boolean sentHome;
+    private boolean sentHome; //has this list been sent back to earth yet?
+  //this is to be used when debris records need to be returned one at a time.
+    private Iterator<DebrisRecord> drIterator;
 
     public DRList(){
         debrisList = new ArrayList<>();
         sentHome = false;
+        drIterator = null;
     }
+
     /**
-     * Get a debris element from the list.
+     * Get a debris element from the list. Sends elements in the order determined
+     * by the drIterator member. If it has sent all of the debris, the iterator
+     * is reset.
      * @return The next DebrisRecord as determined by the internal iterator.
-     * TODO make this.
+     * Returns null if there is nothing left in the list.
      */
     public DebrisRecord getDebrisElement(){
-        return null;
+      DebrisRecord returnRecord = null;
+        if(drIterator == null){
+          drIterator = debrisList.iterator();
+        }
+        if(drIterator.hasNext()){
+          returnRecord = drIterator.next();
+        }
+        else{
+          drIterator = null;
+        }
+
+        return returnRecord;
     }
 
     /**
