@@ -1,7 +1,9 @@
 package debrisProcessingSubsystem.debrisCollection;
 
+import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
+import fpga.objectdetection.Debris;
 
 import java.util.LinkedList;
 
@@ -37,9 +39,23 @@ public class DebrisCollection implements Updatable {
      */
     public Update updateComponent(Update theUpdate){
         //Determine what kind of message we have.
+      DebrisCollectorUpdate updateIn = null;
+      Update returnUpdate = null;
+      if(theUpdate instanceof DebrisCollectorUpdate){
+        updateIn = (DebrisCollectorUpdate)theUpdate;
+        if(updateIn.sendDebrisHome){
+          //get debris to send home
+        }
+        if(updateIn.addDebris){
+          addDebris(updateIn.debrisObject);
+        }
+        if(updateIn.rawImageRequest){
+          //get raw image for updateIn.imageName
+        }
+      }
         //perform appropriate action
         //return response if appropriate.
-        return null;
+        return returnUpdate;
     }
 
     /**
@@ -55,6 +71,7 @@ public class DebrisCollection implements Updatable {
         }
         return retUpdate;
     }
+
 
     /**
      * Start a new image.
@@ -78,9 +95,10 @@ public class DebrisCollection implements Updatable {
      * Add a debris record to the list.
      * TODO needs parameters.
      */
-    private void addDebris(){
+    private void addDebris(Debris objectIn){
         try {
             //TODO this will create a new debris object to put into the list.
+            //TODO convert objectIn to debris record.
             //check to see if it has a match in the old list.
             newDebris.addDebris(new DebrisRecord());
             //check to see if this is a new debris or not.

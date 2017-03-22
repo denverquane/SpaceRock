@@ -2,6 +2,7 @@ package debrisProcessingSubsystem.updateSystem;
 
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
+import fpga.objectdetection.Debris;
 
 /**
  * The update specifically for the Debris Collector component which contains information
@@ -14,7 +15,7 @@ public class DebrisCollectorUpdate extends Update
   public boolean sendDebrisHome;
 
   public boolean addDebris;
-  //public DebrisObjectFromCamera debrisObject;
+  public Debris debrisObject;
 
   public boolean rawImageRequest;
   public String imageName;

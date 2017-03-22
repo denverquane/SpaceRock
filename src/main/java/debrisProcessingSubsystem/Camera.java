@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem;
 
+import debrisProcessingSubsystem.updateSystem.CameraUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
