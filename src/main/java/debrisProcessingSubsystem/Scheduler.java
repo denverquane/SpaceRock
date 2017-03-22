@@ -36,9 +36,8 @@ public class Scheduler
   public Scheduler()
   {
     debrisCollection = new DebrisCollection();
-    //include these once camera and operator implement updatable
-    //camera = new Camera();
-    //operator = new Operator();
+    camera = new Camera();
+    operator = new OperatorTesting();
     worker = new Worker();
     Thread t = new Thread(worker);
     t.start();
