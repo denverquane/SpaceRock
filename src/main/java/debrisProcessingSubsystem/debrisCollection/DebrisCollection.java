@@ -47,7 +47,10 @@ public class DebrisCollection implements Updatable {
           //get debris to send home
         }
         if(updateIn.addDebris){
-          addDebris(updateIn.debrisObject);
+          Debris debrisIn = updateIn.debrisObject;
+          //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
+          //TODO convert Debris to debris object.
+          //addDebris(updateIn.debrisObject);
         }
         if(updateIn.rawImageRequest){
           //get raw image for updateIn.imageName
@@ -72,7 +75,6 @@ public class DebrisCollection implements Updatable {
         return retUpdate;
     }
 
-
     /**
      * Start a new image.
      * @return success or failure
@@ -95,12 +97,12 @@ public class DebrisCollection implements Updatable {
      * Add a debris record to the list.
      * TODO needs parameters.
      */
-    private void addDebris(Debris objectIn){
+    private void addDebris(DebrisRecord objectIn){
         try {
             //TODO this will create a new debris object to put into the list.
             //TODO convert objectIn to debris record.
             //check to see if it has a match in the old list.
-            newDebris.addDebris(new DebrisRecord());
+            newDebris.addDebris(objectIn);
             //check to see if this is a new debris or not.
         }
         catch(NullPointerException e){
