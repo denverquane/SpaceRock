@@ -18,19 +18,19 @@ class MemoryInitializationException extends MemoryMapException {
   }
 }
 
-public class NoSuchRegisterFoundException extends MemoryMapException {
+class NoSuchRegisterFoundException extends MemoryMapException {
   NoSuchRegisterFoundException(String message) {
     super(message);
   }
 }
 
-public class EmptyRegisterException extends MemoryMapException {
+class EmptyRegisterException extends MemoryMapException {
   EmptyRegisterException(String message) {
     super(message);
   }
 }
 
-public class UnavailbleRegisterException extends MemoryMapException {
+class UnavailbleRegisterException extends MemoryMapException {
   UnavailbleRegisterException(String message) {
     super(message);
   }
