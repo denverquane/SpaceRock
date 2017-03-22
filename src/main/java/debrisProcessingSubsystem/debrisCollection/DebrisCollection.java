@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * DebrisCollection manages the debris list on the CPU side of the satellite.
  * It receives updates from the scheduler and performs the appropriate actions
  * and responses.
- * It manages the lists, returns debris for sending to earth, and attempts to
+ * It manages two lists, returns debris for sending to earth, and attempts to
  * track debris over time.
  * Created by jdt on 3/13/17.
  */
@@ -45,14 +45,15 @@ public class DebrisCollection implements Updatable {
         updateIn = (DebrisCollectorUpdate)theUpdate;
         if(updateIn.sendDebrisHome){
           //get debris to send home
+          //returnUpdate = new OperatorUpdate() with debris object return.
         }
-        if(updateIn.addDebris){
+        else if(updateIn.addDebris){
           Debris debrisIn = updateIn.debrisObject;
           //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
           //TODO convert Debris to debris object.
           //addDebris(updateIn.debrisObject);
         }
-        if(updateIn.rawImageRequest){
+        else if(updateIn.rawImageRequest){
           //get raw image for updateIn.imageName
         }
       }
