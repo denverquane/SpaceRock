@@ -6,13 +6,13 @@ import java.awt.image.BufferedImage;
  * Produces a boolean 2d array from an image.
  * @author James Holland
  */
-class Threshold extends PipeNode<BufferedImage, boolean[][]>{
+public class Threshold extends PipeNode<BufferedImage, boolean[][]>{
 
   /**
    * The Gaussian blur will leave a border of untouched pixels.
    * These will need to be ignored.
    */
-  private static final int BORDER_SIZE = 1;
+  public static final int BORDER_SIZE = 1;
 
   /**
    * Set up a new node.  All streams must be set up between the communicating
@@ -31,7 +31,7 @@ class Threshold extends PipeNode<BufferedImage, boolean[][]>{
    * @param image 8-bit grayscale image, must be square.
    * @return 2d array of booleans, true for debris.
    */
-  static boolean[][] threshold(BufferedImage image){
+  public static boolean[][] threshold(BufferedImage image){
 
     boolean[][] debrisMap = new boolean[image.getHeight()][image.getHeight()];
 
