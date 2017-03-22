@@ -1,7 +1,9 @@
 package debrisProcessingSubsystem.debrisCollection;
 
+import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
+import fpga.objectdetection.Debris;
 
 import java.util.LinkedList;
 
@@ -9,7 +11,7 @@ import java.util.LinkedList;
  * DebrisCollection manages the debris list on the CPU side of the satellite.
  * It receives updates from the scheduler and performs the appropriate actions
  * and responses.
- * It manages the lists, returns debris for sending to earth, and attempts to
+ * It manages two lists, returns debris for sending to earth, and attempts to
  * track debris over time.
  * Created by jdt on 3/13/17.
  */
@@ -37,9 +39,27 @@ public class DebrisCollection implements Updatable {
      */
     public Update updateComponent(Update theUpdate){
         //Determine what kind of message we have.
+      DebrisCollectorUpdate updateIn = null;
+      Update returnUpdate = null;
+      if(theUpdate instanceof DebrisCollectorUpdate){
+        updateIn = (DebrisCollectorUpdate)theUpdate;
+        if(updateIn.sendDebrisHome){
+          //get debris to send home
+          //returnUpdate = new OperatorUpdate() with debris object return.
+        }
+        else if(updateIn.addDebris){
+          Debris debrisIn = updateIn.debrisObject;
+          //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
+          //TODO convert Debris to debris object.
+          //addDebris(updateIn.debrisObject);
+        }
+        else if(updateIn.rawImageRequest){
+          //get raw image for updateIn.imageName
+        }
+      }
         //perform appropriate action
         //return response if appropriate.
-        return null;
+        return returnUpdate;
     }
 
     /**
@@ -78,11 +98,12 @@ public class DebrisCollection implements Updatable {
      * Add a debris record to the list.
      * TODO needs parameters.
      */
-    private void addDebris(){
+    private void addDebris(DebrisRecord objectIn){
         try {
             //TODO this will create a new debris object to put into the list.
+            //TODO convert objectIn to debris record.
             //check to see if it has a match in the old list.
-            newDebris.addDebris(new DebrisRecord());
+            newDebris.addDebris(objectIn);
             //check to see if this is a new debris or not.
         }
         catch(NullPointerException e){
