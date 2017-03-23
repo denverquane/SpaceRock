@@ -1,6 +1,7 @@
 package debrisProcessingSubsystem.updateSystem;
 
 import fpga.objectdetection.Debris;
+import sensor.ZoomLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +14,26 @@ import java.util.List;
  */
 public class CameraUpdate extends Update
 {
-  private List<Debris> debris = new ArrayList<>();
+  public enum CameraUpdateParameters {
+    TURN_ON_CAMERA,
+    TURN_OFF_CAMERA,
+    RESET_CAMERA,
+    TAKE_PICTURE,
+    PROCESS_IMAGE,
+    RAW_FRAME,
+    SET_ZOOM
+  }
+
+  public CameraUpdateParameters param;
+  public ZoomLevel zoomLevel;
+  public int frame_x, frame_y, frame_size;
 
   public CameraUpdate(UpdateType updateType)
   {
     super(updateType);
   }
 
-  public void setDebris(List<Debris> debris) {
-    this.debris = debris;
-  }
 
-  public List<Debris> getDebris() {
-    return debris;
-  }
+
 
 }
