@@ -233,7 +233,7 @@ public class FPGAThread implements Runnable {
         while(running){
           takePic = isRegisterReady("take_picture");
           if(takePic){
-            sensor.takePicture();
+            setTakePicture();
           }
         }
         break;
