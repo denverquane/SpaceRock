@@ -1,5 +1,7 @@
 package debrisProcessingSubsystem.updateSystem;
 
+import java.util.HashMap;
+
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
 import fpga.objectdetection.Debris;
@@ -7,31 +9,122 @@ import fpga.objectdetection.Debris;
 /**
  * The update specifically for the Debris Collector component which contains information
  * the debris collector object needs to update.
+ * 
+ * Example Usage:
+ * 
+ * --Generate update
+ * DebrisCollectorUpdate update = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
+ * update.setBeginNewImage(true);
+ * update.setDebrisObject(new DebrisObject);
+ * 
+ * --Send update via Scheduler
+ * 
+ * --Receive update
+ * HashMap<DebrisCollectorParameters, Object> updateMap = update.getParamMap;
+ * 
+ * There would be a function whos job would be to go through each param and check if its in the map. If it is
+ * then set the updated value.
+ * 
+ * Anyone sending an update would be able to see the available params (if using something w/auto-complete then they would get a list
+ * of available params to choose from).
+ * if (updateMap.get(DebrisCollectorParameters.BEGIN_NEW_IMAGE) != null)
+ * {
+ *    newImage = (boolean)updateMap.get(DebrisCollectorParameters.BEGIN_NEW_IMAGE);
+ * }
+ * 
+ * if (updateMap.get(DebrisCollectorParameters.DEBRIS_OBJECT) != null)
+ * {
+ *    debris = (Debris)updateMap.get(DebrisCollectorParameters.DEBRIS_OBJECT);
+ * }
+ * .
+ * .
+ * .
+ * 
+ * 
  * @author Nicholas Spurlok
  *
  */
 public class DebrisCollectorUpdate extends Update
 {
-  public boolean sendDebrisHome;
+  public enum DebrisCollectorParameters
+  {
+    BEGIN_NEW_IMAGE,
+    SEND_DEBRIS_HOME,
+    ADD_DEBRIS,
+    DEBRIS_OBJECT,
+    RAW_IMAGE_REQUEST,
+    IMAGE_NAME
+  }
+  private HashMap<DebrisCollectorParameters, Object> paramMap;
+//  /*
+//  * This is a begin new image update.
+//  * Set true when about to send a new image.
+//   */
+//  public boolean beginNewImage;
+//
+//  /*
+//  * Begin transmitting debris data home. This should be set when the scheduler
+//  * is ready to begin accepting debris for transmission home.
+//   */
+//  public boolean sendDebrisHome;
+//
+//  /*
+//  * Add a debris object to the new list. If this is true, DebrisCollection will
+//  * look for an attached debris object
+//   */
+//  public boolean addDebris;
+//  public Debris debrisObject;
+//
+//  /*
+//  * This is a raw image request. The DebrisCollection will find and return a
+//  * raw image using the object id specified in the string imageName.
+//   */
+//  public boolean rawImageRequest;
+//  public String imageName;
 
-  public boolean addDebris;
-  public Debris debrisObject;
-
-  public boolean rawImageRequest;
-  public String imageName;
-
+  public void setBeginNewImage(boolean bool)
+  {
+    paramMap.put(DebrisCollectorParameters.BEGIN_NEW_IMAGE, bool);
+  }
+  
+  public void setSendDebrisHome(boolean bool)
+  {
+    paramMap.put(DebrisCollectorParameters.SEND_DEBRIS_HOME, bool);
+  }
+  
+  public void setAddDebris(boolean bool)
+  {
+    paramMap.put(DebrisCollectorParameters.ADD_DEBRIS, bool);
+  }
+  
+  public void setDebrisObject(Debris debris)
+  {
+    paramMap.put(DebrisCollectorParameters.DEBRIS_OBJECT, debris);
+  }
+  
+  public void setRawImageRequest(boolean bool)
+  {
+    paramMap.put(DebrisCollectorParameters.RAW_IMAGE_REQUEST, bool);
+  }
+  
+  public void setImageName(String name)
+  {
+    paramMap.put(DebrisCollectorParameters.IMAGE_NAME, name);
+  }
+  
+  public HashMap<DebrisCollectorParameters, Object> getParamMap()
+  {
+    return paramMap;
+  }
   public DebrisCollectorUpdate(UpdateType updateType)
   {
     super(updateType);
-    sendDebrisHome = false;
-    addDebris = false;
-    //debrisObject = null;
-    rawImageRequest = false;
-    imageName = null;
+    paramMap = new HashMap<>();
+//    sendDebrisHome = false;
+//    addDebris = false;
+//    //debrisObject = null;
+//    rawImageRequest = false;
+//    imageName = null;
   }
 
 }
-
-
-
-
