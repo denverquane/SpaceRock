@@ -21,6 +21,7 @@ import debrisProcessingSubsystem.updateSystem.UpdateType;
  */
 public class Scheduler
 {
+  private boolean DEBUG = true;
   private Updatable debrisCollection;
   private Updatable camera;
   private Updatable operator;
@@ -41,6 +42,7 @@ public class Scheduler
     worker = new Worker();
     Thread t = new Thread(worker);
     t.start();
+    if(DEBUG) System.out.println("Scheduler started");
   }
 
   private class Worker implements Runnable
@@ -73,10 +75,12 @@ public class Scheduler
   {
     while ((returnedUpdate = debrisCollection.pollComponent()) != null)
     {
-      responseUpdate = sendUpdate(responseUpdate);
+      responseUpdate = sendUpdate(returnedUpdate);
+      if(DEBUG) System.out.println("Scheduler sent update");
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
+        if(DEBUG) System.out.println("Scheduler sent update");
       }
     }
   }
@@ -95,10 +99,13 @@ public class Scheduler
   {
     while ((returnedUpdate = operator.pollComponent()) != null)
     {
-      responseUpdate = sendUpdate(responseUpdate);
+      responseUpdate = sendUpdate(returnedUpdate);
+      if(DEBUG) System.out.println("Scheduler sent update");
+
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
+        if(DEBUG) System.out.println("Scheduler sent update");
       }
     }
   }
@@ -117,10 +124,13 @@ public class Scheduler
   {
     while ((returnedUpdate = camera.pollComponent()) != null)
     {
-      responseUpdate = sendUpdate(responseUpdate);
+      responseUpdate = sendUpdate(returnedUpdate);
+      if(DEBUG) System.out.println("Scheduler sent update");
+
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
+        if(DEBUG) System.out.println("Scheduler sent update");
       }
     }
   }
@@ -138,16 +148,20 @@ public class Scheduler
     if (theUpdate.getUpdateType() == UpdateType.CAMERA)
     {
       response = camera.updateComponent(theUpdate);
+      if(DEBUG) System.out.println("Update Type = CameraUpdate");
+
     }
     else if (theUpdate.getUpdateType() == UpdateType.DEBRIS_COLLECTOR)
     {
       response = debrisCollection.updateComponent(theUpdate);
+      if(DEBUG) System.out.println("Update Type = DebrisCollectorUpdate");
     }
     else
     {
       //any odd messages, errors etc. go to the operator
       //the operator will need to deal with unknown Update types.
       responseUpdate = operator.updateComponent(theUpdate);
+      if(DEBUG) System.out.println("Update Type = OperatorUpdate");
     }
     return response;
   }
