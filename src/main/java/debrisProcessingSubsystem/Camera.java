@@ -8,6 +8,7 @@ import fpga.memory.UnavailbleRegisterException;
 import fpga.objectdetection.Debris;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,14 +21,14 @@ import java.util.List;
 
 public class Camera implements Updatable {
 
-  List<Debris> debris = new ArrayList<>();
+  LinkedList<Update> outgoing_updates;
 
   public Camera() {
-    this.debris = new ArrayList<>();
+    this.outgoing_updates = new LinkedList<>();
   }
 
  // Jalen
-  private OperatorUpdate on() {
+  private void on() {
     try {
       MemoryMap.write("turnOnCamera", true);
     } catch (NoSuchRegisterFoundException e) {
@@ -35,11 +36,11 @@ public class Camera implements Updatable {
     } catch (UnavailbleRegisterException e) {
       e.printStackTrace();
     }
-    return new CameraUpdate(UpdateType.COMMUNICATION_UP);
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Jalen
-  private OperatorUpdate off() {
+  private void off() {
     try {
       MemoryMap.write("turnOffCamera", true);
     } catch (NoSuchRegisterFoundException e) {
@@ -47,16 +48,16 @@ public class Camera implements Updatable {
     } catch (UnavailbleRegisterException e) {
       e.printStackTrace();
     }
-    return new CameraUpdate(UpdateType.COMMUNICATION_UP);
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Corey
-  private OperatorUpdate reset() {
-    return new CameraUpdate(UpdateType.COMMUNICATION_UP);
+  private void reset() {
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Daniel
-  private OperatorUpdate takePicture() {
+  private void takePicture() {
     try {
       MemoryMap.write("takePicture", true);
     } catch (NoSuchRegisterFoundException e) {
@@ -64,69 +65,80 @@ public class Camera implements Updatable {
     } catch (UnavailbleRegisterException e) {
       e.printStackTrace();
     }
-    return new CameraUpdate(UpdateType.COMMUNICATION_UP);
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Sean Hanely
-  private OperatorUpdate getRawFrame() {
-    return null;
+  private void getRawFrame() {
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Corey
-  private OperatorUpdate setZoomLevel() {
-    return null;
+  private void setZoomLevel() {
+    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
 
   // Divya
-  private CameraUpdate process_image() {
-    if (debris.isEmpty()) {
-      try {
-        this.debris = MemoryMap.read(debris.getClass(), "debris");
-        if (debris.isEmpty()) {
-          return new CameraUpdate(UpdateType.COMMUNICATION_DOWN);
-        } else {
-          MemoryMap.write("debris", null);
-          return new CameraUpdate(UpdateType.DONE);
-        }
-      } catch (NoSuchRegisterFoundException e) {
-        e.printStackTrace();
-      } catch (EmptyRegisterException e) {
-        e.printStackTrace();
-      } catch (UnavailbleRegisterException e) {
-        e.printStackTrace();
+  private void process_image() {
+    try {
+      Debris debris = MemoryMap.read(Debris.class, "debris");
+      if (debris != null) {
+        DebrisCollectorUpdate debris_update = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
+        debris_update.setAddDebris(true);
+        debris_update.setDebrisObject(debris);
+        outgoing_updates.add(debris_update);
+        MemoryMap.write("debris", null);
+      } else {
+        //return new CameraUpdate(UpdateType.DONE);
+        // TODO request next frame
       }
-    } else {
-      return new CameraUpdate(UpdateType.DONE);
+    } catch (NoSuchRegisterFoundException e) {
+      e.printStackTrace();
+    } catch (EmptyRegisterException e) {
+      e.printStackTrace();
+    } catch (UnavailbleRegisterException e) {
+      e.printStackTrace();
     }
-    return new CameraUpdate(UpdateType.COMMUNICATION_DOWN);
   }
 
 
-  public Update updateComponent(CameraUpdate theUpdate) {
-    switch(theUpdate.param) {
-      case TURN_ON_CAMERA:
-        return on();
-      case TURN_OFF_CAMERA:
-        return off();
-      case RESET_CAMERA:
-        return reset();
-      case TAKE_PICTURE:
-        return takePicture();
-      case PROCESS_IMAGE:
-        return process_image();
-      default:
-        throw new RuntimeException("I don't understand what you want me to do.");
-    }
+  public Update updateComponent(Update theUpdate) {
+    CameraUpdate camera_update = (CameraUpdate)theUpdate;
+    camera_update.getParamMap().forEach((param,value) -> {
+      switch(param) {
+        case TURN_ON_CAMERA:
+          on();
+          break;
+        case TURN_OFF_CAMERA:
+          off();
+          break;
+        case RESET_CAMERA:
+          reset();
+          break;
+        case TAKE_PICTURE:
+          takePicture();
+          break;
+        case SET_ZOOM:
+          setZoomLevel();
+          break;
+        case PROCESS_IMAGE:
+          process_image();
+          break;
+        case RAW_FRAME:
+          getRawFrame();
+          break;
+        default:
+          throw new RuntimeException("I don't understand what you want me to do.");
+      }
+
+    });
   }
 
   public Update pollComponent() {
-    if (debris.isEmpty()) {
-      throw new RuntimeException("No data ready");
+    if (outgoing_updates.isEmpty()) {
+      return null;
     } else {
-      CameraUpdate camera_update = new CameraUpdate(UpdateType.DONE);
-      //camera_update.setDebris(debris);
-      this.debris = new ArrayList<>();
-      return camera_update;
+      return outgoing_updates.removeFirst();
     }
   }
 
