@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
  * Created by jdt on 3/5/17.
  */
 public class DebrisRecord {
-    //TODO identification scheme, string maybe?
     private String id;
 
     private final int VECTOR2_SIZE = 2;
