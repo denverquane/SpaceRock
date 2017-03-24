@@ -5,6 +5,7 @@ import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
 import fpga.objectdetection.Debris;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -43,17 +44,18 @@ public class DebrisCollection implements Updatable {
       Update returnUpdate = null;
       if(theUpdate instanceof DebrisCollectorUpdate){
         updateIn = (DebrisCollectorUpdate)theUpdate;
-        if(updateIn.sendDebrisHome){
+        HashMap updateMap = updateIn.getParamMap();
+        if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.SEND_DEBRIS_HOME)){
           //get debris to send home
           //returnUpdate = new OperatorUpdate() with debris object return.
         }
-        else if(updateIn.addDebris){
-          Debris debrisIn = updateIn.debrisObject;
+        else if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS)){
+          Debris debrisIn = (Debris)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
           //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
           //TODO convert Debris to debris object.
           //addDebris(updateIn.debrisObject);
         }
-        else if(updateIn.rawImageRequest){
+        else if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST)){
           //get raw image for updateIn.imageName
         }
       }
