@@ -99,6 +99,33 @@ public class Scheduler
   {
     while ((returnedUpdate = operator.pollComponent()) != null)
     {
+      //pause scheduler if communication is down.
+      if(returnedUpdate.getUpdateType() == UpdateType.COMMUNICATION_DOWN)
+      {
+        if (DEBUG)
+          System.out.println("Scheduler received COMMUNICATION_DOWN");
+        try
+        {
+          returnedUpdate = operator.pollComponent();
+          while (returnedUpdate.getUpdateType() != UpdateType.COMMUNICATION_UP)
+          {
+            //in case there are commands in queue between communication down and up updates
+            //continue going through the queue.
+            while (returnedUpdate != null && returnedUpdate.getUpdateType() != UpdateType.COMMUNICATION_UP)
+            {
+              returnedUpdate = sendUpdate(returnedUpdate);
+              if(DEBUG) System.out.println("Scheduler sent update");
+            }
+            wait(10_000);
+            returnedUpdate = operator.pollComponent();
+          }
+        }
+        catch (InterruptedException e)
+        {
+          e.printStackTrace();
+        }
+      }
+      //resume scheduler if communication us up
       responseUpdate = sendUpdate(returnedUpdate);
       if(DEBUG) System.out.println("Scheduler sent update");
 
