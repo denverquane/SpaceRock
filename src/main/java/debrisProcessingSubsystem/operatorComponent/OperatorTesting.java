@@ -1,9 +1,6 @@
 package debrisProcessingSubsystem.operatorComponent;
 
-import debrisProcessingSubsystem.updateSystem.OperatorUpdate;
-import debrisProcessingSubsystem.updateSystem.Updatable;
-import debrisProcessingSubsystem.updateSystem.Update;
-import debrisProcessingSubsystem.updateSystem.UpdateType;
+import debrisProcessingSubsystem.updateSystem.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,9 +16,11 @@ public class OperatorTesting implements Updatable {
   private boolean DEBUG = true;
 
   private LinkedList<Update> updateQueue;
+  private ToGroundLink groundLink;
 
   public OperatorTesting(){
     updateQueue = new LinkedList<>();
+    groundLink = new ToGroundLink();
   }
 
   /**
@@ -49,9 +48,14 @@ public class OperatorTesting implements Updatable {
       else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS)){
         //package and return camera status package to operator.
       }
+      /* - Update is a connection check - */
       else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CHECK_CONNECTION)){
-        //Check connection. If connection ok then return COMMUNICATION_UP else
-        //return COMMUNICATION_DOWN
+        if(groundLink.connectionIsUp()){
+          returnUpdate = new SchedulerUpdate(UpdateType.COMMUNICATION_UP);
+        }
+        else{
+          returnUpdate = new SchedulerUpdate(UpdateType.COMMUNICATION_DOWN);
+        }
       }
     }
     return returnUpdate;
