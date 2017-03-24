@@ -1,4 +1,4 @@
-package debrisProcessingSubsystem;
+package debrisProcessingSubsystem.cameraComponent;
 
 import debrisProcessingSubsystem.updateSystem.*;
 import fpga.memory.EmptyRegisterException;

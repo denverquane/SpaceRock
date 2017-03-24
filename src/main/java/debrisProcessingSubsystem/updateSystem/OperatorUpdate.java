@@ -17,7 +17,8 @@ public class OperatorUpdate extends Update
     DEBRIS,
     RAW_IMAGE,
     CAMERA_STATUS,
-    DEBRIS_TRANSMISSION_COMPLETE
+    DEBRIS_TRANSMISSION_COMPLETE,
+    CHECK_CONNECTION
   }
 
   HashMap<OperatorUpdateParameters, Object> paramMap;
@@ -56,6 +57,10 @@ public class OperatorUpdate extends Update
    */
   public void setDebrisTransmissionComplete(){
     paramMap.put(OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE, new Boolean(true));
+  }
+
+  public void setCheckConnection(){
+    paramMap.put(OperatorUpdateParameters.CHECK_CONNECTION, new Boolean(true));
   }
 
   /* TODO make a camera status model object (zoom, frame size, etc).

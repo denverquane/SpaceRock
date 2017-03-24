@@ -1,6 +1,8 @@
 package debrisProcessingSubsystem;
 
+import debrisProcessingSubsystem.cameraComponent.Camera;
 import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
+import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
