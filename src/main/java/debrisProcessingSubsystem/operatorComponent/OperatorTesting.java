@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class OperatorTesting implements Updatable {
 
-  private boolean DEBUG = true;
+  private boolean DEBUG = false;
 
   private LinkedList<Update> updateQueue;
   private ToGroundLink groundLink;

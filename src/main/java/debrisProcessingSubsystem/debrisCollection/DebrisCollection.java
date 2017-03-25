@@ -50,7 +50,7 @@ public class DebrisCollection implements Updatable {
           //returnUpdate = new OperatorUpdate() with debris object return.
         }
         else if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS)){
-          Debris debrisIn = (Debris)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
+          Boolean debrisIn = (Boolean)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
           //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
           //TODO convert Debris to debris object.
           //addDebris(updateIn.debrisObject);
