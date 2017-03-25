@@ -189,9 +189,16 @@ public class Scheduler
     {
       //any odd messages, errors etc. go to the operator
       //the operator will need to deal with unknown Update types.
+      
+      if(DEBUG)
+      {
+        operator = new OperatorTesting();
+        
+      }
       responseUpdate = operator.updateComponent(theUpdate);
-      if(DEBUG) System.out.println("Update Type = OperatorUpdate");
+      System.out.println("Update Type = OperatorUpdate");
     }
     return response;
   }
+
 }

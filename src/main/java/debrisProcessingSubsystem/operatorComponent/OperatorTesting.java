@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class OperatorTesting implements Updatable {
 
-  private boolean DEBUG = false;
+  private boolean DEBUG = true;
 
   private LinkedList<Update> updateQueue;
   private ToGroundLink groundLink;
@@ -31,25 +31,34 @@ public class OperatorTesting implements Updatable {
   public Update updateComponent(Update theUpdate){
     Update returnUpdate = null;
 
-    if(DEBUG) System.out.println("OperatorTesting received update, returning null");
     if(theUpdate.getUpdateType() == UpdateType.OPERATOR) {
       OperatorUpdate updateIn = (OperatorUpdate)theUpdate;
       HashMap paramMap = updateIn.getParamMap();
       //parse update and perform action
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS)){
+        if (DEBUG) System.out.println("Received DEBRIS update with value " 
+            + paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS));
         //package and send debris back to earth.
       }
-      else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE)){
+      if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE)){
+        if (DEBUG) System.out.println("Received RAW_IMAGE update with value " 
+            + paramMap.get(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE));
         //package raw image and send back to earth.
       }
-      else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE)){
+      if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE)){
+        if (DEBUG) System.out.println("Received DEBRIS_TRANSMISSION_COMPLETE update with value " 
+            + paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE));
         //Notify operator that all debris has been returned.
       }
-      else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS)){
+      if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS)){
+        if (DEBUG) System.out.println("Received CAMERA_STATUS update with value " 
+            + paramMap.get(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS));
         //package and return camera status package to operator.
       }
       /* - Update is a connection check - */
-      else if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CHECK_CONNECTION)){
+      if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CHECK_CONNECTION)){
+        if (DEBUG) System.out.println("Received CHECK_CONNECTION update with value " 
+            + paramMap.get(OperatorUpdate.OperatorUpdateParameters.CHECK_CONNECTION));
         if(groundLink.connectionIsUp()){
           returnUpdate = new SchedulerUpdate(UpdateType.COMMUNICATION_UP);
         }
@@ -66,7 +75,7 @@ public class OperatorTesting implements Updatable {
    * @return The first element from the updateQueue.
    */
   public Update pollComponent(){
-    if(DEBUG) System.out.println("OperatorTesting polled for update, returning null");
+    //if(DEBUG) System.out.println("OperatorTesting polled for update, returning null");
     if(updateQueue.isEmpty()){
       return null;
     }

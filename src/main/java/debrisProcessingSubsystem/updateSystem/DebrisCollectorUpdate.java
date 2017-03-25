@@ -57,10 +57,10 @@ public class DebrisCollectorUpdate extends Update
   }
   private HashMap<DebrisCollectorParameters, Object> paramMap;
 
-
   public void setBeginNewImage(boolean bool)
   {
     paramMap.put(DebrisCollectorParameters.BEGIN_NEW_IMAGE, bool);
+
   }
   
   public void setSendDebrisHome(boolean bool)

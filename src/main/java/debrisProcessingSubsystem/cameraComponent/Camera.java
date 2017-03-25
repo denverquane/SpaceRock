@@ -22,7 +22,7 @@ import java.util.List;
 public class Camera implements Updatable {
 
   LinkedList<Update> outgoing_updates;
-
+  private boolean DEBUG = true;
   public Camera() {
     this.outgoing_updates = new LinkedList<>();
   }
@@ -108,24 +108,31 @@ public class Camera implements Updatable {
       switch(param) {
         case TURN_ON_CAMERA:
           on();
+          if (DEBUG) System.out.println("Received TURN_ON_CAMERA update.");
           break;
         case TURN_OFF_CAMERA:
           off();
+          if (DEBUG) System.out.println("Received TURN_OFF_CAMERA update.");
           break;
         case RESET_CAMERA:
           reset();
+          if (DEBUG) System.out.println("Received RESET_CAMERA update.");
           break;
         case TAKE_PICTURE:
           takePicture();
+          if (DEBUG) System.out.println("Received TAKE_PICTURE update.");
           break;
         case SET_ZOOM:
           setZoomLevel();
+          if (DEBUG) System.out.println("Received SET_ZOOM update.");
           break;
         case PROCESS_IMAGE:
           process_image();
+          if (DEBUG) System.out.println("Received PROCESS_IMAGE update.");
           break;
         case RAW_FRAME:
           getRawFrame();
+          if (DEBUG) System.out.println("Received RAW_FRAME update.");
           break;
         default:
           throw new RuntimeException("I don't understand what you want me to do.");

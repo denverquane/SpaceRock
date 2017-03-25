@@ -27,6 +27,7 @@ public class CameraUpdate extends Update
   }
 
   private HashMap<CameraUpdateParameters, Object> param_map;
+  private boolean DEBUG = true;
 
   public CameraUpdate(UpdateType updateType)
   {

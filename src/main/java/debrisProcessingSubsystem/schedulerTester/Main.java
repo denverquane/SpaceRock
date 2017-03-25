@@ -1,5 +1,7 @@
 package debrisProcessingSubsystem.schedulerTester;
 
+import java.awt.image.BufferedImage;
+
 import debrisProcessingSubsystem.Scheduler;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.CameraUpdate;
@@ -25,26 +27,30 @@ public class Main
     DebrisCollectorUpdate debUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
     OperatorUpdate opUpdate = new OperatorUpdate(UpdateType.OPERATOR);
     
-    //Print out current camera state
-    
     //Set camera update params
-    //camUpdate.setProcessImage();
-    //camUpdate.setTakePicture();
+    //camUpdate.setProcessImage(); --This caused memory map null pointer exceptions
+    //camUpdate.setTakePicture();  --This causedmemory map null pointer exceptions
     camUpdate.setZoomLevel(ZoomLevel.x4);
+    //camUpdate.setTurnOffCamera();  --This causedmemory map null pointer exceptions
+    //camUpdate.setTurnOnCamera();  --This causedmemory map null pointer exceptions
+    System.out.println("Camera update confermations:");
     sched.sendUpdate(camUpdate);
-    
-    //Print current debris state
-    
+    System.out.println();
     
     //change debris state with update
     debUpdate.setAddDebris(true);
     debUpdate.setRawImageRequest(true);
     debUpdate.setImageName("Test Name");
+    System.out.println("Debris update confermations:");
     sched.sendUpdate(debUpdate);
+    System.out.println();
     
     //Print operator state
     opUpdate.setCheckConnection();
     opUpdate.setDebris(new DebrisRecord());
+    opUpdate.setDebrisTransmissionComplete();
+    opUpdate.setRawImage(new BufferedImage(500, 500, 1));
+    System.out.println("Operator update confermations:");
     sched.sendUpdate(opUpdate);
   }
 }

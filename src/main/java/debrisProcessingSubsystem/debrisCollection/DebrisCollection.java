@@ -20,7 +20,7 @@ public class DebrisCollection implements Updatable {
 
     private DebrisList newDebris, oldDebris;
     private LinkedList<Update> outgoingUpdates;
-
+    private boolean DEBUG = true;
 
     /**
      * Default constructor. Initializes debris lists to null.
@@ -46,16 +46,20 @@ public class DebrisCollection implements Updatable {
         updateIn = (DebrisCollectorUpdate)theUpdate;
         HashMap updateMap = updateIn.getParamMap();
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.SEND_DEBRIS_HOME)){
+          if (DEBUG) System.out.println("Received SEND_DEBRIS_HOME update with value " 
+              + updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.SEND_DEBRIS_HOME));
           //get debris to send home
           //returnUpdate = new OperatorUpdate() with debris object return.
         }
-        else if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS)){
+        if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS)){
           Boolean debrisIn = (Boolean)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
+          if (DEBUG) System.out.println("Received ADD_DEBRIS update with value " + debrisIn);
           //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
           //TODO convert Debris to debris object.
           //addDebris(updateIn.debrisObject);
         }
-        else if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST)){
+        if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST)){
+          if (DEBUG) System.out.println("Received RAW_IMAGE_REQUEST update with value " + updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST));
           //get raw image for updateIn.imageName
         }
       }
