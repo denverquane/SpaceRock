@@ -30,6 +30,7 @@ public class Scheduler
   private Worker worker;
   private Update returnedUpdate = null;
   private Update responseUpdate = null;
+  private boolean runScheduler = true;
 
   /**
    * Default constructor.
@@ -43,6 +44,7 @@ public class Scheduler
     operator = new OperatorTesting();
     worker = new Worker();
     Thread t = new Thread(worker);
+    t.setDaemon(true);
     t.start();
     if(DEBUG) System.out.println("Scheduler started");
   }
@@ -53,12 +55,13 @@ public class Scheduler
     public void run()
     {
       //continuous loop
-      while (true)
+      while (runScheduler)
       {
         check_Collection();
         check_Operator();
         check_Camera();
       }
+      return;
     }
   }
 
@@ -101,11 +104,17 @@ public class Scheduler
   {
     while ((returnedUpdate = operator.pollComponent()) != null)
     {
+      //stop scheduler
+      if(returnedUpdate.getUpdateType() == UpdateType.STOP_SCHEDULER)
+      {
+        runScheduler = false;
+        if(DEBUG) System.out.println("Scheduler Stopped");
+        return;
+      }
       //pause scheduler if communication is down.
       if(returnedUpdate.getUpdateType() == UpdateType.COMMUNICATION_DOWN)
       {
-        if (DEBUG)
-          System.out.println("Scheduler received COMMUNICATION_DOWN");
+        if (DEBUG) System.out.println("Scheduler received COMMUNICATION_DOWN");
         try
         {
           returnedUpdate = operator.pollComponent();
