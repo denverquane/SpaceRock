@@ -26,6 +26,7 @@ public class Main
     CameraUpdate camUpdate = new CameraUpdate(UpdateType.CAMERA);
     DebrisCollectorUpdate debUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
     OperatorUpdate opUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    OperatorUpdate stop = new OperatorUpdate(UpdateType.STOP_SCHEDULER);
     
     //Set camera update params
     //camUpdate.setProcessImage(); --This caused memory map null pointer exceptions
@@ -52,5 +53,8 @@ public class Main
     opUpdate.setRawImage(new BufferedImage(500, 500, 1));
     System.out.println("Operator update confermations:");
     sched.sendUpdate(opUpdate);
+
+    //Stop the scheduler
+    sched.getOperator().updateComponent(stop);
   }
 }

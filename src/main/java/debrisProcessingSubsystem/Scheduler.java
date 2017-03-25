@@ -209,5 +209,18 @@ public class Scheduler
     }
     return response;
   }
+  //For testing purposes
+  public Updatable getCamera()
+  {
+    return camera;
+  }
+  public Updatable getDebrisCollection()
+  {
+    return debrisCollection;
+  }
+  public Updatable getOperator()
+  {
+    return operator;
+  }
 
 }
