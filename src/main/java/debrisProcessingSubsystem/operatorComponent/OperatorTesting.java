@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.operatorComponent;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.*;
 
 import java.util.HashMap;
@@ -68,6 +69,16 @@ public class OperatorTesting implements Updatable {
       }
     }
     return returnUpdate;
+  }
+
+  /**
+   * Repackage debris as operator commands.object and set to return to earth.
+   * TODO Asteroid uses a long ID instead of a string. "Send" debris record for now.
+   * @param record the record to return.
+   */
+  private void sendDebrisToEarth(DebrisRecord record){
+    if(DEBUG) System.out.println("Sending debris to earth" + record);
+    groundLink.sendUpdateToGround(record);
   }
 
   /**

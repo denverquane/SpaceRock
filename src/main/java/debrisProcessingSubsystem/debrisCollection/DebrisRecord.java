@@ -181,6 +181,24 @@ public class DebrisRecord {
     public void setSize(double size){
         this.size = size;
     }
+
+  /**
+   * Create a string with some identifying information about the debris.
+   * @return String with id, radius, and location.
+   */
+  @Override
+    public String toString(){
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append("Debris: ");
+      stringBuilder.append(id);
+      stringBuilder.append(" radius: ");
+      stringBuilder.append(radius);
+      stringBuilder.append(" at : ");
+      stringBuilder.append(xLoc);
+      stringBuilder.append(", ");
+      stringBuilder.append(yLoc);
+      return stringBuilder.toString();
+    }
     //end setters and getters---------------------------------------------------
 
     /**

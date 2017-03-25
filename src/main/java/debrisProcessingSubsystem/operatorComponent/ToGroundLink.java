@@ -19,7 +19,7 @@ public class ToGroundLink {
     connectionUp = true;
   }
 
-  public void sendUpdateToGround(Update update){
+  public void sendUpdateToGround(Object update){
     //Do update stuff
   }
 
