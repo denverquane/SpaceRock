@@ -172,3 +172,6 @@ ENV/
 # generated_images
 generated_image*.png
 test_*.png
+/bin/
+/.classpath
+/.project
