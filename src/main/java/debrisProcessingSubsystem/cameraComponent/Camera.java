@@ -132,6 +132,8 @@ public class Camera implements Updatable {
       }
 
     });
+    //TODO this gets rid of the squiggles, should return something else.
+    return null;
   }
 
   public Update pollComponent() {
