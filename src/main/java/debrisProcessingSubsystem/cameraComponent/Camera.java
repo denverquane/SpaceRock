@@ -23,7 +23,9 @@ public class Camera implements Updatable {
 
   LinkedList<Update> outgoing_updates;
   private boolean DEBUG = true;
+  private CameraStatusReport cameraStatusModel;
   public Camera() {
+    cameraStatusModel = new CameraStatusReport();
     this.outgoing_updates = new LinkedList<>();
   }
 

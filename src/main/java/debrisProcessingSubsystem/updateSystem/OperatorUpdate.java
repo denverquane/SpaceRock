@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.updateSystem;
 
+import debrisProcessingSubsystem.cameraComponent.CameraStatusReport;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 
 import java.awt.image.BufferedImage;
@@ -63,11 +64,9 @@ public class OperatorUpdate extends Update
     paramMap.put(OperatorUpdateParameters.CHECK_CONNECTION, new Boolean(true));
   }
 
-  /* TODO make a camera status model object (zoom, frame size, etc).
-  public void setCameraStatus(CameraStatusModel cameraStatusModel){
+  public void setCameraStatus(CameraStatusReport cameraStatusModel){
     paramMap.put(OperatorUpdateParameters.CAMERA_STATUS, cameraStatusModel);
   }
-  */
 
   public HashMap<OperatorUpdateParameters, Object> getParamMap(){
     return paramMap;

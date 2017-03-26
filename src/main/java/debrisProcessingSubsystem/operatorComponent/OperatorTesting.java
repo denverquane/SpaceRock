@@ -1,8 +1,10 @@
 package debrisProcessingSubsystem.operatorComponent;
 
+import debrisProcessingSubsystem.cameraComponent.CameraStatusReport;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.*;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -33,28 +35,37 @@ public class OperatorTesting implements Updatable {
     Update returnUpdate = null;
 
     if(theUpdate.getUpdateType() == UpdateType.OPERATOR) {
+
       OperatorUpdate updateIn = (OperatorUpdate)theUpdate;
       HashMap paramMap = updateIn.getParamMap();
-      //parse update and perform action
+
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS)){
         if (DEBUG) System.out.println("Received DEBRIS update with value " 
             + paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS));
         //package and send debris back to earth.
+        DebrisRecord debris = (DebrisRecord)paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS);
+        groundLink.sendDebris(debris);
+
       }
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE)){
         if (DEBUG) System.out.println("Received RAW_IMAGE update with value " 
             + paramMap.get(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE));
         //package raw image and send back to earth.
+        BufferedImage img = (BufferedImage) paramMap.get(OperatorUpdate.OperatorUpdateParameters.RAW_IMAGE);
+        groundLink.sendImage(img);
       }
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE)){
         if (DEBUG) System.out.println("Received DEBRIS_TRANSMISSION_COMPLETE update with value " 
             + paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS_TRANSMISSION_COMPLETE));
         //Notify operator that all debris has been returned.
+        groundLink.notifyImageComplete();
       }
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS)){
         if (DEBUG) System.out.println("Received CAMERA_STATUS update with value " 
             + paramMap.get(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS));
         //package and return camera status package to operator.
+        CameraStatusReport cameraStatus = (CameraStatusReport)paramMap.get(OperatorUpdate.OperatorUpdateParameters.CAMERA_STATUS);
+        groundLink.sendCameraStatus(cameraStatus);
       }
       /* - Update is a connection check - */
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.CHECK_CONNECTION)){
@@ -69,16 +80,6 @@ public class OperatorTesting implements Updatable {
       }
     }
     return returnUpdate;
-  }
-
-  /**
-   * Repackage debris as operator commands.object and set to return to earth.
-   * TODO Asteroid uses a long ID instead of a string. "Send" debris record for now.
-   * @param record the record to return.
-   */
-  private void sendDebrisToEarth(DebrisRecord record){
-    if(DEBUG) System.out.println("Sending debris to earth" + record);
-    groundLink.sendUpdateToGround(record);
   }
 
   /**
