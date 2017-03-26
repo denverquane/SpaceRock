@@ -34,7 +34,7 @@ public class Main
     camUpdate.setZoomLevel(ZoomLevel.x4);
     //camUpdate.setTurnOffCamera();  --This causedmemory map null pointer exceptions
     //camUpdate.setTurnOnCamera();  --This causedmemory map null pointer exceptions
-    System.out.println("Camera update confermations:");
+    System.out.println("Camera update confirmations:");
     sched.sendUpdate(camUpdate);
     System.out.println();
     
@@ -42,7 +42,7 @@ public class Main
     debUpdate.setAddDebris(true);
     debUpdate.setRawImageRequest(true);
     debUpdate.setImageName("Test Name");
-    System.out.println("Debris update confermations:");
+    System.out.println("Debris update confirmations:");
     sched.sendUpdate(debUpdate);
     System.out.println();
     
@@ -51,7 +51,7 @@ public class Main
     opUpdate.setDebris(new DebrisRecord());
     opUpdate.setDebrisTransmissionComplete();
     opUpdate.setRawImage(new BufferedImage(500, 500, 1));
-    System.out.println("Operator update confermations:");
+    System.out.println("Operator update confirmations:");
     sched.sendUpdate(opUpdate);
 
     //Stop the scheduler
