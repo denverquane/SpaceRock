@@ -65,4 +65,8 @@ public class ToGroundLink {
     return connectionUp;
   }
 
+  public void addDebrisToSimMemory(DebrisRecord dr){
+    //
+  }
+
 }

@@ -2,6 +2,7 @@ package debrisProcessingSubsystem.operatorComponent;
 
 import debrisProcessingSubsystem.cameraComponent.CameraStatusReport;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
+import debrisProcessingSubsystem.schedulerTester.TestableComponent;
 import debrisProcessingSubsystem.updateSystem.*;
 
 import java.awt.image.BufferedImage;
@@ -14,7 +15,7 @@ import java.util.LinkedList;
  * Created by jdt on 3/22/17.
  * DSR added Debug code 3/23/17.
  */
-public class OperatorTesting implements Updatable {
+public class OperatorTesting implements Updatable, TestableComponent {
 
   private boolean DEBUG = true;
 
@@ -94,5 +95,22 @@ public class OperatorTesting implements Updatable {
     else{
       return updateQueue.removeFirst();
     }
+  }
+
+  /**
+   * Puts an update in the outgoing update queue.
+   * Implementation of testable component.
+   * @param update Update to be sent to scheduler.
+   */
+  public void addUpdateForScheduler(Update update){
+    updateQueue.addLast(update);
+  }
+
+  /**
+   * Puts an update into the simulated debris register.
+   * @param update An update to be put into the ground link's simulated debris register.
+   */
+  public void addUpdateAsData(Update update){
+    System.err.println("No data simulated on this component");
   }
 }
