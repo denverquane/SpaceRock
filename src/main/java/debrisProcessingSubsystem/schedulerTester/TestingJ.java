@@ -7,7 +7,6 @@ import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
 import debrisProcessingSubsystem.updateSystem.CameraUpdate;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
-import sun.tools.jstat.Operator;
 
 import java.util.HashMap;
 

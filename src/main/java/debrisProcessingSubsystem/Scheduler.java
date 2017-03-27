@@ -81,11 +81,11 @@ public class Scheduler
     while ((returnedUpdate = debrisCollection.pollComponent()) != null)
     {
       responseUpdate = sendUpdate(returnedUpdate);
-      if(DEBUG) System.out.println("Scheduler sent update");
+      if(DEBUG) System.out.println("Scheduler sent update: " + returnedUpdate.getUpdateType());
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
-        if(DEBUG) System.out.println("Scheduler sent update");
+        if(DEBUG) System.out.println("Scheduler sent update: " + responseUpdate.getUpdateType());
       }
     }
   }
@@ -125,7 +125,7 @@ public class Scheduler
             while (returnedUpdate != null && returnedUpdate.getUpdateType() != UpdateType.COMMUNICATION_UP)
             {
               returnedUpdate = sendUpdate(returnedUpdate);
-              if(DEBUG) System.out.println("Scheduler sent update");
+              if(DEBUG) System.out.println("Scheduler sent update: " + returnedUpdate.getUpdateType());
             }
             wait(10_000);
             returnedUpdate = operator.pollComponent();
@@ -138,12 +138,12 @@ public class Scheduler
       }
       //resume scheduler if communication us up
       responseUpdate = sendUpdate(returnedUpdate);
-      if(DEBUG) System.out.println("Scheduler sent update");
+      if(DEBUG) System.out.println("Scheduler sent update: " + returnedUpdate.getUpdateType());
 
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
-        if(DEBUG) System.out.println("Scheduler sent update");
+        if(DEBUG) System.out.println("Scheduler sent update: " + responseUpdate.getUpdateType());
       }
     }
   }
@@ -163,12 +163,12 @@ public class Scheduler
     while ((returnedUpdate = camera.pollComponent()) != null)
     {
       responseUpdate = sendUpdate(returnedUpdate);
-      if(DEBUG) System.out.println("Scheduler sent update");
+      if(DEBUG) System.out.println("Scheduler sent update: " + returnedUpdate.getUpdateType());
 
       while (responseUpdate != null)
       {
         responseUpdate = sendUpdate(responseUpdate);
-        if(DEBUG) System.out.println("Scheduler sent update");
+        if(DEBUG) System.out.println("Scheduler sent update: " + responseUpdate.getUpdateType());
       }
     }
   }

@@ -69,9 +69,7 @@ public class Testing
     //todo need debris object to send
     //dbu3.setDebrisObject();
     //camera.addUpdateForScheduler(dbu3);
-    DebrisCollectorUpdate dbu5 = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
-    dbu5.setImageName("Testing Image Name");
-    camera.addUpdateForScheduler(dbu5);
+    
 
   }
 }
