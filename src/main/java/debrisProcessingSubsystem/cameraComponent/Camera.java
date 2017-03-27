@@ -30,7 +30,7 @@ public class Camera implements Updatable, TestableComponent {
   public Camera() {
     cameraStatusModel = new CameraStatusReport();
     //TODO plug in fake memory map.
-    memoryMap = new FPGAComs();
+    memoryMap = new TestingFPGAComs();
     this.outgoing_updates = new LinkedList<>();
   }
 
