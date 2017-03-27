@@ -1,6 +1,9 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.updateSystem.Update;
 import sensor.ZoomLevel;
+
+import java.util.LinkedList;
 
 /**
  * This class will simulate the memory map for testing the CPU side components.
@@ -8,6 +11,11 @@ import sensor.ZoomLevel;
  */
 public class TestingFPGAComs implements MemoryMapAccessor {
   private final String COMPONENT_ID = "MEMORY MAP: ";
+  private LinkedList<Update> debrisRegister;
+
+  public TestingFPGAComs(){
+    debrisRegister = new LinkedList<>();
+  }
   public boolean on(){
     System.out.println(COMPONENT_ID + "Turn camera on.");
     return true;
@@ -30,5 +38,9 @@ public class TestingFPGAComs implements MemoryMapAccessor {
   public boolean setZoomLevel(ZoomLevel zoomLevel){
     System.out.println(COMPONENT_ID + "Zoom level set to: " + zoomLevel);
     return true;
+  }
+
+  public void addToDebrisRegister(Update update){
+    debrisRegister.addLast(update);
   }
 }

@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.updateSystem.Update;
 import sensor.ZoomLevel;
 
 /**
@@ -34,4 +35,10 @@ public interface MemoryMapAccessor {
    * @return True if zoom successfully changed.
    */
   public boolean setZoomLevel(ZoomLevel zoomLevel);
+
+  /**
+   * Testing method for filling "debris register" with a list of debris objects.
+   * @param update
+   */
+  public void addDebrisToRegister(Update update);
 }

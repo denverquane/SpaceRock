@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.schedulerTester.TestableComponent;
 import debrisProcessingSubsystem.updateSystem.*;
 import fpga.memory.EmptyRegisterException;
 import fpga.memory.MemoryMap;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by dsr on 3/4/17.
  */
 
-public class Camera implements Updatable {
+public class Camera implements Updatable, TestableComponent {
 
   LinkedList<Update> outgoing_updates;
   private boolean DEBUG = true;
@@ -175,6 +176,14 @@ public class Camera implements Updatable {
     } else {
       return outgoing_updates.removeFirst();
     }
+  }
+
+  public void addUpdateForScheduler(Update update){
+    outgoing_updates.addLast(update);
+  }
+
+  public void addUpdateAsData(Update update){
+
   }
 
 }
