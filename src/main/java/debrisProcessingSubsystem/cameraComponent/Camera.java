@@ -157,10 +157,6 @@ public class Camera implements Updatable, TestableComponent {
           //process_image();
           if (DEBUG) System.out.println("Received PROCESS_IMAGE update.");
           break;
-        case RAW_FRAME:
-          //getRawFrame();
-          if (DEBUG) System.out.println("Received RAW_FRAME update.");
-          break;
         default:
           throw new RuntimeException("I don't understand what you want me to do.");
       }

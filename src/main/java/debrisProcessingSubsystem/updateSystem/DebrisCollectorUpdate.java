@@ -54,7 +54,6 @@ public class DebrisCollectorUpdate extends Update
     DEBRIS_OBJECT,
     RAW_IMAGE_REQUEST,
     IMAGE_NAME,
-    ALL_DEBRIS_SENT
   }
   private HashMap<DebrisCollectorParameters, Object> paramMap;
 

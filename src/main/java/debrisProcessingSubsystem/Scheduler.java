@@ -45,8 +45,8 @@ public class Scheduler
     worker = new Worker();
     Thread t = new Thread(worker);
     t.setDaemon(true);
-    t.start();
     if(DEBUG) System.out.println("Scheduler started");
+    t.start();
   }
 
   private class Worker implements Runnable

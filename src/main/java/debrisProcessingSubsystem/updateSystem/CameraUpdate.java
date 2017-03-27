@@ -1,12 +1,8 @@
 package debrisProcessingSubsystem.updateSystem;
 
-import fpga.objectdetection.Debris;
 import sensor.ZoomLevel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * The update specifically for the Camera component which contains information
@@ -22,7 +18,6 @@ public class CameraUpdate extends Update
     RESET_CAMERA,
     TAKE_PICTURE,
     SET_ZOOM,
-    RAW_FRAME,
     PROCESS_IMAGE,
   }
 
@@ -61,13 +56,6 @@ public class CameraUpdate extends Update
 
   public void setZoomLevel(ZoomLevel zoom_level) {
     param_map.put(CameraUpdateParameters.SET_ZOOM, zoom_level);
-    param_map.remove(CameraUpdateParameters.TURN_ON_CAMERA);
-    param_map.remove(CameraUpdateParameters.TURN_OFF_CAMERA);
-    param_map.remove(CameraUpdateParameters.RESET_CAMERA);
-  }
-
-  public void getRawFrame(int frame_x, int frame_y, int frame_size) {
-    param_map.put(CameraUpdateParameters.RAW_FRAME, Arrays.asList(frame_x, frame_y, frame_size));
     param_map.remove(CameraUpdateParameters.TURN_ON_CAMERA);
     param_map.remove(CameraUpdateParameters.TURN_OFF_CAMERA);
     param_map.remove(CameraUpdateParameters.RESET_CAMERA);

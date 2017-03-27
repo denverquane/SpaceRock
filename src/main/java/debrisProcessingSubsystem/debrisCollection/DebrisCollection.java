@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.debrisCollection;
 
+import debrisProcessingSubsystem.schedulerTester.TestableComponent;
 import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
@@ -16,7 +17,8 @@ import java.util.LinkedList;
  * track debris over time.
  * Created by jdt on 3/13/17.
  */
-public class DebrisCollection implements Updatable {
+public class DebrisCollection implements Updatable, TestableComponent
+{
 
     private DebrisList newDebris, oldDebris;
     private LinkedList<Update> outgoingUpdates;
@@ -174,4 +176,17 @@ public class DebrisCollection implements Updatable {
     public static void main(String[] args){
 
     }
+
+  @Override
+  public void addUpdateForScheduler(Update update)
+  {
+    queueUpdate(update);
+
+  }
+
+  @Override
+  public void addUpdateAsData(Update update)
+  {
+
+  }
 }
