@@ -7,9 +7,7 @@ import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
 import debrisProcessingSubsystem.updateSystem.CameraUpdate;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
-import sun.tools.jstat.Operator;
 
-import java.util.HashMap;
 
 /**
  * Created by jdt on 3/27/17.
@@ -35,8 +33,6 @@ public class TestingJ {
 
   public static void main(String[] args){
     TestingJ tester = new TestingJ();
-    //TestableComponent operator = (TestableComponent)sked.getOperator();
 
-    //System.out.println(testUpdate.getParamMap().get(CameraUpdate.CameraUpdateParameters.TAKE_PICTURE));
   }
 }
