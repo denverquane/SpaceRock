@@ -4,6 +4,7 @@ import debrisProcessingSubsystem.schedulerTester.TestableComponent;
 import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
+import debrisProcessingSubsystem.updateSystem.*;
 import fpga.objectdetection.Debris;
 
 import java.util.HashMap;
@@ -43,16 +44,29 @@ public class DebrisCollection implements Updatable, TestableComponent
     public Update updateComponent(Update theUpdate){
         //Determine what kind of message we have.
       DebrisCollectorUpdate updateIn = null;
-      Update returnUpdate = null;
       if(theUpdate instanceof DebrisCollectorUpdate){
         updateIn = (DebrisCollectorUpdate)theUpdate;
         HashMap updateMap = updateIn.getParamMap();
+
+        /* Send debris home update */
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.SEND_DEBRIS_HOME)){
           if (DEBUG) System.out.println("Received SEND_DEBRIS_HOME update with value " 
               + updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.SEND_DEBRIS_HOME));
           //get debris to send home
-          //returnUpdate = new OperatorUpdate() with debris object return.
+          DebrisRecord returnRecord = getDebris();
+          if(returnRecord != null) {
+            OperatorUpdate updateOut = new OperatorUpdate(UpdateType.OPERATOR);
+            HashMap paramMap = updateOut.getParamMap();
+            paramMap.put(OperatorUpdate.OperatorUpdateParameters.DEBRIS, returnRecord);
+            return updateOut;
+          }
+          else{
+            SchedulerUpdate updateOut = new SchedulerUpdate(UpdateType.ALL_DEBRIS_RETURNED);
+            return updateOut;
+          }
         }
+
+        /* Add debris to list update */
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS)){
           Boolean debrisIn = (Boolean)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
           if (DEBUG) System.out.println("Received ADD_DEBRIS update with value " + debrisIn);
@@ -64,10 +78,15 @@ public class DebrisCollection implements Updatable, TestableComponent
           if (DEBUG) System.out.println("Received RAW_IMAGE_REQUEST update with value " + updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST));
           //get raw image for updateIn.imageName
         }
+        if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ALL_DEBRIS_SENT)){
+          if (DEBUG) System.out.println("Received ALL_DEBRIS_SENT update.");
+          //All debris sent, new list becomes old list.
+          swapLists();
+
+        }
       }
-        //perform appropriate action
-        //return response if appropriate.
-        return returnUpdate;
+        //if nothing has returned already there is no update.
+        return null;
     }
 
     /**
