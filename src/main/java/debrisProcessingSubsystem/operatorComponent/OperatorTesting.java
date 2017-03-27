@@ -80,6 +80,7 @@ public class OperatorTesting implements Updatable, TestableComponent {
         }
       }
     }
+    else System.out.println("Not an Operator Update:");
     return returnUpdate;
   }
 
