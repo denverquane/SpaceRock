@@ -160,9 +160,7 @@ public class Camera implements Updatable, TestableComponent {
         default:
           throw new RuntimeException("I don't understand what you want me to do.");
       }
-
     });
-    //TODO this gets rid of the squiggles, should return something else.
     return null;
   }
 
