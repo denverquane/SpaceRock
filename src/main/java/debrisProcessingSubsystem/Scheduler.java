@@ -37,11 +37,11 @@ public class Scheduler
    * In place now to demonstrate how components should be set up and accessed.
    * Each component should be created as an instance of Updatable
    */
-  public Scheduler()
+  public Scheduler(DebrisCollection dc, OperatorTesting op, Camera cam)
   {
-    debrisCollection = new DebrisCollection();
-    camera = new Camera();
-    operator = new OperatorTesting();
+    this.debrisCollection = dc;
+    this.camera = cam;
+    this.operator = op;
     worker = new Worker();
     Thread t = new Thread(worker);
     t.setDaemon(true);

@@ -1,11 +1,11 @@
 package debrisProcessingSubsystem.schedulerTester;
 
 import debrisProcessingSubsystem.Scheduler;
+import debrisProcessingSubsystem.cameraComponent.Camera;
+import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
-import debrisProcessingSubsystem.updateSystem.CameraUpdate;
-import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
-import debrisProcessingSubsystem.updateSystem.OperatorUpdate;
-import debrisProcessingSubsystem.updateSystem.UpdateType;
+import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
+import debrisProcessingSubsystem.updateSystem.*;
 import sensor.ZoomLevel;
 
 import java.awt.image.BufferedImage;
@@ -15,15 +15,25 @@ import java.awt.image.BufferedImage;
  */
 public class Testing
 {
+  private static DebrisCollection debrisCollection;
+  private static Camera camera;
+  private static OperatorTesting operator;
+
+
   public static void main (String args[])
   {
+    debrisCollection = new DebrisCollection();
+    camera = new Camera();
+    operator = new OperatorTesting();
+
     //set up initial update states for each component
     CameraUpdate camUpdate = new CameraUpdate(UpdateType.CAMERA);
     DebrisCollectorUpdate debUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
     OperatorUpdate opUpdate = new OperatorUpdate(UpdateType.OPERATOR);
     OperatorUpdate stop = new OperatorUpdate(UpdateType.STOP_SCHEDULER);
 
-    //Set camera update params
+    //Operator commands to the camera
+
 
 
 
@@ -50,9 +60,6 @@ public class Testing
     System.out.println("Operator update confirmations:");
 
     //start up the test
-    Scheduler sched = new Scheduler();
-
-    //Stop the scheduler
-    sched.getOperator().updateComponent(stop);
-  }
+    Scheduler scheduler = new Scheduler(debrisCollection, operator, camera);
+}
 }
