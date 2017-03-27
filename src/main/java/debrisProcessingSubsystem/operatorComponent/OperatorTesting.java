@@ -40,6 +40,7 @@ public class OperatorTesting implements Updatable, TestableComponent {
       OperatorUpdate updateIn = (OperatorUpdate)theUpdate;
       HashMap paramMap = updateIn.getParamMap();
 
+      /* Return Debris to Earth */
       if(paramMap.containsKey(OperatorUpdate.OperatorUpdateParameters.DEBRIS)){
         if (DEBUG) System.out.println("Received DEBRIS update with value " 
             + paramMap.get(OperatorUpdate.OperatorUpdateParameters.DEBRIS));

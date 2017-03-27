@@ -5,7 +5,6 @@ import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Updatable;
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.*;
-import fpga.objectdetection.Debris;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class DebrisCollection implements Updatable, TestableComponent
      * Default constructor. Initializes debris lists to null.
      */
     public DebrisCollection(){
-        newDebris = null;
+        newDebris = new DRList();
         oldDebris = null;
         outgoingUpdates = new LinkedList<>();
     }
@@ -71,8 +70,8 @@ public class DebrisCollection implements Updatable, TestableComponent
           Boolean debrisIn = (Boolean)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.ADD_DEBRIS);
           if (DEBUG) System.out.println("Received ADD_DEBRIS update with value " + debrisIn);
           //DebrisRecord newRecord = DebrisRecord(debrisIn.centerXLocation);
-          //TODO convert Debris to debris object.
-          //addDebris(updateIn.debrisObject);
+
+          addDebris((DebrisRecord)updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.DEBRIS_OBJECT));
         }
 
         /* Raw Image Request */
@@ -85,7 +84,17 @@ public class DebrisCollection implements Updatable, TestableComponent
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ALL_DEBRIS_SENT)){
           if (DEBUG) System.out.println("Received ALL_DEBRIS_SENT update.");
           //All debris sent, new list becomes old list.
-          swapLists();
+          newImage();
+          //TODO change to debris data format.
+          OperatorUpdate returnUpdate;
+          DebrisRecord returnRecord = oldDebris.getDebrisElement();
+          System.out.println(oldDebris);
+          while(returnRecord != null){
+            returnUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+            returnUpdate.setDebris(returnRecord);
+            outgoingUpdates.addLast(returnUpdate);
+            returnRecord = oldDebris.getDebrisElement();
+          }
 
         }
       }
