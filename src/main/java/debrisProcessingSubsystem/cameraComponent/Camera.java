@@ -6,6 +6,7 @@ import fpga.memory.MemoryMap;
 import fpga.memory.NoSuchRegisterFoundException;
 import fpga.memory.UnavailbleRegisterException;
 import fpga.objectdetection.Debris;
+import sensor.ZoomLevel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,63 +25,86 @@ public class Camera implements Updatable {
   LinkedList<Update> outgoing_updates;
   private boolean DEBUG = true;
   private CameraStatusReport cameraStatusModel;
+  private MemoryMapAccessor memoryMap;
   public Camera() {
     cameraStatusModel = new CameraStatusReport();
+    //TODO plug in fake memory map.
+    memoryMap = new FPGAComs();
     this.outgoing_updates = new LinkedList<>();
   }
 
- // Jalen
+  /**
+   * Turn on the camera.
+   */
   private void on() {
-    try {
-      MemoryMap.write("turnOnCamera", true);
-    } catch (NoSuchRegisterFoundException e) {
-      e.printStackTrace();
-    } catch (UnavailbleRegisterException e) {
-      e.printStackTrace();
+    if(DEBUG){
+      System.out.println("Turn on camera.");
     }
-    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
+    if(memoryMap.on()){
+      cameraStatusModel.setIsOn(true);
+    }
+    OperatorUpdate outgoingUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    outgoingUpdate.setCameraStatus(new CameraStatusReport(cameraStatusModel));
+    outgoing_updates.add(outgoingUpdate);
   }
 
-  // Jalen
+  /**
+   * Turn the camera off.
+   */
   private void off() {
-    try {
-      MemoryMap.write("turnOffCamera", true);
-    } catch (NoSuchRegisterFoundException e) {
-      e.printStackTrace();
-    } catch (UnavailbleRegisterException e) {
-      e.printStackTrace();
+    if(DEBUG){
+      System.out.println("Turn camera off.");
     }
-    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
+    if(memoryMap.on()){
+      cameraStatusModel.setIsOn(false);
+    }
+    OperatorUpdate outgoingUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    outgoingUpdate.setCameraStatus(new CameraStatusReport(cameraStatusModel));
+    outgoing_updates.add(outgoingUpdate);
   }
 
-  // Corey
+  /**
+   * Reset the camera.
+   * TODO this needs to power off, power on, and reset zoom level.
+   */
   private void reset() {
-    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
-  }
-
-  // Daniel
-  private void takePicture() {
-    try {
-      MemoryMap.write("takePicture", true);
-    } catch (NoSuchRegisterFoundException e) {
-      e.printStackTrace();
-    } catch (UnavailbleRegisterException e) {
-      e.printStackTrace();
+    if(DEBUG){
+      System.out.println("Reset Camera.");
     }
-    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
+    OperatorUpdate outgoingUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    cameraStatusModel = new CameraStatusReport();
+    outgoingUpdate.setCameraStatus(cameraStatusModel);
+    outgoing_updates.add(outgoingUpdate);
   }
 
+  /**
+   * Tell camera to take a picture.
+   */
+  private void takePicture() {
+    memoryMap.takePicture();
+  }
+
+  /* Raw frame will be returned with every debris object.
   // Sean Hanely
   private void getRawFrame() {
     outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
   }
+  */
 
   // Corey
-  private void setZoomLevel() {
-    outgoing_updates.add(new OperatorUpdate(UpdateType.OPERATOR));
+  private void setZoomLevel(ZoomLevel zoomLevel) {
+    if(DEBUG){
+      System.out.println("Setting zoom level to: " + zoomLevel);
+    }
+    if(memoryMap.setZoomLevel(zoomLevel)){
+      cameraStatusModel.setZoomLevel(zoomLevel);
+    }
+    OperatorUpdate outgoingUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    outgoingUpdate.setCameraStatus(cameraStatusModel);
   }
 
   // Divya
+  /* Camera should call this internally when the image is finished.
   private void process_image() {
     try {
       Debris debris = MemoryMap.read(Debris.class, "debris");
@@ -101,7 +125,7 @@ public class Camera implements Updatable {
     } catch (UnavailbleRegisterException e) {
       e.printStackTrace();
     }
-  }
+  }*/
 
 
   public Update updateComponent(Update theUpdate) {
@@ -125,15 +149,15 @@ public class Camera implements Updatable {
           if (DEBUG) System.out.println("Received TAKE_PICTURE update.");
           break;
         case SET_ZOOM:
-          setZoomLevel();
+          setZoomLevel((ZoomLevel)value);
           if (DEBUG) System.out.println("Received SET_ZOOM update.");
           break;
         case PROCESS_IMAGE:
-          process_image();
+          //process_image();
           if (DEBUG) System.out.println("Received PROCESS_IMAGE update.");
           break;
         case RAW_FRAME:
-          getRawFrame();
+          //getRawFrame();
           if (DEBUG) System.out.println("Received RAW_FRAME update.");
           break;
         default:

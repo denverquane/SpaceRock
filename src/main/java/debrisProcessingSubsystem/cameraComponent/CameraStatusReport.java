@@ -1,19 +1,21 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import sensor.ZoomLevel;
+
 /**
  * Created by jdt on 3/26/17.
  */
 public class CameraStatusReport {
   private boolean isOn;
   private boolean isReady;
-  private int zoomLevel;
+  private ZoomLevel zoomLevel;
 
   public CameraStatusReport(){
-    isOn = false;
-    isReady = false;
-    zoomLevel = 1;
+    isOn = true;
+    isReady = true;
+    zoomLevel = ZoomLevel.NONE;
   }
-  public CameraStatusReport(boolean isOn, boolean isReady, int zoomLevel){
+  public CameraStatusReport(boolean isOn, boolean isReady, ZoomLevel zoomLevel){
     this.isOn = isOn;
     this.isReady = isReady;
     this.zoomLevel = zoomLevel;
@@ -42,7 +44,7 @@ public class CameraStatusReport {
    * @param isReady Is the camera ready to take a picture?
    * @param zoomLevel What is the zoom level setting.
    */
-  public void updateStatus(boolean isOn, boolean isReady, int zoomLevel){
+  public void updateStatus(boolean isOn, boolean isReady, ZoomLevel zoomLevel){
     this.isOn = isOn;
     this.isReady = isReady;
     this.zoomLevel = zoomLevel;
@@ -64,11 +66,11 @@ public class CameraStatusReport {
     isReady = value;
   }
 
-  public int zoomLevel(){
+  public ZoomLevel zoomLevel(){
     return zoomLevel;
   }
 
-  public void setZoomLevel(int value){
+  public void setZoomLevel(ZoomLevel value){
     zoomLevel = value;
   }
 
