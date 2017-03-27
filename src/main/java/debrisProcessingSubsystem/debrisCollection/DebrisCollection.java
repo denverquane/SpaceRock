@@ -74,10 +74,14 @@ public class DebrisCollection implements Updatable, TestableComponent
           //TODO convert Debris to debris object.
           //addDebris(updateIn.debrisObject);
         }
+
+        /* Raw Image Request */
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST)){
           if (DEBUG) System.out.println("Received RAW_IMAGE_REQUEST update with value " + updateMap.get(DebrisCollectorUpdate.DebrisCollectorParameters.RAW_IMAGE_REQUEST));
           //get raw image for updateIn.imageName
         }
+
+        /* All debris sent */
         if(updateMap.containsKey(DebrisCollectorUpdate.DebrisCollectorParameters.ALL_DEBRIS_SENT)){
           if (DEBUG) System.out.println("Received ALL_DEBRIS_SENT update.");
           //All debris sent, new list becomes old list.

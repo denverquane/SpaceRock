@@ -89,6 +89,10 @@ public class DebrisCollectorUpdate extends Update
   {
     paramMap.put(DebrisCollectorParameters.IMAGE_NAME, name);
   }
+
+  public void setAllDebrisSent(){
+    paramMap.put(DebrisCollectorParameters.ALL_DEBRIS_SENT, true);
+  }
   
   public HashMap<DebrisCollectorParameters, Object> getParamMap()
   {

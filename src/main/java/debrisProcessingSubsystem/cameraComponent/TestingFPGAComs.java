@@ -15,6 +15,7 @@ import java.util.LinkedList;
 public class TestingFPGAComs implements MemoryMapAccessor {
   private final String COMPONENT_ID = "MEMORY MAP: ";
   private LinkedList<DebrisRecord> debrisRegister;
+  private boolean returningDebris = false;
 
   public TestingFPGAComs(){
     debrisRegister = new LinkedList<>();
@@ -45,13 +46,27 @@ public class TestingFPGAComs implements MemoryMapAccessor {
 
   public void addDebrisToRegister(DebrisRecord update){
     debrisRegister.addLast(update);
+    returningDebris = true;
   }
 
+  /**
+   * Check memory map to see if there is debris to send back.
+   * @return a debris object.
+   */
   public Update checkMap(){
     if(!debrisRegister.isEmpty()){
       DebrisCollectorUpdate retUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
       retUpdate.setDebrisObject(debrisRegister.removeFirst());
       retUpdate.setAddDebris(true);
+      if(debrisRegister.isEmpty()){
+        returningDebris = false;
+      }
+      return retUpdate;
+    }
+    else if(returningDebris){
+      returningDebris = false;
+      DebrisCollectorUpdate retUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
+      retUpdate.setAllDebrisSent();
       return retUpdate;
     }
     else{
