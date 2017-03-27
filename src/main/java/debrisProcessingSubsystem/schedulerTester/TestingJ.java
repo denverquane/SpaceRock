@@ -3,6 +3,7 @@ package debrisProcessingSubsystem.schedulerTester;
 import debrisProcessingSubsystem.Scheduler;
 import debrisProcessingSubsystem.cameraComponent.Camera;
 import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
 import debrisProcessingSubsystem.updateSystem.CameraUpdate;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
@@ -21,9 +22,13 @@ public class TestingJ {
     camera = new Camera();
     operator = new OperatorTesting();
     collection = new DebrisCollection();
-    CameraUpdate testUpdate = new CameraUpdate(UpdateType.CAMERA);
-    testUpdate.setTakePicture();
-    operator.addUpdateForScheduler(testUpdate);
+    //CameraUpdate testUpdate = new CameraUpdate(UpdateType.CAMERA);
+    //testUpdate.setTakePicture();
+    //operator.addUpdateForScheduler(testUpdate);
+    camera.addDebrisRecord(new DebrisRecord());
+    camera.addDebrisRecord(new DebrisRecord());
+    camera.addDebrisRecord(new DebrisRecord());
+
 
     sked = new Scheduler((DebrisCollection)collection, (OperatorTesting)operator, (Camera)camera);
   }

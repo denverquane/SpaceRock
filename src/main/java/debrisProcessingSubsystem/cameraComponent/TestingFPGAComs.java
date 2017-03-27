@@ -58,9 +58,7 @@ public class TestingFPGAComs implements MemoryMapAccessor {
       DebrisCollectorUpdate retUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
       retUpdate.setDebrisObject(debrisRegister.removeFirst());
       retUpdate.setAddDebris(true);
-      if(debrisRegister.isEmpty()){
-        returningDebris = false;
-      }
+
       return retUpdate;
     }
     else if(returningDebris){
