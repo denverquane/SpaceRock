@@ -8,6 +8,8 @@ import sensor.ZoomLevel;
 /**
  * This class creates an object that interacts with the fpga through the memory
  * map.
+ * This will be the object that interacts with the MemoryMap in the full
+ * implementation of the project.
  * Created by jdt on 3/26/17.
  */
 public class FPGAComs implements MemoryMapAccessor{
