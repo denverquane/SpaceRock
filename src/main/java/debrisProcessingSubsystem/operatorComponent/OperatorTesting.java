@@ -95,7 +95,7 @@ public class OperatorTesting implements Updatable, TestableComponent {
     else{
       Update retUpdate = updateQueue.removeFirst();
       System.out.println(retUpdate.getUpdateType());
-      return updateQueue.removeFirst();
+      return retUpdate;//updateQueue.removeFirst();
     }
   }
 
