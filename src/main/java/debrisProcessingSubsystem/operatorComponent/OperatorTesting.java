@@ -113,7 +113,7 @@ public class OperatorTesting implements Updatable, TestableComponent {
    * Puts an update into the simulated debris register.
    * @param update An update to be put into the ground link's simulated debris register.
    */
-  public void addUpdateAsData(Update update){
+  public void addDebrisRecord(DebrisRecord update){
     System.err.println("No data simulated on this component");
   }
 }

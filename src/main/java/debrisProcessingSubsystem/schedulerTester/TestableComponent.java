@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.schedulerTester;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.Update;
 
 /**
@@ -20,5 +21,5 @@ public interface TestableComponent {
    * when is being asked to send debris.
    * @param update
    */
-  public void addUpdateAsData(Update update);
+  public void addDebrisRecord(DebrisRecord update);
 }

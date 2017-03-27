@@ -1,6 +1,9 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
+import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.Update;
+import debrisProcessingSubsystem.updateSystem.UpdateType;
 import sensor.ZoomLevel;
 
 import java.util.LinkedList;
@@ -11,7 +14,7 @@ import java.util.LinkedList;
  */
 public class TestingFPGAComs implements MemoryMapAccessor {
   private final String COMPONENT_ID = "MEMORY MAP: ";
-  private LinkedList<Update> debrisRegister;
+  private LinkedList<DebrisRecord> debrisRegister;
 
   public TestingFPGAComs(){
     debrisRegister = new LinkedList<>();
@@ -40,7 +43,19 @@ public class TestingFPGAComs implements MemoryMapAccessor {
     return true;
   }
 
-  public void addDebrisToRegister(Update update){
+  public void addDebrisToRegister(DebrisRecord update){
     debrisRegister.addLast(update);
+  }
+
+  public Update checkMap(){
+    if(!debrisRegister.isEmpty()){
+      DebrisCollectorUpdate retUpdate = new DebrisCollectorUpdate(UpdateType.DEBRIS_COLLECTOR);
+      retUpdate.setDebrisObject(debrisRegister.removeFirst());
+      retUpdate.setAddDebris(true);
+      return retUpdate;
+    }
+    else{
+      return null;
+    }
   }
 }

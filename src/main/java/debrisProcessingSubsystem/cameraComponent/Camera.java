@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.schedulerTester.TestableComponent;
 import debrisProcessingSubsystem.updateSystem.*;
 import fpga.memory.EmptyRegisterException;
@@ -165,6 +166,8 @@ public class Camera implements Updatable, TestableComponent {
   }
 
   public Update pollComponent() {
+    Update updateFromMemoryMap = memoryMap.checkMap();
+    outgoing_updates.addLast(updateFromMemoryMap);
     if (outgoing_updates.isEmpty()) {
       return null;
     } else {
@@ -176,7 +179,11 @@ public class Camera implements Updatable, TestableComponent {
     outgoing_updates.addLast(update);
   }
 
-  public void addUpdateAsData(Update update){
+  /**
+   * Add a debris record to the memory map.
+   * @param update the DebrisRecord to add
+   */
+  public void addDebrisRecord(DebrisRecord update){
     memoryMap.addDebrisToRegister(update);
   }
 

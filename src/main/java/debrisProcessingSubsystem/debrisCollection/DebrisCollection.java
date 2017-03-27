@@ -204,8 +204,7 @@ public class DebrisCollection implements Updatable, TestableComponent
   }
 
   @Override
-  public void addUpdateAsData(Update update)
-  {
-
+  public void addDebrisRecord(DebrisRecord update){
+    //add a debris record to list?
   }
 }

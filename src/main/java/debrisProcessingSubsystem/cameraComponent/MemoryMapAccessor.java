@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.Update;
 import sensor.ZoomLevel;
 
@@ -40,5 +41,7 @@ public interface MemoryMapAccessor {
    * Testing method for filling "debris register" with a list of debris objects.
    * @param update
    */
-  public void addDebrisToRegister(Update update);
+  public void addDebrisToRegister(DebrisRecord update);
+
+  public Update checkMap();
 }

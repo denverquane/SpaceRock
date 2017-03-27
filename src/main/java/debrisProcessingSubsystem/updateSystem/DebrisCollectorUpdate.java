@@ -2,6 +2,7 @@ package debrisProcessingSubsystem.updateSystem;
 
 import java.util.HashMap;
 
+import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
 import debrisProcessingSubsystem.updateSystem.Update;
 import debrisProcessingSubsystem.updateSystem.UpdateType;
 import fpga.objectdetection.Debris;
@@ -74,7 +75,7 @@ public class DebrisCollectorUpdate extends Update
     paramMap.put(DebrisCollectorParameters.ADD_DEBRIS, bool);
   }
   
-  public void setDebrisObject(Debris debris)
+  public void setDebrisObject(DebrisRecord debris)
   {
     paramMap.put(DebrisCollectorParameters.DEBRIS_OBJECT, debris);
   }
