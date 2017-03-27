@@ -1,5 +1,6 @@
 package debrisProcessingSubsystem.cameraComponent;
 
+import debrisProcessingSubsystem.updateSystem.Update;
 import fpga.memory.MemoryMap;
 import fpga.memory.NoSuchRegisterFoundException;
 import fpga.memory.UnavailbleRegisterException;
@@ -72,5 +73,10 @@ public class FPGAComs implements MemoryMapAccessor{
    */
   public boolean setZoomLevel(ZoomLevel zoomLevel){
     return true;
+  }
+
+  public void addDebrisToRegister(Update update){
+    //debrisRegister.addLast(update);
+    System.err.println("Feature not available on FPGA");
   }
 }

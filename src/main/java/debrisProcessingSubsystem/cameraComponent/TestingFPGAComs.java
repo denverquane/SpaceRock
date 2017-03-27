@@ -40,7 +40,7 @@ public class TestingFPGAComs implements MemoryMapAccessor {
     return true;
   }
 
-  public void addToDebrisRegister(Update update){
+  public void addDebrisToRegister(Update update){
     debrisRegister.addLast(update);
   }
 }

@@ -183,7 +183,7 @@ public class Camera implements Updatable, TestableComponent {
   }
 
   public void addUpdateAsData(Update update){
-
+    memoryMap.addDebrisToRegister(update);
   }
 
 }
