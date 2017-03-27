@@ -3,7 +3,10 @@ package debrisProcessingSubsystem.schedulerTester;
 import java.awt.image.BufferedImage;
 
 import debrisProcessingSubsystem.Scheduler;
+import debrisProcessingSubsystem.cameraComponent.Camera;
+import debrisProcessingSubsystem.debrisCollection.DebrisCollection;
 import debrisProcessingSubsystem.debrisCollection.DebrisRecord;
+import debrisProcessingSubsystem.operatorComponent.OperatorTesting;
 import debrisProcessingSubsystem.updateSystem.CameraUpdate;
 import debrisProcessingSubsystem.updateSystem.DebrisCollectorUpdate;
 import debrisProcessingSubsystem.updateSystem.OperatorUpdate;
@@ -14,13 +17,21 @@ import sensor.ZoomLevel;
 public class Main
 {
   public Scheduler scheduler;
+  private static DebrisCollection debrisCollection;
+  private static Camera camera;
+  private static OperatorTesting operator;
 
   public Main()
   {
-    scheduler = new Scheduler();
+    debrisCollection = new DebrisCollection();
+    camera = new Camera();
+    operator = new OperatorTesting();
+
+    scheduler = new Scheduler(debrisCollection, operator, camera);
   }
   public static void main (String args[])
   {
+
     Main main = new Main();
     Scheduler sched = main.scheduler;
     CameraUpdate camUpdate = new CameraUpdate(UpdateType.CAMERA);
