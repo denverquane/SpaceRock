@@ -61,7 +61,7 @@ public class DebrisCollection implements Updatable, TestableComponent
             return updateOut;
           }
           else{
-            SchedulerUpdate updateOut = new SchedulerUpdate(UpdateType.ALL_DEBRIS_RETURNED);
+            OperatorUpdate updateOut = new OperatorUpdate(UpdateType.ALL_DEBRIS_RETURNED);
             return updateOut;
           }
         }
