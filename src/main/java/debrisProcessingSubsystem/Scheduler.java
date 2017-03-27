@@ -44,7 +44,7 @@ public class Scheduler
     this.operator = op;
     worker = new Worker();
     Thread t = new Thread(worker);
-    t.setDaemon(true);
+    //t.setDaemon(true);
     if(DEBUG) System.out.println("Scheduler started");
     t.start();
   }
