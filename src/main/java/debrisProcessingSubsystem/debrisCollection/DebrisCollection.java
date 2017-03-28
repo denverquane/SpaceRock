@@ -95,6 +95,9 @@ public class DebrisCollection implements Updatable, TestableComponent
             outgoingUpdates.addLast(returnUpdate);
             returnRecord = oldDebris.getDebrisElement();
           }
+          returnUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+          returnUpdate.setDebrisTransmissionComplete();
+          outgoingUpdates.addLast(returnUpdate);
 
         }
       }
