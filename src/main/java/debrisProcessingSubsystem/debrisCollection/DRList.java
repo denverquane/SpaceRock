@@ -42,6 +42,11 @@ public class DRList implements DebrisList {
         return returnRecord;
     }
 
+    public ArrayList<DebrisRecord> getDebrisRecords()
+    {
+      return debrisList;
+    }
+
     /**
      * Get size of the DebrisList
      * @return  int: debrisList's size.

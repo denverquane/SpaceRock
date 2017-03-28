@@ -9,25 +9,19 @@ import java.awt.image.BufferedImage;
  */
 public class DebrisRecord {
     private String id;
-
+    private static int idCounter = 0;
     private final int VECTOR2_SIZE = 2;
     private double[] estimatedVelocityXY;
     private DebrisRecord matchingRecord;
     private boolean ambiguousMatch;
     private BufferedImage frameImage;
-
-    private int xLoc, yLoc;
+    private DebrisData data;
     private int frameX, frameY;
-    private double radius;
-    private double size;
 
     public DebrisRecord(){
-        xLoc = 0;
-        yLoc = 0;
+        data = new DebrisData();
         frameX = 0;
         frameY = 0;
-        radius = 0.0;
-        size = 0.0;
     }
 
     //Begin setters and getters------------------------------------------------
@@ -43,12 +37,9 @@ public class DebrisRecord {
      */
     public DebrisRecord(int xLoc, int yLoc, int frameX, int frameY,
                         double radius, double size){
-        this.xLoc = xLoc;
-        this.yLoc = yLoc;
+        data = new DebrisData(xLoc, yLoc, radius, size);
         this.frameX = frameX;
         this.frameY = frameY;
-        this.radius = radius;
-        this.size = size;
     }
 
     /**
@@ -62,12 +53,12 @@ public class DebrisRecord {
      */
     public void initializeDebris(int xLoc, int yLoc, int frameX, int frameY,
                                  double radius, double size){
-        this.xLoc = xLoc;
-        this.yLoc = yLoc;
+        data.xLoc = xLoc;
+        data.yLoc = yLoc;
         this.frameX = frameX;
         this.frameY = frameY;
-        this.radius = radius;
-        this.size = size;
+        data.radius = radius;
+        data.size = size;
     }
 
     /**
@@ -87,11 +78,36 @@ public class DebrisRecord {
     }
 
     /**
+     * Set the ID for this DebrisRecord, marking "X" at the end.
+     * This tags the Record that it is a possible match.
+     * @param id The id for this DebrisRecord.
+     */
+    public void setPossibleId(String id){
+        if(id.contains("X"))
+        {
+            setId(id);
+        }
+        else
+        {
+            setId(id + "X");
+        }
+    }
+
+    /**
+     * Generates a new label number by incrementing the counter
+     * @return the String representation of the label counter
+     */
+    public static String getNextID()
+    {
+        return Integer.toString(idCounter++);
+    }
+
+    /**
      * Get the x coordinate of the debris.
      * @return xLoc The x coordinate of the debris' location.
      */
     public int getX(){
-        return xLoc;
+        return data.xLoc;
     }
 
     /**
@@ -99,7 +115,7 @@ public class DebrisRecord {
      * @param xLoc The x location of this debris.
      */
     public void setX(int xLoc){
-        this.xLoc = xLoc;
+        data.xLoc = xLoc;
     }
 
     /**
@@ -107,7 +123,7 @@ public class DebrisRecord {
      * @return yLoc The y location of this debris.
      */
     public int getY(){
-        return yLoc;
+        return data.yLoc;
     }
 
     /**
@@ -115,7 +131,7 @@ public class DebrisRecord {
      * @param yLoc the y location of this debris.
      */
     public void setY(int yLoc){
-        this.yLoc = yLoc;
+        data.yLoc = yLoc;
     }
 
     /**
@@ -155,7 +171,7 @@ public class DebrisRecord {
      * @return radius The radius of this debris object.
      */
     public double getRadius(){
-        return radius;
+        return data.radius;
     }
 
     /**
@@ -163,7 +179,7 @@ public class DebrisRecord {
      * @param r The radius of this object.
      */
     public void setRadius(double r){
-        this.radius = r;
+        data.radius = r;
     }
 
     /**
@@ -171,7 +187,7 @@ public class DebrisRecord {
      * @return size The size of this object.
      */
     public double getSize(){
-        return size;
+        return data.size;
     }
 
     /**
@@ -179,25 +195,41 @@ public class DebrisRecord {
      * @param size size The size of this object.
      */
     public void setSize(double size){
-        this.size = size;
+        data.size = size;
     }
 
-  /**
-   * Create a string with some identifying information about the debris.
-   * @return String with id, radius, and location.
-   */
-  @Override
+    /**
+     * Set the image associated with the debris.
+     * @param  frameImage the image to set.
+     */
+    public void setImage(BufferedImage frameImage){
+        this.frameImage = frameImage;
+    }
+
+    /**
+     * Get the image associated with the debris.
+     * @return frameImage.
+     */
+    public BufferedImage getImage(){
+        return frameImage;
+    }
+
+    /**
+     * Create a string with some identifying information about the debris.
+     * @return String with id, radius, and location.
+     */
+    @Override
     public String toString(){
-      StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.append("Debris: ");
-      stringBuilder.append(id);
-      stringBuilder.append(" radius: ");
-      stringBuilder.append(radius);
-      stringBuilder.append(" at : ");
-      stringBuilder.append(xLoc);
-      stringBuilder.append(", ");
-      stringBuilder.append(yLoc);
-      return stringBuilder.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Debris: ");
+        stringBuilder.append(id);
+        stringBuilder.append(" radius: ");
+        stringBuilder.append(data.radius);
+        stringBuilder.append(" at : ");
+        stringBuilder.append(data.xLoc);
+        stringBuilder.append(", ");
+        stringBuilder.append(data.yLoc);
+        return stringBuilder.toString();
     }
     //end setters and getters---------------------------------------------------
 
@@ -209,17 +241,30 @@ public class DebrisRecord {
      * the other DebrisRecord passed as a parameter.
      */
     public double radiusDifference(DebrisRecord other){
-        return this.radius - other.getRadius();
+        return data.radius - other.getRadius();
     }
 
-  /**
-   * Return distance from to object.
-   * @param other The object to get distance from
-   * @return Real (double) distance from other debris.
-   */
-  public double distanceTo(DebrisRecord other){
-      double distanceSquared = (double)sqDistanceTo(other);
-      return Math.sqrt(distanceSquared);
+    /**
+     * Compute the percent difference between  this DebrisRecord and another DebrisRecord.
+     * @param other The DebrisRecord we are comparing to.
+     * @return  double percent difference in radius between this Debris Record and
+     * the other DebrisRecord passed as a parameter.
+     */
+    public double radiusRatio(DebrisRecord other){
+        double average = (data.radius + other.getRadius()) / 2;
+        double diff = Math.abs(radiusDifference(other));
+        return diff / average;
+    }
+
+
+    /**
+     * Return distance from to object.
+     * @param other The object to get distance from
+     * @return Real (double) distance from other debris.
+     */
+    public double distanceTo(DebrisRecord other){
+        double distanceSquared = (double)sqDistanceTo(other);
+        return Math.sqrt(distanceSquared);
     }
 
     /**
@@ -229,8 +274,28 @@ public class DebrisRecord {
      * @return The squared distance between the two DebrisRecords. dX^2 + dY^2.
      */
     public int sqDistanceTo(DebrisRecord other){
-        int xDistance = other.getX() - xLoc;
-        int yDistance = other.getY() - yLoc;
+        int xDistance = other.getX() - data.xLoc;
+        int yDistance = other.getY() - data.yLoc;
         return xDistance * xDistance + yDistance * yDistance;
+    }
+
+    private class DebrisData{
+        public int xLoc, yLoc;
+        public double radius;
+        public double size;
+
+        public DebrisData(){
+            xLoc = 0;
+            yLoc = 0;
+            radius = 0.0;
+            size = 0.0;
+        }
+
+        public DebrisData(int xLoc, int yLoc, double radius, double size){
+            this.xLoc = xLoc;
+            this.yLoc = xLoc;
+            this.radius = radius;
+            this.size = size;
+        }
     }
 }

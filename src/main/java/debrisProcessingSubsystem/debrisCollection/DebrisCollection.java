@@ -166,8 +166,38 @@ public class DebrisCollection implements Updatable, TestableComponent
    * @param debris DebrisRecord object to look for a match in.
    */
   private void checkForDebrisMatch(DebrisRecord debris){
-      //Search oldDebris record for possible matches.
-      //update debris with information about match.
+
+    //Search oldDebris record for possible matches.
+    //update debris with information about match.
+
+    DebrisRecord old;
+
+    //uses iterator for now, should probably change
+    while((old = oldDebris.getDebrisElement()) != null)
+    {
+      double distance = debris.distanceTo(old);
+      double radiusDiff = debris.radiusDifference(old);
+      double radiusRatio = debris.radiusRatio(old);
+      if(distance <= 10)
+      {
+        //confirmed match if radius increased & distance is less than max threshold
+        if(radiusDiff >= 0)
+        {
+          debris.setId(old.getId());
+          break;
+        }
+
+        //possible match if radius is smaller, but close to the old.
+        else if(radiusRatio <= 0.2)
+        {
+          debris.setPossibleId(old.getId());
+        }
+      }
+
+      //no matches were found, so a new label is created
+      debris.setId(DebrisRecord.getNextID());
+    }
+
     }
 
     /**
