@@ -293,7 +293,7 @@ public class DebrisRecord {
 
         public DebrisData(int xLoc, int yLoc, double radius, double size){
             this.xLoc = xLoc;
-            this.yLoc = xLoc;
+            this.yLoc = yLoc;
             this.radius = radius;
             this.size = size;
         }
