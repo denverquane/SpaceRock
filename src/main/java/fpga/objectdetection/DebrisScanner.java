@@ -69,9 +69,9 @@ class DebrisScanner {
         validDebris = !(onBoarder(i, j));
         debrisSize = 1;
         maxX = i;
-        minX = i;
+        minX = i - 1;
         maxY = j;
-        minY = j;
+        minY = j - 1;
         for( Dir d : Dir.values() )
         {
             search(i + d.deltaX(), j + d.deltaY() );
