@@ -37,7 +37,7 @@ public class DebrisRecord {
      */
     public DebrisRecord(int xLoc, int yLoc, int frameX, int frameY,
                         double radius, double size){
-        data = new DebrisData(xLoc, yLoc, radius, size)
+        data = new DebrisData(xLoc, yLoc, radius, size);
         this.frameX = frameX;
         this.frameY = frameY;
     }
