@@ -32,6 +32,7 @@ public class Testing
     //start up the test
     Scheduler scheduler = new Scheduler(debrisCollection, operator, camera);
     stageTwo();
+    stageThree();
     OperatorUpdate stop = new OperatorUpdate(UpdateType.STOP_SCHEDULER);
     operator.addUpdateForScheduler(stop);
 
@@ -70,6 +71,17 @@ public class Testing
     //dbu3.setDebrisObject();
     //camera.addUpdateForScheduler(dbu3);
     
+
+  }
+  public static void stageThree()
+  {
+    //operator updates
+    OperatorUpdate opUpdate = new OperatorUpdate(UpdateType.OPERATOR);
+    opUpdate.setCheckConnection();
+    opUpdate.setDebris(new DebrisRecord());
+    opUpdate.setDebrisTransmissionComplete();
+    opUpdate.setRawImage(new BufferedImage(500, 500, 1));
+    operator.addUpdateForScheduler(opUpdate);
 
   }
 }

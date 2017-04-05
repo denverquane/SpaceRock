@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public class DebrisRecord {
     private String id;
-
+    private static int idCounter = 0;
     private final int VECTOR2_SIZE = 2;
     private double[] estimatedVelocityXY;
     private DebrisRecord matchingRecord;
@@ -75,6 +75,31 @@ public class DebrisRecord {
      */
     public void setId(String id){
         this.id = id;
+    }
+
+    /**
+     * Set the ID for this DebrisRecord, marking "X" at the end.
+     * This tags the Record that it is a possible match.
+     * @param id The id for this DebrisRecord.
+     */
+    public void setPossibleId(String id){
+        if(id.contains("X"))
+        {
+            setId(id);
+        }
+        else
+        {
+            setId(id + "X");
+        }
+    }
+
+    /**
+     * Generates a new label number by incrementing the counter
+     * @return the String representation of the label counter
+     */
+    public static String getNextID()
+    {
+        return Integer.toString(idCounter++);
     }
 
     /**
@@ -175,7 +200,7 @@ public class DebrisRecord {
 
     /**
      * Set the image associated with the debris.
-     * @param frameImage.
+     * @param  frameImage the image to set.
      */
     public void setImage(BufferedImage frameImage){
         this.frameImage = frameImage;
@@ -189,22 +214,22 @@ public class DebrisRecord {
         return frameImage;
     }
 
-  /**
-   * Create a string with some identifying information about the debris.
-   * @return String with id, radius, and location.
-   */
-  @Override
+    /**
+     * Create a string with some identifying information about the debris.
+     * @return String with id, radius, and location.
+     */
+    @Override
     public String toString(){
-      StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.append("Debris: ");
-      stringBuilder.append(id);
-      stringBuilder.append(" radius: ");
-      stringBuilder.append(data.radius);
-      stringBuilder.append(" at : ");
-      stringBuilder.append(data.xLoc);
-      stringBuilder.append(", ");
-      stringBuilder.append(data.yLoc);
-      return stringBuilder.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Debris: ");
+        stringBuilder.append(id);
+        stringBuilder.append(" radius: ");
+        stringBuilder.append(data.radius);
+        stringBuilder.append(" at : ");
+        stringBuilder.append(data.xLoc);
+        stringBuilder.append(", ");
+        stringBuilder.append(data.yLoc);
+        return stringBuilder.toString();
     }
     //end setters and getters---------------------------------------------------
 
@@ -219,14 +244,27 @@ public class DebrisRecord {
         return data.radius - other.getRadius();
     }
 
-  /**
-   * Return distance from to object.
-   * @param other The object to get distance from
-   * @return Real (double) distance from other debris.
-   */
-  public double distanceTo(DebrisRecord other){
-      double distanceSquared = (double)sqDistanceTo(other);
-      return Math.sqrt(distanceSquared);
+    /**
+     * Compute the percent difference between  this DebrisRecord and another DebrisRecord.
+     * @param other The DebrisRecord we are comparing to.
+     * @return  double percent difference in radius between this Debris Record and
+     * the other DebrisRecord passed as a parameter.
+     */
+    public double radiusRatio(DebrisRecord other){
+        double average = (data.radius + other.getRadius()) / 2;
+        double diff = Math.abs(radiusDifference(other));
+        return diff / average;
+    }
+
+
+    /**
+     * Return distance from to object.
+     * @param other The object to get distance from
+     * @return Real (double) distance from other debris.
+     */
+    public double distanceTo(DebrisRecord other){
+        double distanceSquared = (double)sqDistanceTo(other);
+        return Math.sqrt(distanceSquared);
     }
 
     /**
@@ -255,7 +293,7 @@ public class DebrisRecord {
 
         public DebrisData(int xLoc, int yLoc, double radius, double size){
             this.xLoc = xLoc;
-            this.yLoc = xLoc;
+            this.yLoc = yLoc;
             this.radius = radius;
             this.size = size;
         }
